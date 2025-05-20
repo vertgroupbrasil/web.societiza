@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { PROTECTED_ROUTES } from './routes/routes.conf';
 import { API_ENDPOINTS } from './routes/endpoints';
 
-const api = API_ENDPOINTS
+const api = API_ENDPOINTS;
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;

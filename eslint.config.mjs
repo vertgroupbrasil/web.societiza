@@ -75,6 +75,7 @@ const config = [
       'unicorn/catch-error-name': 'warn',
       'unicorn/no-useless-promise-resolve-reject': 'warn',
       'unicorn/prefer-global-this': 'warn',
+      'unicorn/prefer-native-coercion-functions': 'warn',
     },
   },
   {

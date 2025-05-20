@@ -1,3 +1,3 @@
-export const formatNumToStr = (num: number) => {
-    return String(num)
-}
+export const formatNumToString = (num: number) => {
+  return String(num);
+};
