@@ -24,10 +24,10 @@ jobs:
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
-        run: cd historio && npm ci
+        run: cd flowtec && npm ci
 
       - name: Run ESLint
-        run: cd historio && npm run lint
+        run: cd flowtec && npm run lint
 
       # - name: npm audit action
       #   uses: oke-py/npm-audit-action@v2.4.4
