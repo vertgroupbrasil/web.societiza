@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
   // Só protege rotas especificadas
   const isProtected = PROTECTED_ROUTES.some((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.startsWith(route),
   );
   if (!isProtected) return NextResponse.next();
 

@@ -1,8 +1,7 @@
-import useSWR, { SWRConfiguration } from "swr";
-import { useRouter } from "next/navigation";
-import { ApiError } from "@/types/Api";
-import api from "@/lib/axios";
-
+import useSWR, { SWRConfiguration } from 'swr';
+import { useRouter } from 'next/navigation';
+import { ApiError } from '@/types/Api';
+import api from '@/lib/axios';
 
 export function useApiBase<T>(
   endpoint: string | null,
@@ -18,7 +17,7 @@ export function useApiBase<T>(
       return response.data;
     } catch (error: any) {
       const apiError: ApiError = new Error(
-        "An error occurred while fetching the data.",
+        'An error occurred while fetching the data.',
       );
       apiError.info = error.response?.data;
       apiError.status = error.response?.status;
@@ -45,16 +44,16 @@ export function useApiBase<T>(
           // Limita para uma única tentativa
           if (retryCount < 1) {
             try {
-              console.log("Revalidating after token refresh");
+              console.log('Revalidating after token refresh');
               await revalidate();
             } catch (error: any) {
               console.log(retryCount);
-              console.log("Token refresh failed:", error);
-              router.push("/login");
+              console.log('Token refresh failed:', error);
+              router.push('/login');
             }
           } else {
-            console.log("Max retry count reached, redirecting to login");
-            router.push("/login");
+            console.log('Max retry count reached, redirecting to login');
+            router.push('/login');
           }
           return;
         }

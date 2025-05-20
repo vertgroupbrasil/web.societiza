@@ -12,8 +12,8 @@ interface AuthLoaderProps {
 }
 
 const FlowtecAuthLoader = ({
-  message = "Verificando suas credenciais...",
-  statusLabel = "Autenticando...",
+  message = 'Verificando suas credenciais...',
+  statusLabel = 'Autenticando...',
   showSecureBadge = false,
 }: AuthLoaderProps) => {
   return (
@@ -21,7 +21,6 @@ const FlowtecAuthLoader = ({
       <div className="w-full max-w-md p-10 ">
         {/* Header with logo */}
 
-        
         {/* Loader animation and status */}
         <div className="flex flex-col items-center justify-center my-8">
           {/* Circular loader */}
@@ -59,12 +58,14 @@ const FlowtecAuthLoader = ({
               />
             </svg>
           </div>
-          
+
           {/* Status text */}
-          <div className="mt-6 text-sm font-medium text-black opacity-90">{statusLabel}</div>
+          <div className="mt-6 text-sm font-medium text-black opacity-90">
+            {statusLabel}
+          </div>
           <div className="mt-2 text-xs text-zinc-400">{message}</div>
         </div>
-        
+
         {/* Secure badge */}
         {showSecureBadge && (
           <div className="flex items-center justify-center mt-6 text-xs text-zinc-500 gap-2">
