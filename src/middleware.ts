@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { PROTECTED_ROUTES } from './routes/routes.conf';
 import { API_ENDPOINTS } from './routes/endpoints';
 
-const api = API_ENDPOINTS;
+const api = API_ENDPOINTS
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   // Requisição ao backend Django para verificar se o cookie é válido
   const sessionRes = await fetch(api.accounts.getUser, {
     headers: {
-      Cookie: request.headers.get('cookie') || '',
+      Cookie: request.headers.get('accessToken') || '',
     },
     credentials: 'include',
   });
