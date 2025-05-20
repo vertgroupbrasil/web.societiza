@@ -1,0 +1,57 @@
+'use client'
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@flowtec/components/ui/shadcnui/form"
+import { useLoginForm } from "../../hooks/useAuthForm"
+import { Button } from "@flowtec/components/ui/shadcnui/button"
+import { Input } from "@flowtec/components/ui/shadcnui/input"
+
+
+export function LoginForm() {
+  const { form, onSubmit, isSubmitting, globalError } = useLoginForm()
+
+  return (
+    <Form {...form}>
+      <form onSubmit={onSubmit} className="space-y-4">
+        {/* Email */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="seu@email.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Senha */}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Senha</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="********" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Erro global (ex: email/senha inválidos) */}
+        {globalError && (
+          <p className="text-sm text-red-500 font-medium">{globalError}</p>
+        )}
+
+        {/* Botão */}
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? 'Entrando...' : 'Entrar'}
+        </Button>
+      </form>
+    </Form>
+  )
+}
