@@ -19,5 +19,5 @@ COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
 # Verificar se a mensagem já tem um ID de commit
 if ! echo "$COMMIT_MSG" | grep -q "#[0-9]\+"; then
   # Adicionar o ID de commit à mensagem
-  echo "$COMMIT_MSG #($NEXT_COMMIT)" > "$COMMIT_MSG_FILE"
+  echo "$COMMIT_MSG (#$NEXT_COMMIT)" > "$COMMIT_MSG_FILE"
 fi
