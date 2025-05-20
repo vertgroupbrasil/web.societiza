@@ -13,7 +13,7 @@ export function useLoginForm() {
     resolver: zodResolver(authSchema),
     defaultValues: emptyAuth,
   });
-  const router = useRouter()
+  const router = useRouter();
   const { login } = useAuthMutations();
   const [globalError, setGlobalError] = useState<string | undefined>();
 
@@ -24,7 +24,7 @@ export function useLoginForm() {
       toast.success('Autenticado com sucesso!', {
         description: 'Você está sendo redirecionado...',
       });
-      router.push("/dashboard")
+      router.push('/dashboard');
     } catch (err) {
       const parsed = handleFormError<Auth>(err, form.setError, setGlobalError);
       toast.error('Erro ao autenticar!', {

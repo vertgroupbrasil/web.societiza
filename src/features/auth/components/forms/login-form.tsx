@@ -1,13 +1,19 @@
-'use client'
+'use client';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@flowtec/components/ui/shadcnui/form"
-import { useLoginForm } from "../../hooks/useAuthForm"
-import { Button } from "@flowtec/components/ui/shadcnui/button"
-import { Input } from "@flowtec/components/ui/shadcnui/input"
-
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@flowtec/components/ui/shadcnui/form';
+import { useLoginForm } from '../../hooks/useAuthForm';
+import { Button } from '@flowtec/components/ui/shadcnui/button';
+import { Input } from '@flowtec/components/ui/shadcnui/input';
 
 export function LoginForm() {
-  const { form, onSubmit, isSubmitting, globalError } = useLoginForm()
+  const { form, onSubmit, isSubmitting, globalError } = useLoginForm();
 
   return (
     <Form {...form}>
@@ -53,5 +59,5 @@ export function LoginForm() {
         </Button>
       </form>
     </Form>
-  )
+  );
 }

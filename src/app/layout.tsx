@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@flowtec/providers/theme-provider';
 import { Toaster } from 'sonner';
@@ -31,7 +30,7 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <html lang="pt-BR" suppressHydrationWarning>
-      <body
+        <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider
@@ -41,7 +40,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            <Toaster position='top-center'/>
+            <Toaster position="top-center" />
           </ThemeProvider>
         </body>
       </html>
