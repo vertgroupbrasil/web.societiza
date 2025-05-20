@@ -1,7 +1,7 @@
 import useSWR, { SWRConfiguration } from 'swr';
 import { useRouter } from 'next/navigation';
-import { ApiError } from '@/types/Api';
-import api from '@/lib/axios';
+import { ApiError } from '@flowtec/types/Api';
+import api from '@flowtec/lib/axios';
 
 export function useApiBase<T>(
   endpoint: string | null,
