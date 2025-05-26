@@ -1,6 +1,7 @@
 import { ZodError } from 'zod';
 import { HttpError } from './HttpErrors';
 import { ValidationError } from './ApiErrors'; // Importe o caminho correto para suas classes de erro
+import { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 
 /**
  * ParsedError<T> representa as mensagens de erro mapeadas por campo e a mensagem global.
@@ -101,39 +102,59 @@ export function formatErrorMessage<T extends object>(
  * @param setError Função do react-hook-form para definir erros
  * @param setGlobalError Função setState para definir erro global
  */
-// src/handlers/error.ts
-import { FieldValues, Path, UseFormSetError } from 'react-hook-form';
+
 
 export function handleFormError<T extends FieldValues>(
   err: unknown,
   setError: UseFormSetError<T>,
   setGlobalError?: (msg?: string) => void,
 ): { globalError?: string } {
-  let globalError: string | undefined = 'Ocorreu um erro inesperado.';
+  let globalError: string | undefined
 
-  // Exemplo: erro da API com mensagens por campo
-  if (
+  // 1) ZodError
+  if (err instanceof ZodError) {
+    const flat = err.flatten().fieldErrors
+    Object.entries(flat).forEach(([key, msgs]) => {
+      if (msgs?.[0]) {
+        setError(key as Path<T>, { message: msgs[0] })
+      }
+    })
+    globalError = undefined
+  }
+  // 2) HttpError personalizada
+  else if (err instanceof HttpError) {
+    // se tiver detalhes de campo (ValidationError, por exemplo)
+    if ((err as any).details && typeof (err as any).details === 'object') {
+      const details = (err as any).details as Record<string,string>
+      Object.entries(details).forEach(([key, msg]) => {
+        setError(key as Path<T>, { message: msg })
+      })
+    }
+    globalError = err.message
+  }
+  // 3) AxiosError sem subclass (fallback)
+  else if (
     err &&
     typeof err === 'object' &&
     'response' in err &&
     (err as any).response?.data
   ) {
-    const data = (err as any).response.data;
+    const data = (err as any).response.data as any
 
-    if (data?.errors) {
-      Object.entries(data.errors).forEach(([key, value]) => {
-        setError(key as Path<T>, { message: value as string });
-      });
+    if (data.errors && typeof data.errors === 'object') {
+      Object.entries(data.errors).forEach(([key, msg]) => {
+        setError(key as Path<T>, { message: String(msg) })
+      })
     }
-
-    if (data?.message) {
-      globalError = data.message;
-    }
+    globalError = data.message ?? data.detail ?? 'Erro na requisição'
+  }
+  // 4) qualquer outro erro JS
+  else {
+    globalError = err instanceof Error ? err.message : String(err)
   }
 
-  setGlobalError?.(globalError);
+  setGlobalError?.(globalError)
 
-  return {
-    ...(globalError ? { globalError } : {}),
-  };
+  return { ...(globalError ? { globalError } : {}) }
 }
+

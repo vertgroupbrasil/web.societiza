@@ -1,48 +1,57 @@
+const api = process.env.NEXT_PUBLIC_API_URL;
+
+const withBase = (endpoint: string) => `${api}${endpoint}`;
+
 export const API_ENDPOINTS = {
   accountings: {
-    listContabilidades: '/contabilidades/list-contabilidades/',
-    getContabilidades: '/contabilidades/get-contabilidade/',
-    createContabilidade: '/contabilidades/create-contabilidade/',
+    listContabilidades: withBase('/contabilidades/list-contabilidades/'),
+    getContabilidades: withBase('/contabilidades/get-contabilidade/'),
+    createContabilidade: withBase('/contabilidades/create-contabilidade/'),
   },
   auth: {
-    login: '/accounts/token/',
-    logout: '/accounts/token/logout/',
-    refresh: '/accounts/token/refresh/',
+    login: withBase('/accounts/token/'),
+    logout: withBase('/accounts/token/logout/'),
+    refresh: withBase('/accounts/token/refresh/'),
   },
   accounts: {
-    getUser: '/accounts/get-user/',
-    createUserAdmin: `/accounts/create-user/`,
-    getUserById: (id: string) => `/accounts/get-user/?id=${id}`,
-    updateUserById: (id: string) => `/accounts/get-user/?id=${id}`,
-    deleteUser: (id: string) => `/accounts/delete-user/?id=${id}`,
+    getUser: withBase('/accounts/get-user/'),
+    createUserAdmin: withBase('/accounts/create-user/'),
+    getUserById: (id: string) =>
+      withBase(`/accounts/get-user/?id=${id}`),
+    updateUserById: (id: string) =>
+      withBase(`/accounts/get-user/?id=${id}`),
+    deleteUser: (id: string) =>
+      withBase(`/accounts/delete-user/?id=${id}`),
   },
   societario: {
     form: {
-      createOpeningForm: `/societario/create-form-abertura/`,
+      createOpeningForm: withBase('/societario/create-form-abertura/'),
       getOpeningFormById: (id: string) =>
-        `/societario/get-form-abertura/?form_id=${id}`,
+        withBase(`/societario/get-form-abertura/?form_id=${id}`),
       updateOpeningForm: (id: string) =>
-        `/societario/update-form-abertura/?form_id=${id}`,
+        withBase(`/societario/update-form-abertura/?form_id=${id}`),
     },
     socio: {
-      createSocios: `/societario/create-socios/`,
+      createSocios: withBase('/societario/create-socios/'),
     },
     stage: {
-      listStages: '/societario/list-etapas/',
-      getStageById: (id: string) => `/societario/get-etapa/?etapa_id=${id}`,
+      listStages: withBase('/societario/list-etapas/'),
+      getStageById: (id: string) =>
+        withBase(`/societario/get-etapa/?etapa_id=${id}`),
     },
     process: {
       type: {
-        listProcessTypes: '/societario/list-tipo-processo/',
+        listProcessTypes: withBase('/societario/list-tipo-processo/'),
         getProcessTypeById: (id: string) =>
-          `/societario/get-tipo-processo/?tipo_processo_id=${id}`,
+          withBase(`/societario/get-tipo-processo/?tipo_processo_id=${id}`),
       },
-      listProcessessByStages: '/societario/list-processos-etapas/',
-      createProcess: '/societario/create-processo/',
-      updateProcess: '/societario/update-processo/',
+      listProcessessByStages: withBase('/societario/list-processos-etapas/'),
+      createProcess: withBase('/societario/create-processo/'),
+      updateProcess: withBase('/societario/update-processo/'),
       getProcessById: (id: string) =>
-        `/societario/get-processo/?processo_id=${id}`,
-      deleteProcess: (id: string) => `/societario/${id}/`,
+        withBase(`/societario/get-processo/?processo_id=${id}`),
+      deleteProcess: (id: string) =>
+        withBase(`/societario/${id}/`),
     },
   },
 };
