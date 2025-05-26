@@ -8,9 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prepare": "husky install",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
