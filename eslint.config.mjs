@@ -76,6 +76,7 @@ const config = [
       'unicorn/no-useless-promise-resolve-reject': 'warn',
       'unicorn/prefer-global-this': 'warn',
       'unicorn/prefer-native-coercion-functions': 'warn',
+      'unicorn/no-negated-condition': 'off',
     },
   },
   {

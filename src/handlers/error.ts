@@ -1,32 +1,160 @@
 import { ZodError } from 'zod';
+import { HttpError } from './HttpErrors';
+import { ValidationError } from './ApiErrors'; // Importe o caminho correto para suas classes de erro
+import { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 
 /**
  * ParsedError<T> representa as mensagens de erro mapeadas por campo e a mensagem global.
  */
 export interface ParsedError<T extends object> {
   fieldErrors: Partial<Record<keyof T, string>>;
-  globalError?: string;
+  globalError: string | undefined;
+  statusCode: number | undefined;
+  errorCode: string | undefined;
 }
 
 /**
- * parseError converte um erro genérico ou ZodError em um objeto com mensagens de erro.
- * @param err Erro lançado pela Server Action ou validação Zod.
- * @returns {ParsedError<T>} Objeto contendo fieldErrors e globalError.
+ * parseError converte um erro genérico, ZodError, ou HttpError em um objeto com mensagens de erro.
+ * @param err Erro lançado por Server Action, validação Zod, ou API.
+ * @returns {ParsedError<T>} Objeto contendo fieldErrors, globalError, statusCode e errorCode.
  */
 export function parseError<T extends object>(err: unknown): ParsedError<T> {
-  // Se for um erro de validação Zod, extraímos mensagens de cada campo
+  // Caso 1: Se for um erro de validação Zod
   if (err instanceof ZodError) {
     const flat = err.flatten().fieldErrors;
     const fieldErrors: ParsedError<T>['fieldErrors'] = {};
+
     for (const key in flat) {
       if (flat[key] && flat[key]![0]) {
         fieldErrors[key as keyof T] = flat[key]![0];
       }
     }
-    return { fieldErrors };
+
+    return {
+      fieldErrors,
+      globalError: undefined,
+      statusCode: 400, // Bad Request para erros de validação
+      errorCode: 'VALIDATION_ERROR',
+    };
   }
 
-  // Para qualquer outro erro, definimos uma mensagem global
+  // Caso 2: Se for um HttpError personalizado (incluindo ValidationError e outros)
+  if (err instanceof HttpError) {
+    // Se for especificamente um ValidationError, ele tem fieldErrors
+    if (err instanceof ValidationError && err.details) {
+      const fieldErrors: ParsedError<T>['fieldErrors'] = {};
+
+      // Convertemos o Record<string, string> para Partial<Record<keyof T, string>>
+      for (const key in err.details) {
+        fieldErrors[key as keyof T] = err.details[key];
+      }
+
+      return {
+        fieldErrors,
+        globalError: err.message,
+        statusCode: err.status,
+        errorCode: err.code,
+      };
+    }
+
+    // Para outros HttpErrors, usamos apenas a mensagem global
+    return {
+      fieldErrors: {},
+      globalError: err.message,
+      statusCode: err.status,
+      errorCode: err.code,
+    };
+  }
+
+  // Caso 3: Para qualquer outro erro, definimos uma mensagem global
   const message = err instanceof Error ? err.message : String(err);
-  return { fieldErrors: {}, globalError: message };
+  return {
+    fieldErrors: {},
+    globalError: message,
+    statusCode: 500, // Internal Server Error como padrão
+    errorCode: 'UNKNOWN_ERROR',
+  };
 }
+
+/**
+ * Formata uma mensagem de erro para exibição ao usuário
+ * @param error O objeto de erro parseado
+ * @returns Uma string formatada para exibição
+ */
+export function formatErrorMessage<T extends object>(
+  error: ParsedError<T>,
+): string {
+  if (error.globalError) {
+    return error.globalError;
+  }
+
+  const fieldMessages = Object.values(error.fieldErrors).filter(Boolean);
+  if (fieldMessages.length > 0) {
+    return fieldMessages.join('. ');
+  }
+
+  return 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+}
+
+/**
+ * Hook para tratamento simplificado de erros em formulários
+ * @param err O erro capturado
+ * @param setError Função do react-hook-form para definir erros
+ * @param setGlobalError Função setState para definir erro global
+ */
+
+
+export function handleFormError<T extends FieldValues>(
+  err: unknown,
+  setError: UseFormSetError<T>,
+  setGlobalError?: (msg?: string) => void,
+): { globalError?: string } {
+  let globalError: string | undefined
+
+  // 1) ZodError
+  if (err instanceof ZodError) {
+    const flat = err.flatten().fieldErrors
+    Object.entries(flat).forEach(([key, msgs]) => {
+      if (msgs?.[0]) {
+        setError(key as Path<T>, { message: msgs[0] })
+      }
+    })
+    globalError = undefined
+  }
+  // 2) HttpError personalizada
+  else if (err instanceof HttpError) {
+    // se tiver detalhes de campo (ValidationError, por exemplo)
+    if ((err as any).details && typeof (err as any).details === 'object') {
+      const details = (err as any).details as Record<string,string>
+      Object.entries(details).forEach(([key, msg]) => {
+        setError(key as Path<T>, { message: msg })
+      })
+    }
+    globalError = err.message
+  }
+  // 3) AxiosError sem subclass (fallback)
+  else if (
+    err &&
+    typeof err === 'object' &&
+    'response' in err &&
+    (err as any).response?.data
+  ) {
+    const data = (err as any).response.data as any
+
+    if (data.errors && typeof data.errors === 'object') {
+      Object.entries(data.errors).forEach(([key, msg]) => {
+        setError(key as Path<T>, { message: String(msg) })
+      })
+    }
+    globalError = data.message ?? data.detail ?? 'Erro na requisição'
+  }
+  // 4) qualquer outro erro JS
+  else {
+    globalError = err instanceof Error ? err.message : String(err)
+  }
+
+  setGlobalError?.(globalError)
+
+  return { ...(globalError ? { globalError } : {}) }
+}
+
