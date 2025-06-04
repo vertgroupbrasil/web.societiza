@@ -33,6 +33,7 @@
   --destructive-foreground: oklch(0.9934 0.0032 17.2118);
   --border: oklch(0.9037 0 0);
   --border-primary: oklch(0.9934 0.0032 17.2118);
+  --border-destructive: oklch(0.4206 0.1899 32.7272);
   --input: oklch(0.9 0 0);
   --ring: oklch(0.7047 0.1587 252.3506);
   --chart-1: oklch(0.8348 0.1302 160.908);
@@ -45,7 +46,7 @@
   --sidebar-primary: oklch(0.6048 0.2166 257.2136);
   --sidebar-primary-foreground: oklch(0.2626 0.0147 166.4589);
   --sidebar-accent: oklch(0.9461 0 0);
-  --sidebar-accent-foreground: oklch(0.2435 0 0);
+  --sidebar-accent-foreground: oklch(0.2046 0 0);
   --sidebar-border: oklch(0.9037 0 0);
   --sidebar-ring: oklch(0.7047 0.1587 252.3506);
   --font-sans: Outfit, sans-serif;
@@ -67,8 +68,8 @@
     0px 4.5px 0px -1px oklch(0.4897 0.2146 257.2136),
     0px 1px 2px -2px oklch(0.4897 0.2146 257.2136);
   --shadow-btn-destructive:
-    0px 4.5px 0px -1px oklch(0.4897 0.2146 257.2136),
-    0px 1px 2px -2px oklch(0.4897 0.2146 257.2136);
+    0px 4.5px 0px -1px oklch(0.4206 0.1899 32.7272),
+    0px 1px 2px -2px oklch(0.4206 0.1899 32.7272);
   --shadow-md:
     0px 4.5px 0px -1px hsl(0 0% 87.451% / 0.28),
     0px 2px 4px -2px hsl(0 0% 87.451% / 0.28);
@@ -97,9 +98,10 @@
   --muted-foreground: oklch(0.7122 0 0);
   --accent: oklch(0.3132 0 0);
   --accent-foreground: oklch(0.9851 0 0);
-  --destructive: oklch(0.4257 0.1651 31.1511);
+  --destructive: oklch(0.4647 0.1727 31.1511);
   --destructive-foreground: oklch(0.9368 0.0045 34.3092);
   --border: oklch(0.2809 0 0);
+  --border-destructive: oklch(0.3676 0.1702 32.7272);
   --input: oklch(0.4 0 0);
   --ring: oklch(0.7047 0.1587 252.3506);
   --chart-1: oklch(0.8003 0.1821 151.711);
@@ -128,8 +130,10 @@
     0px 4.5px 0px -1px hsl(0 0% 16.4706% / 0.28),
     0px 1px 2px -2px hsl(0 0% 16.4706% / 0.28);
   --shadow-btn:
-    0px 4.5px 0px -1px oklch(0.4 0 0),
-    0px 1px 2px -2px oklch(0.4 0 0);
+    0px 4.5px 0px -1px oklch(0.4 0 0), 0px 1px 2px -2px oklch(0.4 0 0);
+  --shadow-btn-destructive:
+    0px 4.5px 0px -1px oklch(0.3676 0.1702 32.7272),
+    0px 1px 2px -2px oklch(0.3676 0.1702 32.7272);
   --shadow-md:
     0px 4.5px 0px -1px hsl(0 0% 16.4706% / 0.28),
     0px 2px 4px -2px hsl(0 0% 16.4706% / 0.28);
@@ -161,6 +165,7 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-border-primary: var(--border-primary);
+  --color-border-destructive: var(--border-primary);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);

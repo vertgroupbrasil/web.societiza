@@ -2,8 +2,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { Auth, authSchema, emptyAuth } from '../schemas/auth-schema';
-import { useAuthMutations } from './useAuth';
+import { Auth, authSchema, emptyAuth } from '../schemas/auth.schema';
+import { useAuthMutations } from './useAuthMutations';
 import { handleFormError } from '@flowtec/handlers/error';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -15,7 +15,7 @@ export function useLoginForm() {
     mode: 'onSubmit', // Define quando a validação acontece
     reValidateMode: 'onChange', // Re-valida ao alterar após o primeiro submit
   });
-  
+
   const router = useRouter();
   const { login } = useAuthMutations();
   const [globalError, setGlobalError] = useState<string | undefined>();
@@ -31,13 +31,16 @@ export function useLoginForm() {
         });
         router.push('/dashboard');
       } catch (err) {
-        const parsed = handleFormError<Auth>(err, form.setError, setGlobalError);
+        const parsed = handleFormError<Auth>(
+          err,
+          form.setError,
+          setGlobalError,
+        );
         toast.error('Erro ao autenticar!', {
           description: parsed.globalError ?? 'Algo deu errado',
         });
       }
     },
-    
   );
 
   return {

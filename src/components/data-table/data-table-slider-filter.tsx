@@ -90,8 +90,8 @@ export function DataTableSliderFilter<TData>({
   }, []);
 
   const onFromInputChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value);
+    (value: string) => {
+      const numValue = Number(value);
       if (!Number.isNaN(numValue) && numValue >= min && numValue <= range[1]) {
         column.setFilterValue([numValue, range[1]]);
       }
@@ -100,8 +100,8 @@ export function DataTableSliderFilter<TData>({
   );
 
   const onToInputChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const numValue = Number(event.target.value);
+    (value: string) => {
+      const numValue = Number(value);
       if (!Number.isNaN(numValue) && numValue <= max && numValue >= range[0]) {
         column.setFilterValue([range[0], numValue]);
       }
@@ -166,7 +166,7 @@ export function DataTableSliderFilter<TData>({
           </p>
           <div className="flex items-center gap-4">
             <Label htmlFor={`${id}-from`} className="sr-only">
-              From
+              De
             </Label>
             <div className="relative">
               <Input
@@ -190,7 +190,7 @@ export function DataTableSliderFilter<TData>({
               )}
             </div>
             <Label htmlFor={`${id}-to`} className="sr-only">
-              to
+              para
             </Label>
             <div className="relative">
               <Input

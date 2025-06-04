@@ -2,7 +2,7 @@ import { Badge } from '@flowtec/components/ui/shadcnui/badge';
 import { cn } from '@flowtec/lib/utils';
 import type { ComponentProps, HTMLAttributes } from 'react';
 export type StatusProps = ComponentProps<typeof Badge> & {
-  status: 'online' | 'offline' | 'maintenance' | 'degraded';
+  status: string;
 };
 export const Status = ({ className, status, ...props }: StatusProps) => (
   <Badge
@@ -20,19 +20,23 @@ export const StatusIndicator = ({
     <span
       className={cn(
         'absolute inline-flex h-full w-full animate-ping rounded-full opacity-75',
-        'group-[.online]:bg-emerald-500',
-        'group-[.offline]:bg-red-500',
-        'group-[.maintenance]:bg-blue-500',
-        'group-[.degraded]:bg-amber-500'
+        'group-[.ativa]:bg-emerald-500',
+        'group-[.suspensa]:bg-yellow-500',
+        'group-[.inapta]:bg-rose-500',
+        'group-[.baixada]:bg-red-500',
+        'group-[.nula]:bg-blue-500',
+        'group-[.inativa]:bg-amber-500',
       )}
     />
     <span
       className={cn(
         'relative inline-flex h-2 w-2 rounded-full',
-        'group-[.online]:bg-emerald-500',
-        'group-[.offline]:bg-red-500',
-        'group-[.maintenance]:bg-blue-500',
-        'group-[.degraded]:bg-amber-500'
+        'group-[.ativa]:bg-emerald-500',
+        'group-[.baixada]:bg-red-500',
+        'group-[.inapta]:bg-rose-500',
+        'group-[.nula]:bg-blue-500',
+        'group-[.inativa]:bg-amber-500',
+        'group-[.suspensa]:bg-yellow-500',
       )}
     />
   </span>
@@ -46,10 +50,12 @@ export const StatusLabel = ({
   <span className={cn('text-muted-foreground', className)} {...props}>
     {children ?? (
       <>
-        <span className="hidden group-[.online]:block">Online</span>
-        <span className="hidden group-[.offline]:block">Offline</span>
-        <span className="hidden group-[.maintenance]:block">Maintenance</span>
-        <span className="hidden group-[.degraded]:block">Degraded</span>
+        <span className="hidden group-[.ativa]:block">Ativa</span>
+        <span className="hidden group-[.baixada]:block">Baixada</span>
+        <span className="hidden group-[.inapta]:block">Inapta</span>
+        <span className="hidden group-[.suspensa]:block">Suspensa</span>
+        <span className="hidden group-[.nula]:block">Nula</span>
+        <span className="hidden group-[.inativa]:block">Inativa</span>
       </>
     )}
   </span>

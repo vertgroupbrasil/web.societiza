@@ -1,208 +1,123 @@
-"use client";
+'use client';
 
- 
-import { DataTable } from "@flowtec/components/data-table/data-table";
-import { DataTableColumnHeader } from "@flowtec/components/data-table/data-table-column-header";
-import { Checkbox } from "@flowtec/components/ui/checkbox";
-import { Badge } from "@flowtec/components/ui/shadcnui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@flowtec/components/ui/shadcnui/dropdown-menu";
-import { useDataTable } from "@flowtec/hooks/use-data-table";
-import type { Column, ColumnDef } from "@tanstack/react-table";
-import {
-  CheckCircle,
-  CheckCircle2,
-  DollarSign,
-  MoreHorizontal,
-  Text,
-  XCircle,
-} from "lucide-react";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import * as React from "react";
-import { Button } from "@flowtec/components/ui/shadcnui/button";
-import { DataTableToolbar } from "@flowtec/components/data-table/data-table-toolbar";
- 
-interface Project {
-  id: string;
-  title: string;
-  status: "active" | "inactive";
-  budget: number;
-}
- 
-const data: Project[] = [
-  {
-    id: "1",
-    title: "Project Alpha",
-    status: "active",
-    budget: 50000,
-  },
-  {
-    id: "2",
-    title: "Project Beta",
-    status: "inactive",
-    budget: 75000,
-  },
-  {
-    id: "3",
-    title: "Project Gamma",
-    status: "active",
-    budget: 25000,
-  },
-  {
-    id: "4",
-    title: "Project Delta",
-    status: "active",
-    budget: 100000,
-  },
-];
- 
+import * as React from 'react';
+import { useQueryState, parseAsString, parseAsArrayOf } from 'nuqs';
+import { DataTable } from '@flowtec/components/data-table/data-table';
+import { DataTableToolbar } from '@flowtec/components/data-table/data-table-toolbar';
+import { useDataTable } from '@flowtec/hooks/use-data-table';
+import { toast } from 'sonner';
+
+import { useManagement } from '../hooks/queries/useManagementQueries';
+import { useManagementMutations } from '../hooks/mutations/useManagementMutations';
+import { makeManagementColumns } from './columns';
+import DeleteModal from '@flowtec/components/delete-modal';
+
+import type { Accounting } from '../schemas/management.schema';
+import { handleFormError } from '@flowtec/handlers/error';
+
 export function DataTableDemo() {
-  const [title] = useQueryState("title", parseAsString.withDefault(""));
+  const [globalError, setGlobalError] = React.useState<string | undefined>();
+  const [title] = useQueryState('nome_fantasia', parseAsString.withDefault(''));
   const [status] = useQueryState(
-    "status",
+    'situacao',
     parseAsArrayOf(parseAsString).withDefault([]),
   );
- 
-  // Ideally we would filter the data server-side, but for the sake of this example, we'll filter the data client-side
-  const filteredData = React.useMemo(() => {
-    return data.filter((project) => {
-      const matchesTitle =
-        title === "" ||
-        project.title.toLowerCase().includes(title.toLowerCase());
-      const matchesStatus =
-        status.length === 0 || status.includes(project.status);
- 
-      return matchesTitle && matchesStatus;
-    });
-  }, [title, status]);
- 
-  const columns = React.useMemo<ColumnDef<Project>[]>(
-    () => [
-      {
-        id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            aria-label="Select all"
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
-        ),
-        size: 32,
-        enableSorting: false,
-        enableHiding: false,
-      },
-      {
-        id: "title",
-        accessorKey: "title",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Title" />
-        ),
-        cell: ({ cell }) => <div>{cell.getValue<Project["title"]>()}</div>,
-        meta: {
-          label: "Title",
-          placeholder: "Search titles...",
-          variant: "text",
-          icon: Text,
-        },
-        enableColumnFilter: true,
-      },
-      {
-        id: "status",
-        accessorKey: "status",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Status" />
-        ),
-        cell: ({ cell }) => {
-          const status = cell.getValue<Project["status"]>();
-          const Icon = status === "active" ? CheckCircle2 : XCircle;
- 
-          return (
-            <Badge variant="outline" className="capitalize">
-              <Icon />
-              {status}
-            </Badge>
-          );
-        },
-        meta: {
-          label: "Status",
-          variant: "multiSelect",
-          options: [
-            { label: "Active", value: "active", icon: CheckCircle },
-            { label: "Inactive", value: "inactive", icon: XCircle },
-          ],
-        },
-        enableColumnFilter: true,
-      },
-      {
-        id: "budget",
-        accessorKey: "budget",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Budget" />
-        ),
-        cell: ({ cell }) => {
-          const budget = cell.getValue<Project["budget"]>();
- 
-          return (
-            <div className="flex items-center gap-1">
-              <DollarSign className="size-4" />
-              {budget.toLocaleString()}
-            </div>
-          );
-        },
-      },
-      {
-        id: "actions",
-        cell: function Cell() {
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreHorizontal className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem variant="destructive">
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        },
-        size: 32,
-      },
-    ],
+
+  // dados e mutações
+  const { data, isPending, error } = useManagement();
+  const { deleteAccounting } = useManagementMutations();
+
+  // estado do modal de delete
+  const [deleteModal, setDeleteModal] = React.useState<{
+    isOpen?: boolean;
+    id: string;
+    identifier: string;
+    text: string;
+  } | null>(null);
+
+  // função para abrir o modal
+  const handleOpenDeleteModal = React.useCallback(
+    (id: string, identifier: string, text: string, isOpen: boolean) => {
+      setDeleteModal({ id, identifier, text, isOpen });
+    },
     [],
   );
- 
+
+  // colunas injetando o callback que abre o modal
+  const columns = React.useMemo(
+    () => makeManagementColumns(handleOpenDeleteModal),
+    [handleOpenDeleteModal],
+  );
+
+  // opcional: filtro client-side (ou remova se fizer server-side)
+  const filteredData = React.useMemo(() => {
+    const list = data?.results.empresas ?? [];
+    return list.filter((d) => {
+      const byTitle =
+        !title || d.nome_fantasia.toLowerCase().includes(title.toLowerCase());
+      const byStatus = status.length === 0 || status.includes(d.situacao);
+      return byTitle && byStatus;
+    });
+  }, [data, title, status]);
+
+  // hook da tabela
   const { table } = useDataTable({
     data: filteredData,
     columns,
-    pageCount: 1,
+    pageCount: data
+      ? Math.ceil(data.count / (data.results.empresas.length || 1))
+      : 1,
     initialState: {
-      sorting: [{ id: "title", desc: true }],
-      columnPinning: { right: ["actions"] },
+      sorting: [{ id: 'nome_fantasia', desc: true }],
+      columnPinning: { right: ['actions'] },
     },
-    getRowId: (row) => row.id,
+    getRowId: (row: Accounting) => row.id,
   });
- 
+
+  // função executada ao confirmar delete
+  const handleDelete = async () => {
+    if (!deleteModal) return;
+    const { id, identifier } = deleteModal;
+    setGlobalError(undefined);
+
+    try {
+      await deleteAccounting.mutateAsync(id);
+      // Se chegou aqui, deu sucesso
+      toast.success('Exclusão feita com sucesso!', {
+        description: `${identifier} foi excluído.`,
+      });
+      setDeleteModal(null);
+    } catch (error) {
+      const parsed = handleFormError<Accounting>(error, setGlobalError);
+      toast.error('Ops! Erro ao excluir.', {
+        description:
+          parsed.globalError ?? 'Algo deu errado durante a exclusão.',
+      });
+    }
+  };
+
+  // função para fechar o modal
+  const handleCloseModal = React.useCallback(() => {
+    setDeleteModal(null);
+  }, []);
+
   return (
     <div className="data-table-container">
       <DataTable table={table}>
         <DataTableToolbar table={table} />
       </DataTable>
+
+      {/* APENAS o modal de delete - SEM botão extra */}
+      {deleteModal?.isOpen && (
+        <DeleteModal
+          isOpen={true}
+          identifier={deleteModal.identifier}
+          text="Tem certeza que deseja prosseguir com essa ação? Ela não pode ser desfeita, você estará excluindo "
+          onDelete={handleDelete}
+          onClose={handleCloseModal}
+          isLoading={deleteAccounting.isPending}
+        />
+      )}
     </div>
   );
 }

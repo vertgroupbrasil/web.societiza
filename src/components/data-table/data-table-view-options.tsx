@@ -49,15 +49,14 @@ export function DataTableViewOptions<TData>({
           className="ml-auto hidden h-8 lg:flex"
         >
           <Settings2 />
-          View
-          <ChevronsUpDown className="ml-auto opacity-50" />
+          Visualizar <ChevronsUpDown className="ml-auto opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-44 p-0">
         <Command>
-          <CommandInput placeholder="Search columns..." />
+          <CommandInput placeholder="Procurar colunas..." />
           <CommandList>
-            <CommandEmpty>No columns found.</CommandEmpty>
+            <CommandEmpty>Nenhuma coluna encontrada.</CommandEmpty>
             <CommandGroup>
               {columns.map((column) => (
                 <CommandItem

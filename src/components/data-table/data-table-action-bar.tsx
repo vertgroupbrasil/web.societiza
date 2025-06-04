@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@flowtec/components/ui/button";
-import { Separator } from "@flowtec/components/ui/separator";
+import { Button } from "@flowtec/components/ui/shadcnui/button";
+import { Separator } from "@flowtec/components/ui/shadcnui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@flowtec/components/ui/tooltip";
+} from "@flowtec/components/ui/shadcnui/tooltip";
 import { cn } from "@flowtec/lib/utils";
 import type { Table } from "@tanstack/react-table";
 import { Loader, X } from "lucide-react";
@@ -78,10 +78,24 @@ function DataTableActionBar<TData>({
   );
 }
 
-interface DataTableActionBarActionProps
-  extends React.ComponentProps<typeof Button> {
+interface DataTableActionBarActionProps {
   tooltip?: string;
   isPending?: boolean;
+  size?: "sm" | "icon" | "default" | "lg";
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  disabled?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: "button" | "submit" | "reset";
+  form?: string;
+  name?: string;
+  value?: string;
+  autoFocus?: boolean;
+  tabIndex?: number;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  'data-testid'?: string;
 }
 
 function DataTableActionBarAction({
@@ -138,7 +152,7 @@ function DataTableActionBarSelection<TData>({
   return (
     <div className="flex h-7 items-center rounded-md border pr-1 pl-2.5">
       <span className="whitespace-nowrap text-xs">
-        {table.getFilteredSelectedRowModel().rows.length} selected
+        {table.getFilteredSelectedRowModel().rows.length} selecionado(s)
       </span>
       <Separator
         orientation="vertical"
@@ -159,7 +173,7 @@ function DataTableActionBarSelection<TData>({
           sideOffset={10}
           className="flex items-center gap-2 border bg-accent px-2 py-1 font-semibold text-foreground dark:bg-zinc-900 [&>span]:hidden"
         >
-          <p>Clear selection</p>
+          <p>Limpar seleção</p>
           <kbd className="select-none rounded border bg-background px-1.5 py-px font-mono font-normal text-[0.7rem] text-foreground shadow-xs">
             <abbr title="Escape" className="no-underline">
               Esc

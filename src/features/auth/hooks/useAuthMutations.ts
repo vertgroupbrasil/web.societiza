@@ -5,7 +5,7 @@ import {
   login as Auth,
   logout as UnAuth,
   refresh as RefreshToken,
-} from '@flowtec/features/auth/server/services/auth-service';
+} from '@flowtec/features/auth/server/services/auth.service';
 import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
 
 const api = API_ENDPOINTS;

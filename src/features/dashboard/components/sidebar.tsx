@@ -1,5 +1,5 @@
 import { AppSidebar } from "@flowtec/components/ui/shadcnui/app-sidebar";
-import { Separator } from "@flowtec/components/ui/shadcnui/separator";
+
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@flowtec/components/ui/shadcnui/sidebar";
 
 

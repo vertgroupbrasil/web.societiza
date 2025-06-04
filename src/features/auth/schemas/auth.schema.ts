@@ -1,4 +1,8 @@
-import { z, customMessage, portugueseMessages } from '@flowtec/lib/zod-portuguese';
+import {
+  z,
+  customMessage,
+  portugueseMessages,
+} from '@flowtec/lib/zod-portuguese';
 
 export const authSchema = z.object({
   email: z
@@ -8,7 +12,6 @@ export const authSchema = z.object({
     .string(customMessage(portugueseMessages.required))
     .min(8, customMessage(portugueseMessages.minLength(8))),
 });
-
 
 export const emptyAuth = {
   email: '',

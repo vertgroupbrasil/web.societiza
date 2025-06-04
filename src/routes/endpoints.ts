@@ -5,7 +5,10 @@ const withBase = (endpoint: string) => `${api}${endpoint}`;
 export const API_ENDPOINTS = {
   accountings: {
     listContabilidades: withBase('/contabilidades/list-contabilidades/'),
-    getContabilidades: withBase('/contabilidades/get-contabilidade/'),
+    getContabilidadeById: (id: string) =>
+      withBase(`/contabilidades/get-contabilidade/?id=${id}`),
+    deleteContabilidade: (id: string) =>
+      withBase(`/contabilidades/delete-contabilidade/?id=${id}`),
     createContabilidade: withBase('/contabilidades/create-contabilidade/'),
   },
   auth: {
@@ -16,14 +19,11 @@ export const API_ENDPOINTS = {
   accounts: {
     getUser: withBase('/accounts/get-user/'),
     createUserAdmin: withBase('/accounts/create-user/'),
-    getUserById: (id: string) =>
-      withBase(`/accounts/get-user/?id=${id}`),
-    updateUserById: (id: string) =>
-      withBase(`/accounts/get-user/?id=${id}`),
-    deleteUser: (id: string) =>
-      withBase(`/accounts/delete-user/?id=${id}`),
+    getUserById: (id: string) => withBase(`/accounts/get-user/?id=${id}`),
+    updateUserById: (id: string) => withBase(`/accounts/get-user/?id=${id}`),
+    deleteUser: (id: string) => withBase(`/accounts/delete-user/?id=${id}`),
   },
-  societario: {
+  corporate: {
     form: {
       createOpeningForm: withBase('/societario/create-form-abertura/'),
       getOpeningFormById: (id: string) =>
@@ -31,7 +31,7 @@ export const API_ENDPOINTS = {
       updateOpeningForm: (id: string) =>
         withBase(`/societario/update-form-abertura/?form_id=${id}`),
     },
-    socio: {
+    partner: {
       createSocios: withBase('/societario/create-socios/'),
     },
     stage: {
@@ -50,8 +50,7 @@ export const API_ENDPOINTS = {
       updateProcess: withBase('/societario/update-processo/'),
       getProcessById: (id: string) =>
         withBase(`/societario/get-processo/?processo_id=${id}`),
-      deleteProcess: (id: string) =>
-        withBase(`/societario/${id}/`),
+      deleteProcess: (id: string) => withBase(`/societario/${id}/`),
     },
   },
 };

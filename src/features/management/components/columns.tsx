@@ -1,126 +1,113 @@
-import { DataTableColumnHeader } from "@flowtec/components/data-table/data-table-column-header";
-import { Checkbox } from "@flowtec/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@flowtec";
-import { Column, ColumnDef } from "@tanstack/react-table";
-import { CheckCircle2, XCircle, Badge, CheckCircle, DollarSign, MoreHorizontal } from "lucide-react";
-import React from "react";
-import { Button } from "react-day-picker";
+import { DataTableColumnHeader } from '@flowtec/components/data-table/data-table-column-header';
+import { Column, ColumnDef } from '@tanstack/react-table';
+import { XCircle, CheckCircle, MoreHorizontal, Trash2Icon } from 'lucide-react';
+import React from 'react';
+import { Accounting } from '../schemas/management.schema';
+import {
+  Status,
+  StatusIndicator,
+  StatusLabel,
+} from '@flowtec/components/ui/kiboui/status';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@flowtec/components/ui/shadcnui/dropdown-menu';
+import { Button } from '@flowtec/components/ui/shadcnui/button';
 
-export interface Project {
-    id: string;
-    title: string;
-    status: "active" | "inactive";
-    budget: number;
-  }
-
-const columns = React.useMemo<ColumnDef<Project>[]>(
-    () => [
-      {
-        id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            aria-label="Select all"
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
-        ),
-        size: 32,
-        enableSorting: false,
-        enableHiding: false,
+export function makeManagementColumns(
+  openDeleteModal: (
+    id: string,
+    identifier: string,
+    text: string,
+    isOpen: boolean,
+  ) => void,
+): ColumnDef<Accounting>[] {
+  return [
+    {
+      id: 'nome_fantasia',
+      accessorKey: 'nome_fantasia',
+      header: ({ column }: { column: Column<Accounting, unknown> }) => (
+        <DataTableColumnHeader column={column} title="Nome Fantasia" />
+      ),
+      cell: ({ cell }) => (
+        <div>{cell.getValue<Accounting['nome_fantasia']>()}</div>
+      ),
+      meta: {
+        label: 'Nome',
+        placeholder: 'Procurar nome...',
+        variant: 'text',
       },
-      {
-        id: "title",
-        accessorKey: "title",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Title" />
-        ),
-        cell: ({ cell }) => <div>{cell.getValue<Project["title"]>()}</div>,
-        meta: {
-          label: "Title",
-          placeholder: "Search titles...",
-          variant: "text",
-          icon: Text,
-        },
-        enableColumnFilter: true,
+      enableColumnFilter: true,
+    },
+    {
+      id: 'situacao',
+      accessorKey: 'situacao',
+      header: ({ column }: { column: Column<Accounting, unknown> }) => (
+        <DataTableColumnHeader column={column} title="Situação" />
+      ),
+      cell: ({ cell }) => {
+        const status = cell.getValue<Accounting['situacao']>().toLowerCase();
+        return (
+          <Status status={status} className="capitalize">
+            <StatusIndicator />
+            <StatusLabel />
+          </Status>
+        );
       },
-      {
-        id: "status",
-        accessorKey: "status",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Status" />
-        ),
-        cell: ({ cell }) => {
-          const status = cell.getValue<Project["status"]>();
-          const Icon = status === "active" ? CheckCircle2 : XCircle;
- 
-          return (
-            <Badge variant="outline" className="capitalize">
-              <Icon />
-              {status}
-            </Badge>
-          );
-        },
-        meta: {
-          label: "Status",
-          variant: "multiSelect",
-          options: [
-            { label: "Active", value: "active", icon: CheckCircle },
-            { label: "Inactive", value: "inactive", icon: XCircle },
-          ],
-        },
-        enableColumnFilter: true,
+      meta: {
+        label: 'Situação',
+        variant: 'multiSelect',
+        options: [
+          { label: 'Ativa', value: 'ativa', icon: CheckCircle },
+          { label: 'Suspensa', value: 'suspensa', icon: CheckCircle },
+          { label: 'Inapta', value: 'inapta', icon: CheckCircle },
+          { label: 'Baixada', value: 'baixada', icon: CheckCircle },
+          { label: 'Nula', value: 'nula', icon: CheckCircle },
+          { label: 'Inativa', value: 'inativa', icon: XCircle },
+        ],
       },
-      {
-        id: "budget",
-        accessorKey: "budget",
-        header: ({ column }: { column: Column<Project, unknown> }) => (
-          <DataTableColumnHeader column={column} title="Budget" />
-        ),
-        cell: ({ cell }) => {
-          const budget = cell.getValue<Project["budget"]>();
- 
-          return (
-            <div className="flex items-center gap-1">
-              <DollarSign className="size-4" />
-              {budget.toLocaleString()}
-            </div>
-          );
-        },
+      enableColumnFilter: true,
+    },
+    {
+      id: 'tipo',
+      accessorKey: 'tipo',
+      header: ({ column }: { column: Column<Accounting, unknown> }) => (
+        <DataTableColumnHeader column={column} title="Tipo" />
+      ),
+      cell: ({ cell }) => <div>{cell.getValue<Accounting['tipo']>()}</div>,
+      meta: {
+        label: 'Tipo',
       },
-      {
-        id: "actions",
-        cell: function Cell() {
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreHorizontal className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem variant="destructive">
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        },
-        size: 32,
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        const { id, nome_fantasia } = row.original;
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-4 w-4" />
+                <span className="sr-only">Abrir menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => {
+                  openDeleteModal(id, nome_fantasia, 'contabilidade', true);
+                }}
+              >
+                <Trash2Icon />
+                Deletar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
       },
-    ],
-    [],
-  );
+      size: 32,
+    },
+  ];
+}

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
@@ -48,6 +50,7 @@
     "eslint-plugin-unicorn": "^59.0.1",
     "framer-motion": "^12.12.1",
     "i18next": "^25.2.0",
+    "imask": "^7.6.1",
     "lucide-react": "^0.511.0",
     "motion": "^12.14.0",
     "nanoid": "^5.1.5",
@@ -61,12 +64,14 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.4",
+    "react-imask": "^7.6.1",
     "sonner": "^2.0.3",
     "swr": "^2.3.3",
     "tailwind-animate": "^0.2.10",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.7",
     "typescript-eslint": "^8.32.1",
+    "uuid": "^11.1.0",
     "zod": "3.24",
     "zod-i18n-map": "^2.27.0"
   },
