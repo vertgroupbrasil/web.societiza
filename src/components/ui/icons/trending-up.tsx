@@ -17,15 +17,14 @@ interface TrendingUpIconProps extends HTMLAttributes<HTMLDivElement> {
 
 const svgVariants: Variants = {
   animate: {
-    x: 0,
-    y: 0,
-    translateX: [0, 2, 0],
-    translateY: [0, -2, 0],
+    x: [0, 2, 0],
+    y: [0, -2, 0],
     transition: {
       duration: 0.5,
     },
   },
 };
+
 
 const pathVariants: Variants = {
   normal: {
