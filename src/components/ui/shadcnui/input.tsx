@@ -1,14 +1,8 @@
 'use client';
-
 import * as React from 'react';
 import IMask from 'imask';
 import { cn } from '@flowtec/lib/utils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 import { Info } from 'lucide-react';
 
 // Tipos de máscara predefinidos
@@ -172,7 +166,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           }
         };
       }
-    }, [mask, maskOptions, onChange]);
+    }, [mask, maskOptions, onChange, value]);
 
     // Update mask value when value prop changes
     React.useEffect(() => {
@@ -234,20 +228,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             aria-invalid={error ? 'true' : 'false'}
             placeholder={placeholder}
             onChange={handleChange}
+            value={value ?? ''}
+            defaultValue={defaultValue}
             {...props}
           />
           {info && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-help hover:text-foreground transition-colors" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{info}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 text-muted-foreground cursor-help hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{info}</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           )}
         </div>

@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@flowtec/components/ui/shadcnui/popover";
-import { Slider } from "@flowtec/components/ui/shadcnui/slider";
 import { cn } from "@flowtec/lib/utils";
 import { PlusCircle, XCircle } from "lucide-react";
 import { Button } from "../ui/shadcnui/button";
@@ -50,7 +49,7 @@ export function DataTableSliderFilter<TData>({
   const defaultRange = column.columnDef.meta?.range;
   const unit = column.columnDef.meta?.unit;
 
-  const { min, max, step } = React.useMemo<Range & { step: number }>(() => {
+  const { min, max } = React.useMemo<Range & { step: number }>(() => {
     let minValue = 0;
     let maxValue = 100;
 
@@ -107,15 +106,6 @@ export function DataTableSliderFilter<TData>({
       }
     },
     [column, max, range],
-  );
-
-  const onSliderValueChange = React.useCallback(
-    (value: RangeValue) => {
-      if (Array.isArray(value) && value.length === 2) {
-        column.setFilterValue(value);
-      }
-    },
-    [column],
   );
 
   const onReset = React.useCallback(
@@ -217,14 +207,7 @@ export function DataTableSliderFilter<TData>({
           <Label htmlFor={`${id}-slider`} className="sr-only">
             {title} slider
           </Label>
-          <Slider
-            id={`${id}-slider`}
-            min={min}
-            max={max}
-            step={step}
-            value={range}
-            onValueChange={onSliderValueChange}
-          />
+
         </div>
         <Button
           aria-label={`Clear ${title} filter`}
