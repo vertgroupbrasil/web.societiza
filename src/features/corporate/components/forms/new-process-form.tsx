@@ -1,0 +1,161 @@
+'use client';
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  Button,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  Separator,
+} from '@shadcn/index';
+import { Building } from 'lucide-react';
+import {
+  formatProcessType,
+  ProcessTypes,
+  Stages,
+  useProcessForm,
+} from '@corporate/index';
+import { Accounties } from '@flowtec/features/management/schemas/management.schema';
+
+interface NewProcessFormProps {
+  accounties: Accounties; // ✅ Não opcional, pois só chega aqui se tiver dados
+  processTypes: ProcessTypes;
+  stages: Stages;
+  onSuccess?: () => void;
+}
+
+export function NewProcessForm({
+  accounties,
+  processTypes,
+  stages,
+  onSuccess,
+}: NewProcessFormProps) {
+  const { form, onSubmit, isSubmitting, activeTab, setActiveTab } =
+    useProcessForm({
+      accounties,
+      processTypes,
+      stages,
+      onSuccess,
+    });
+
+  // ✅ CORREÇÃO: Verificar se dados necessários estão presentes
+  if (!accounties?.results?.empresas?.length) {
+    return (
+      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+        <p className="text-sm text-yellow-700">
+          Nenhuma contabilidade disponível. Verifique se os dados foram
+          carregados corretamente.
+        </p>
+      </div>
+    );
+  }
+
+  // ✅ CORREÇÃO: Verificar se tipos de processo estão disponíveis
+  if (!processTypes?.tipo_processo?.length) {
+    return (
+      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+        <p className="text-sm text-yellow-700">
+          Nenhum tipo de processo disponível. Verifique se os dados foram
+          carregados corretamente.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={onSubmit} className="space-y-6 grid grid-cols-1 gap-2">
+        {/* Nome da Empresa */}
+
+        <div className="space-y-4 col-span-2">
+          <FormLabel>Tipo de Processo *</FormLabel>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3">
+              {/* ✅ CORREÇÃO: Loop correto nos tipos de processo */}
+              {processTypes.tipo_processo.map((processType) => (
+                <TabsTrigger key={processType.id} value={processType.id}>
+                  {formatProcessType(processType.descricao)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+
+          <FormField
+            control={form.control}
+            name="nome"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Nome da Empresa *</FormLabel>
+                <FormControl>
+                  <Input
+                    error={fieldState.error?.message}
+                    icon={Building}
+                    placeholder="Razão Social da empresa"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          {/* Contabilidade */}
+          <FormField
+            control={form.control}
+            name="contabilidade_id"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Contabilidade Responsável *</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecione a contabilidade" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {accounties?.results?.empresas?.map((accounting) => {
+                      return (
+                        <SelectItem key={accounting?.id} value={accounting?.id}>
+                          {accounting?.nome_fantasia}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                {fieldState.error && (
+                  <p className="text-sm text-red-500">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Botões */}
+        <div className="flex flex-col gap-3 col-span-2">
+          <Separator />
+          <Button
+            loading={isSubmitting}
+            variant="default"
+            effect="shineHover"
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full"
+          >
+            {isSubmitting ? 'Criando Processo...' : 'Criar Novo Processo'}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
