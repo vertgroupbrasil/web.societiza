@@ -1,20 +1,304 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
-
-/* Para navegadores WebKit (Chrome, Safari, Edge) e modernos */
-::selection {
-  background-color: #00d084; /* cor de fundo da seleção */
-  color: #ffffff; /* cor do texto selecionado */
+/* Animação básica suave */
+.collapsible-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Para Firefox */
-::-moz-selection {
-  background-color: #00d084;
-  color: #ffffff;
+.collapsible-smooth [data-state='open'] {
+  animation: collapsible-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapsible-smooth [data-state='closed'] {
+  animation: collapsible-slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animação com bounce */
+.collapsible-bounce {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.collapsible-bounce [data-state='open'] {
+  animation: collapsible-bounce-down 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.collapsible-bounce [data-state='closed'] {
+  animation: collapsible-bounce-up 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Animação rápida */
+.collapsible-fast {
+  transition: all 0.15s ease-out;
+}
+
+.collapsible-fast [data-state='open'] {
+  animation: collapsible-fast-down 0.15s ease-out;
+}
+
+.collapsible-fast [data-state='closed'] {
+  animation: collapsible-fast-up 0.15s ease-out;
+}
+
+/* Animação com fade */
+.collapsible-fade {
+  transition: all 0.3s ease-in-out;
+}
+
+.collapsible-fade [data-state='open'] {
+  animation: collapsible-fade-in 0.3s ease-in-out;
+}
+
+.collapsible-fade [data-state='closed'] {
+  animation: collapsible-fade-out 0.3s ease-in-out;
+}
+
+/* Animação elegante */
+.collapsible-elegant {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.collapsible-elegant [data-state='open'] {
+  animation: collapsible-elegant-down 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.collapsible-elegant [data-state='closed'] {
+  animation: collapsible-elegant-up 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Keyframes */
+@keyframes collapsible-slide-down {
+  from {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes collapsible-slide-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes collapsible-bounce-down {
+  from {
+    height: 0;
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes collapsible-bounce-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    height: 0;
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+}
+
+@keyframes collapsible-fast-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-fast-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes collapsible-fade-in {
+  from {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes collapsible-fade-out {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes collapsible-elegant-down {
+  from {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes collapsible-elegant-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+}
+
+/* Animações para o trigger (ícone de seta) */
+.collapsible-trigger-rotate {
+  transition: transform 0.3s ease;
+}
+
+.collapsible-trigger-rotate[data-state='open'] {
+  transform: rotate(180deg);
+}
+
+.collapsible-trigger-bounce {
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.collapsible-trigger-bounce[data-state='open'] {
+  transform: rotate(180deg) scale(1.1);
+}
+
+.collapsible-trigger-elastic {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.collapsible-trigger-elastic[data-state='open'] {
+  transform: rotate(180deg);
+}
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.3) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgb(148 163 184 / 0.3);
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(148 163 184 / 0.5);
+}
+
+/* Layout otimizado para viewport height */
+.viewport-layout {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Fix para scroll horizontal do kanban */
+.horizontal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: rgb(241 245 249);
+  border-radius: 4px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.4);
+  border-radius: 4px;
 }
 
 :root {
+  ::-moz-selection {
+    background-color: #00d084;
+    color: #ffffff;
+  }
+  ::selection {
+    background-color: #00d084;
+    color: #ffffff;
+  }
+  --completed: oklch(0.9574 0.148 145); /* Verde suave light */
+  --completed-foreground: oklch(0.6074 0.2417 145); /* Verde escuro light */
+  --completed-border: oklch(0.6956 0.2146 145); /* Border verde light */
+  --completed-hover: oklch(0.8485 0.1603 145); /* Hover verde light */
+
+  /* Estados de aviso/próxima tarefa */
+  --warning: oklch(0.9 0.05 85); /* Amber suave light */
+  --warning-foreground: oklch(0.25 0.12 85); /* Amber escuro light */
+  --warning-border: oklch(0.8 0.08 85); /* Border amber light */
+  --warning-hover: oklch(0.85 0.06 85); /* Hover amber light */
+
+  /* Estados de info/dica */
+  --info: oklch(0.9 0.05 230); /* Azul suave light */
+  --info-foreground: oklch(0.25 0.12 230); /* Azul escuro light */
+  --info-border: oklch(0.8 0.08 230); /* Border azul light */
+  --info-hover: oklch(0.85 0.06 230); /* Hover azul light */
   --background: oklch(0.9911 0 0);
   --foreground: oklch(0.2046 0 0);
   --card: oklch(0.9911 0 0);
@@ -84,6 +368,32 @@
 }
 
 .dark {
+  ::selection {
+    background-color: #237054;
+    color: #00d084;
+  }
+
+  /* Para Firefox */
+  ::-moz-selection {
+    background-color: #26916a;
+    color: #00d084;
+  }
+  --completed: oklch(0.2 0.05 145); /* Verde suave dark */
+  --completed-foreground: oklch(0.8 0.1 145); /* Verde claro dark */
+  --completed-border: oklch(0.3 0.08 145); /* Border verde dark */
+  --completed-hover: oklch(0.25 0.06 145); /* Hover verde dark */
+
+  /* Estados de aviso/próxima tarefa - dark mode */
+  --warning: oklch(0.2 0.05 85); /* Amber suave dark */
+  --warning-foreground: oklch(0.8 0.12 85); /* Amber claro dark */
+  --warning-border: oklch(0.3 0.08 85); /* Border amber dark */
+  --warning-hover: oklch(0.25 0.06 85); /* Hover amber dark */
+
+  /* Estados de info/dica - dark mode */
+  --info: oklch(0.2 0.05 230); /* Azul suave dark */
+  --info-foreground: oklch(0.8 0.12 230); /* Azul claro dark */
+  --info-border: oklch(0.3 0.08 230); /* Border azul dark */
+  --info-hover: oklch(0.25 0.06 230); /* Hover azul dark */
   --background: oklch(0.1822 0 0);
   --foreground: oklch(0.9288 0.0126 255.5078);
   --card: oklch(0.2046 0 0);
@@ -147,6 +457,20 @@
 }
 
 @theme inline {
+  --color-completed: var(--completed);
+  --color-completed-foreground: var(--completed-foreground);
+  --color-completed-border: var(--completed-border);
+  --color-completed-hover: var(--completed-hover);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-border: var(--warning-border);
+  --color-warning-hover: var(--warning-hover);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-border: var(--info-border);
+  --color-info-hover: var(--info-hover);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
