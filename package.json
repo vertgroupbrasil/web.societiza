@@ -10,7 +10,13 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "npm install --legacy-peer-deps || true"
+  },
+  "overrides": {
+    "eslint-plugin-tailwindcss": {
+      "tailwindcss": "^4.0.0"
+    }
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
