@@ -30,8 +30,7 @@ const cctvVariants: Variants = {
   normal: { rotate: 0 },
   animate: {
     rotate: [0, -15, 10, 0],
-    originX: '9px',
-    originY: '15px',
+    transformOrigin: '9px 15px',
     transition: {
       duration: 2,
       ease: 'easeInOut',
@@ -61,7 +60,7 @@ const CctvIcon = forwardRef<CctvIconHandle, CctvIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -72,7 +71,7 @@ const CctvIcon = forwardRef<CctvIconHandle, CctvIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
     return (
       <div
@@ -106,7 +105,7 @@ const CctvIcon = forwardRef<CctvIconHandle, CctvIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 CctvIcon.displayName = 'CctvIcon';

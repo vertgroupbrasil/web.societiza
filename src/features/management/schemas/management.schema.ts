@@ -6,7 +6,7 @@ import { paginationSchema } from '@flowtec/types/pagination';
 export const accountingSchema = z.object({
   id: z.string(),
   cnpj: Document,
-  data_abertura: z.date().transform(formatDateBR),
+  data_abertura: z.string().transform(formatDateBR),
   situacao: z.string(),
   tipo: z.string(),
   nome: z.string(),
@@ -33,3 +33,4 @@ export const emptyCNPJ = {
 
 export type Management = z.infer<typeof accountiesSchema>;
 export type Accounting = z.infer<typeof accountingSchema>;
+export type Accounties = z.infer<typeof accountiesSchema>;

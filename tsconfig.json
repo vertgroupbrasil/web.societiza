@@ -22,7 +22,18 @@
       }
     ],
     "paths": {
-      "@flowtec/*": ["./src/*"]
+      "@flowtec/*": ["./src/*"],
+      "@shadcn/*": ["./src/components/ui/shadcnui/*"],
+      "@kibo/*": ["./src/components/ui/kiboui/*"],
+      "@icons/*": ["./src/components/ui/icons/*"],
+      "@components/*": ["./src/components/*"],
+      "@features/*": ["./src/features/*"],
+      "@corporate/*": ["./src/features/corporate/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@management/*": ["./src/features/management/*"],
+      "@dashboard/*": ["./src/features/dashboard/*"],
+      "@form/*": ["./src/features/form/*"],
+      "@user/*": ["./src/features/user/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

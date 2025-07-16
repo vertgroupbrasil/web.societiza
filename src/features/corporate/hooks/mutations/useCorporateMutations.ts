@@ -1,114 +1,88 @@
-// hooks/mutations/useCorporateMutations.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { v4 } from 'uuid';
 import {
-  MutationContext,
   Process,
-  ProcessByStages,
   ProcessDTO,
-} from '../../server/types/corporate.types';
-import { corporateService } from '../../server/services/corporate.service';
-import { corporateQueries } from '../queries/queryOptions';
+  corporateService,
+  corporateQueries,
+  UpdateProcessDTO,
+  ProcessById,
+} from '@corporate/index';
 
 export const useCorporateMutations = () => {
   const queryClient = useQueryClient();
 
-  const createProcess = useMutation<
-    Process,
-    Error,
-    ProcessDTO,
-    MutationContext
-  >({
+  const createProcess = useMutation<Process, Error, ProcessDTO>({
     mutationFn: corporateService.create,
 
-    onMutate: (newProcessData) => {
-      const queryKey = corporateQueries.processesByStages().queryKey;
-
-      queryClient.cancelQueries({ queryKey });
-
-      const previousData = queryClient.getQueryData<ProcessByStages>(queryKey);
-
-      queryClient.setQueryData<ProcessByStages>(queryKey, (oldData) => {
-        if (!oldData) return oldData;
-
-        const optimisticProcess: Process = {
-          id: v4(),
-          nome: newProcessData.nome,
-          contabilidade: {
-            id: newProcessData.contabilidade_id,
-          },
-          tipo_processo: {
-            id: newProcessData.tipo_processo_id,
-            descricao: 'Carregando...',
-          },
-          observacao: null,
-          created_at: new Date(),
-          expire_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          tarefas: [],
-          isOptimistic: true,
-        };
-
-        const newData: ProcessByStages = JSON.parse(JSON.stringify(oldData));
-
-        const stageTarget = newData.processos_por_etapa.find(
-          (stage) => stage.id === newProcessData.etapa_id,
-        );
-
-        if (stageTarget) {
-          stageTarget.processos.push(optimisticProcess);
-        }
-
-        return newData;
-      });
-
-      return { previousData } satisfies MutationContext;
-    },
-
-    onSuccess: (serverProcess, variables, _context) => {
-      const queryKey = corporateQueries.processesByStages().queryKey;
-
-      queryClient.setQueryData<ProcessByStages>(queryKey, (oldData) => {
-        if (!oldData) return oldData;
-
-        const newData: ProcessByStages = JSON.parse(JSON.stringify(oldData));
-        const stage = newData.processos_por_etapa.find(
-          (e) => e.id === variables.etapa_id,
-        );
-
-        if (stage) {
-          const optimisticIndex = stage.processos.findIndex(
-            (p) => p.isOptimistic && p.nome === variables.nome,
-          );
-
-          if (optimisticIndex !== -1) {
-            // Substitui processo otimista pelo real
-            stage.processos[optimisticIndex] = {
-              ...serverProcess,
-              isOptimistic: false,
-            };
-          }
-        }
-
-        return newData;
-      });
-    },
-
-    onError: (_error, _variables, context) => {
-      const queryKey = corporateQueries.processesByStages().queryKey;
-
-      // ✅ Verifica se previousData existe antes de usar
-      if (context?.previousData) {
-        queryClient.setQueryData(queryKey, context.previousData);
-      }
-    },
-
-    // Sempre: invalida para sincronização
-    onSettled: () => {
+    onSuccess: (newProcess, variables) => {
+      // Invalidate específico para a etapa onde o processo foi criado
       queryClient.invalidateQueries({
         queryKey: corporateQueries.processesByStages().queryKey,
+        refetchType: 'active', // Só refetch queries ativas
       });
+
+      // Pre-populate o cache individual do processo criado
+      queryClient.setQueryData(
+        corporateQueries.processById(newProcess.id).queryKey,
+        { processo: newProcess },
+      );
+
+      // Invalidate outras queries relacionadas se necessário
+      queryClient.invalidateQueries({
+        queryKey: corporateQueries.listStages().queryKey,
+        refetchType: 'none', // Só marca como stale, não refetch imediato
+      });
+    },
+
+    onError: (error) => {
+      // Log error ou mostrar toast de erro
+      console.error('Erro ao criar processo:', error);
     },
   });
 
-  return { createProcess };
+  const updateProcess = useMutation<ProcessById, Error, UpdateProcessDTO>({
+    mutationFn: corporateService.update,
+
+    onSuccess: (_updatedProcess, variables) => {
+      queryClient.refetchQueries({
+        queryKey: corporateQueries.processById(variables.processo_id).queryKey,
+      });
+
+      queryClient.refetchQueries({
+        queryKey: corporateQueries.processesByStages().queryKey,
+      });
+
+      if (variables.etapa_id) {
+        queryClient.refetchQueries({
+          queryKey: corporateQueries.listStages().queryKey,
+        });
+      }
+    },
+  });
+
+  const deleteProcess = useMutation<void, Error, string>({
+    mutationFn: (processo_id: string) => corporateService.delete(processo_id),
+
+    onSuccess: (_response, processo_id) => {
+      // Simplesmente invalidar as queries
+      queryClient.invalidateQueries({
+        queryKey: corporateQueries.processesByStages().queryKey,
+      });
+
+      // Remover do cache individual
+      queryClient.removeQueries({
+        queryKey: corporateQueries.processById(processo_id).queryKey,
+      });
+    },
+
+    onError: (error) => {
+      console.error('Delete error:', error);
+    },
+  });
+
+  return {
+    createProcess,
+    updateProcess,
+    deleteProcess,
+  };
 };

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   Sidebar,
@@ -10,104 +10,112 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@flowtec/components/ui/shadcnui/sidebar"
-import { TrendingUpIcon, type TrendingUpIconHandle } from "../icons/trending-up"
-import { CctvIcon } from "../icons/cctv"
-import { IdCardIcon } from "../icons/id-card"
-import { ScanTextIcon } from "../icons/scan-text"
-import { ClipboardCheckIcon } from "../icons/clipboard-check"
-import { CircleHelpIcon } from "../icons/circle-help"
-import { SettingsGearIcon } from "../icons/settings-gear"
-import { FilePenLineIcon } from "../icons/file-pen-line"
-import Logo from "@flowtec/components/logo"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ThemeSwitcher } from "../kiboui/theme-switcher"
-import React from "react"
+} from '@flowtec/components/ui/shadcnui/sidebar';
+import {
+  TrendingUpIcon,
+  type TrendingUpIconHandle,
+} from '../icons/trending-up';
+import { CctvIcon } from '../icons/cctv';
+import { IdCardIcon } from '../icons/id-card';
+import { ScanTextIcon } from '../icons/scan-text';
+import { ClipboardCheckIcon } from '../icons/clipboard-check';
+import { CircleHelpIcon } from '../icons/circle-help';
+import { SettingsGearIcon } from '../icons/settings-gear';
+import { FilePenLineIcon } from '../icons/file-pen-line';
+import Logo from '@flowtec/components/logo';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ThemeSwitcher } from '../kiboui/theme-switcher';
+import React from 'react';
 
 type NavItem = {
-  title: string
-  url: string
-  icon: any
-}
+  title: string;
+  url: string;
+  icon: any;
+};
 
 type Section = {
-  title: string
-  items: NavItem[]
-}
+  title: string;
+  items: NavItem[];
+};
 
 // Estrutura de dados atualizada com seções
 const data: { sections: Section[] } = {
   sections: [
     {
-      title: "Geral",
+      title: 'Geral',
       items: [
         {
-          title: "Painel de controle",
+          title: 'Painel de controle',
           icon: TrendingUpIcon,
-          url: "/dashboard/",
+          url: '/dashboard/',
         },
         {
-          title: "Gerenciamento",
+          title: 'Gerenciamento',
           icon: CctvIcon,
-          url: "/dashboard/gerenciamento/",
+          url: '/dashboard/gerenciamento/',
         },
         {
-          title: "Societário",
+          title: 'Societário',
           icon: IdCardIcon,
-          url: "/dashboard/societario",
+          url: '/dashboard/societario',
         },
         {
-          title: "Alvarás",
+          title: 'Alvarás',
           icon: ClipboardCheckIcon,
-          url: "/dashboard/alvaras/",
+          url: '/dashboard/alvaras/',
         },
         {
-          title: "Certificados digitais",
+          title: 'Certificados digitais',
           icon: ScanTextIcon,
-          url: "/dashboard/certificados-digitais/",
+          url: '/dashboard/certificados-digitais/',
         },
         {
-          title: "Contratos",
+          title: 'Contratos',
           icon: FilePenLineIcon,
-          url: "/dashboard/contratos/",
+          url: '/dashboard/contratos/',
         },
       ],
     },
     {
-      title: "Suporte",
+      title: 'Suporte',
       items: [
         {
-          title: "Configurações",
+          title: 'Configurações',
           icon: SettingsGearIcon,
-          url: "/dashboard/configuracoes/",
+          url: '/dashboard/configuracoes/',
         },
         {
-          title: "Ajuda",
+          title: 'Ajuda',
           icon: CircleHelpIcon,
-          url: "/dashboard/ajuda/",
+          url: '/dashboard/ajuda/',
         },
       ],
     },
   ],
-}
+};
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname()
-  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>({})
+  const pathname = usePathname();
+  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>(
+    {},
+  );
 
   // Function to check if a menu item is active
   const isItemActive = (itemUrl: string) => {
     // Exact match for root dashboard
-    if (itemUrl === "/dashboard/" && pathname === "/dashboard") {
-      return true
+    if (itemUrl === '/dashboard/' && pathname === '/dashboard') {
+      return true;
     }
     // For other routes, check if pathname starts with the item URL
-    if (itemUrl !== "/dashboard/" && pathname.startsWith(itemUrl.replace(/\/$/, ""))) {
-      return true
+    if (
+      itemUrl !== '/dashboard/' &&
+      pathname.startsWith(itemUrl.replace(/\/$/, ''))
+    ) {
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
   return (
     <Sidebar variant="floating" {...props}>
@@ -124,31 +132,38 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               {section.items.map((item) => {
                 const ItemIcon = item.icon as React.ForwardRefExoticComponent<
                   React.RefAttributes<TrendingUpIconHandle> & any
-                >
-                const isActive = isItemActive(item.url)
+                >;
+                const isActive = isItemActive(item.url);
 
                 return (
                   <SidebarMenuItem
                     key={item.title}
                     // handlers no container inteiro
-                    onMouseEnter={() => iconRefs.current[item.title]?.startAnimation?.()}
-                    onMouseLeave={() => iconRefs.current[item.title]?.stopAnimation?.()}
+                    onMouseEnter={() =>
+                      iconRefs.current[item.title]?.startAnimation?.()
+                    }
+                    onMouseLeave={() =>
+                      iconRefs.current[item.title]?.stopAnimation?.()
+                    }
                   >
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={item.url} className="flex items-center gap-2 font-medium">
+                      <Link
+                        href={item.url}
+                        className="flex items-center gap-2 font-medium"
+                      >
                         <ItemIcon
                           size={20}
                           className="inline-flex items-center justify-center"
                           // registra a instância na iconRefs
                           ref={(el: TrendingUpIconHandle | null) => {
-                            iconRefs.current[item.title] = el
+                            iconRefs.current[item.title] = el;
                           }}
                         />
                         {item.title}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroup>
@@ -160,5 +175,5 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

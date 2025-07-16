@@ -24,7 +24,7 @@ const springTransition = {
   type: 'spring',
   stiffness: 500,
   damping: 30,
-};
+} as const;
 
 const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {

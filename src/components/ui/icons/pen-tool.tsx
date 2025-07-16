@@ -16,12 +16,13 @@ interface PenToolIconProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const svgVariants: Variants = {
-  normal: { rotate: 0, translateX: 0, translateY: 0 },
+  normal: { rotate: 0, x: 0, y: 0 },
   animate: {
     rotate: [0, 0, 8, -3, 8, 0],
-    translateY: [0, 2, 0, -1, 0],
+    y: [0, 2, 0, -1, 0],
   },
 };
+
 
 const pathVariants: Variants = {
   normal: { pathLength: 1, opacity: 1, pathOffset: 0 },

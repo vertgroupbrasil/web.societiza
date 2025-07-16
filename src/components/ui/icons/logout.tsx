@@ -17,13 +17,13 @@ interface LogoutIconProps extends HTMLAttributes<HTMLDivElement> {
 
 const pathVariants: Variants = {
   animate: {
-    x: 2,
-    translateX: [0, -3, 0],
+    x: [0, -3, 0], // Remove o x: 2 e usa apenas o array
     transition: {
       duration: 0.4,
     },
   },
 };
+
 
 const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {

@@ -50,7 +50,8 @@ export const API_ENDPOINTS = {
       updateProcess: withBase('/societario/update-processo/'),
       getProcessById: (id: string) =>
         withBase(`/societario/get-processo/?processo_id=${id}`),
-      deleteProcess: (id: string) => withBase(`/societario/${id}/`),
+      deleteProcess: (id: string) =>
+        withBase(`/societario/delete-processo/?id=${id}`),
     },
   },
 };
