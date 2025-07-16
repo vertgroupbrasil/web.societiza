@@ -13,7 +13,7 @@ import { Input } from '@flowtec/components/ui/shadcnui/input';
 import { Mail } from 'lucide-react';
 
 export function LoginForm() {
-  const { form, onSubmit, isSubmitting, globalError } = useLoginForm();
+  const { form, onSubmit, isSubmitting } = useLoginForm();
 
   return (
     <Form {...form}>

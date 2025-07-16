@@ -10,13 +10,13 @@ import { toast } from 'sonner';
 import { useManagement } from '../hooks/queries/useManagementQueries';
 import { useManagementMutations } from '../hooks/mutations/useManagementMutations';
 import { makeManagementColumns } from './columns';
-import DeleteModal from '@flowtec/components/delete-modal';
+import { DeleteModal } from '@flowtec/components/delete-modal';
 
 import type { Accounting } from '../schemas/management.schema';
 import { handleFormError } from '@flowtec/handlers/error';
 
 export function DataTableDemo() {
-  const [globalError, setGlobalError] = React.useState<string | undefined>();
+  const [, setGlobalError] = React.useState<string | undefined>();
   const [title] = useQueryState('nome_fantasia', parseAsString.withDefault(''));
   const [status] = useQueryState(
     'situacao',
@@ -24,7 +24,7 @@ export function DataTableDemo() {
   );
 
   // dados e mutações
-  const { data, isPending, error } = useManagement();
+  const { data } = useManagement();
   const { deleteAccounting } = useManagementMutations();
 
   // estado do modal de delete
