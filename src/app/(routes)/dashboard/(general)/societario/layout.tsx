@@ -1,22 +1,18 @@
-import React from 'react';
-import type { Metadata } from 'next';
-import '@flowtec/app/globals.css';
-
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Flowtec - Societário',
-  description: 'O futuro contábil em uma plataforma só.',
+  description:
+    'Gestão de processos societários - abertura, alteração e baixa de empresas',
 };
 
-export default function RootLayout({
+export default function CorporateLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <main>
-
-    {children}
-    </main>
+    // Container que ocupa toda altura disponível sem overflow-hidden
+    <div className="h-full w-full">{children}</div>
   );
 }

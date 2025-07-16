@@ -1,5 +1,5 @@
 import React from 'react';
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
 import { QueryProvider } from '@flowtec/providers/query-provider';
 import { ThemeProvider } from 'next-themes';
+import { TooltipProvider } from '@flowtec/components/ui/shadcnui';
 
 export const metadata: Metadata = {
   title: 'Flowtec',
@@ -22,40 +23,39 @@ export default function RootLayout({
   return (
     <QueryProvider>
       <NuqsAdapter>
-
-      <html lang="pt-BR" suppressHydrationWarning>
-        <body className={`antialiased`}>
-          <NextTopLoader
-            color="#007BFF"
-            initialPosition={0.08}
-            crawlSpeed={200}
-            height={3}
-            crawl={true}
-            easing="ease"
-            speed={200}
+        <html lang="pt-BR" suppressHydrationWarning>
+          <body className={`antialiased`}>
+            <NextTopLoader
+              color="#007BFF"
+              initialPosition={0.08}
+              crawlSpeed={200}
+              height={3}
+              crawl={true}
+              easing="ease"
+              speed={200}
             />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
             >
-            {children}
-            <Toaster
-              richColors
-              position="top-center"
-              toastOptions={{
-                classNames: {
-                  toast: 'toast',
-                  description: 'text-white',
-                },
-              }}
+              <TooltipProvider>{children}</TooltipProvider>
+              <Toaster
+                richColors
+                position="top-center"
+                toastOptions={{
+                  classNames: {
+                    toast: 'toast',
+                    description: 'text-white',
+                  },
+                }}
               />
-          </ThemeProvider>
-        </body>
-      </html>
-      <ReactQueryDevtools initialIsOpen={false} />
-              </NuqsAdapter>
+            </ThemeProvider>
+          </body>
+        </html>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </NuqsAdapter>
     </QueryProvider>
   );
 }

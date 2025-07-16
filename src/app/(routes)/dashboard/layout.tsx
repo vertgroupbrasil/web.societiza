@@ -14,8 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <Sidebar children={children} />
-    </div>
+    // Remover overflow-hidden do main para permitir scroll horizontal controlado
+    <main className="h-screen w-screen">
+      <div className="h-full w-full">
+        <Sidebar children={children} />
+      </div>
+    </main>
   );
 }
