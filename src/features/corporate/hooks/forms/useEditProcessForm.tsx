@@ -388,8 +388,8 @@ export function useEditProcessForm(props: UseEditProcessFormProps = {}) {
       // ✅ Garantir que tipo_processo_id seja sempre incluído no payload
       const updateData = {
         processo_id: typedFormData.processo_id,
-        tipo_processo_id:
-          process.tipo_processo?.id || typedFormData.tipo_processo_id, // ✅ Usar o valor atual do processo
+        // tipo_processo_id:
+        //   process.tipo_processo?.id || typedFormData.tipo_processo_id, // ✅ Usar o valor atual do processo
         etapa_id: finalEtapaId,
         ...(typedFormData.observacao !== undefined && {
           observacao: typedFormData.observacao,

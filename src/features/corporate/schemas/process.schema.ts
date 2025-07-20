@@ -79,7 +79,7 @@ export const updateTaskSchema = z.object({
 export const updateProcessSchemaDTO = processSchema.partial().extend({
   processo_id: z.string().uuid(),
   etapa_id: z.string().uuid(),
-  tipo_processo_id: z.string().uuid(),
+  tipo_processo_id: z.string().uuid().optional(),
   tarefas: z.array(updateTaskSchema).optional(),
 });
 
