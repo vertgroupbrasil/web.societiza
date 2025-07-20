@@ -57,7 +57,6 @@ export function CorporateDrawer() {
         setDrawerOpen(false);
         setSelectedProcessId(null); // ✅ Limpar processo selecionado
       } catch (error) {
-        console.error('Erro ao deletar:', error);
         toast.error('Erro ao deletar processo');
       } finally {
         setIsDeleting(false);

@@ -377,9 +377,11 @@ export function EditProcessForm({
                                 href={field.value}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-primary hover:underline flex items-center space-x-1"
+                                className="text-sm text-primary truncate hover:underline flex items-center space-x-1"
                               >
-                                <span className="truncate">{field.value}</span>
+                                <span className="truncate max-w-2">
+                                  {field.value}
+                                </span>
                                 <ExternalLink className="h-3 w-3 flex-shrink-0" />
                               </a>
                             ) : (

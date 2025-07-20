@@ -27,6 +27,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeSwitcher } from '../kiboui/theme-switcher';
 import React from 'react';
+import Logout from '@flowtec/features/auth/components/ui/logout-button';
 
 type NavItem = {
   title: string;
@@ -172,6 +173,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <div className="p-2 flex items-center justify-center">
           <ThemeSwitcher />
+        </div>
+        <div className="w-full">
+          <Logout />
         </div>
       </SidebarFooter>
     </Sidebar>

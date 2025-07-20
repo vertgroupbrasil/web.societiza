@@ -7,10 +7,10 @@ import {
   FormItem,
   FormLabel,
 } from '@flowtec/components/ui/shadcnui/form';
-import { useLoginForm } from '../../hooks/useAuthForm';
 import { Button } from '@flowtec/components/ui/shadcnui/button';
 import { Input } from '@flowtec/components/ui/shadcnui/input';
 import { Mail } from 'lucide-react';
+import { useLoginForm } from '../../hooks/forms/useAuthForm';
 
 export function LoginForm() {
   const { form, onSubmit, isSubmitting } = useLoginForm();

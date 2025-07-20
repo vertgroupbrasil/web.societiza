@@ -33,11 +33,6 @@ export const useCorporateMutations = () => {
         refetchType: 'none', // Só marca como stale, não refetch imediato
       });
     },
-
-    onError: (error) => {
-      // Log error ou mostrar toast de erro
-      console.error('Erro ao criar processo:', error);
-    },
   });
 
   const updateProcess = useMutation<ProcessById, Error, UpdateProcessDTO>({
@@ -76,7 +71,6 @@ export const useCorporateMutations = () => {
     },
 
     onError: (error) => {
-      console.error('Delete error:', error);
     },
   });
 

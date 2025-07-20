@@ -41,7 +41,6 @@ const formatDateSafely = (date: Date | undefined): string | null => {
   try {
     return format(date, 'dd/MM/yyyy', { locale: ptBR });
   } catch (error) {
-    console.error('Error formatting date:', error);
     return null;
   }
 };
@@ -73,7 +72,6 @@ export function DatePicker({
     }
 
     if (!isDateValid(selectedDate)) {
-      console.warn('Selected date is invalid or out of range:', selectedDate);
       return;
     }
 

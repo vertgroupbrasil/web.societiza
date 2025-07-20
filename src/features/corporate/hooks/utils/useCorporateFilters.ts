@@ -21,8 +21,6 @@ export const useCorporateFilters = () => {
   // Função para filtrar processos - CORRIGIDA
   const applyFilters = useMemo(() => {
     return (processes: Process[]): Process[] => {
-      console.log('🔍 Aplicando filtros:', filters);
-      console.log('📋 Total de processos:', processes.length);
 
       return processes.filter((process) => {
         // Filtro de busca global - CORRIGIDO
@@ -59,14 +57,6 @@ export const useCorporateFilters = () => {
         if (filters.urgency && filters.urgency !== '') {
           const processUrgency = calculateUrgency(process.expire_at);
           if (processUrgency !== filters.urgency) {
-            console.log(
-              '❌ Filtrado pela urgência:',
-              process.nome,
-              'esperado:',
-              filters.urgency,
-              'atual:',
-              processUrgency,
-            );
             return false;
           }
         }
@@ -76,12 +66,10 @@ export const useCorporateFilters = () => {
           const expireDate = new Date(process.expire_at);
 
           if (filters.dateRange.start && expireDate < filters.dateRange.start) {
-            console.log('❌ Filtrado pela data inicial:', process.nome);
             return false;
           }
 
           if (filters.dateRange.end && expireDate > filters.dateRange.end) {
-            console.log('❌ Filtrado pela data final:', process.nome);
             return false;
           }
         }

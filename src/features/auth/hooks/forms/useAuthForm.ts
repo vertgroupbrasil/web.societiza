@@ -2,11 +2,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { Auth, authSchema, emptyAuth } from '../schemas/auth.schema';
-import { useAuthMutations } from './useAuthMutations';
 import { handleFormError } from '@flowtec/handlers/error';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { Auth, authSchema, emptyAuth } from '../../schemas/auth.schema';
+import { useAuthMutations } from '../mutations/useAuthMutations';
 
 export function useLoginForm() {
   const form = useForm<Auth>({
