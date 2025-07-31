@@ -61,6 +61,12 @@ export const useCorporateFilters = () => {
           }
         }
 
+        if (filters.accounting && filters.accounting !== '') {
+          if (process.contabilidade.nome !== filters.accounting) {
+            return false;
+          }
+        }
+
         // Filtro por intervalo de datas
         if (filters.dateRange?.start || filters.dateRange?.end) {
           const expireDate = new Date(process.expire_at);
