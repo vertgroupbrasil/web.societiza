@@ -24,7 +24,7 @@ import { useCorporateFiltersContext } from '@corporate/index';
 import { Accounties } from '@flowtec/features/management/schemas/management.schema';
 
 interface FiltersDialogProps {
-  accounties: Accounties | undefined;
+  accounties?: Accounties;
 }
 
 export function FiltersDialog({ accounties }: FiltersDialogProps) {
