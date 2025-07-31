@@ -21,9 +21,13 @@ import {
 } from '@shadcn/index';
 import { DateRangePicker } from '@flowtec/components/ui/date-range-picker';
 import { useCorporateFiltersContext } from '@corporate/index';
+import { Accounties } from '@flowtec/features/management/schemas/management.schema';
 
-export function FiltersDialog() {
-  // Context de filtros especializado
+interface FiltersDialogProps {
+  accounties: Accounties | undefined;
+}
+
+export function FiltersDialog({ accounties }: FiltersDialogProps) {
   const {
     filters,
     hasActiveFilters,
@@ -185,6 +189,29 @@ export function FiltersDialog() {
                   <SelectItem value="alteracao_sem_regin_baixa">
                     Alteração S/ Regin/Baixa
                   </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-3 col-span-2">
+              <Label htmlFor="process-type">Contabilidade</Label>
+
+              <Select
+                key={`accounting-${selectKey}`}
+                value={getSelectValue(localFilters.accounting)}
+                onValueChange={(value) =>
+                  handleLocalFilterChange('accounting', value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione a contabilidade" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(accounties?.results?.empresas ?? []).map((a) => (
+                    <SelectItem key={a.id} value={a.nome}>
+                      {a.nome}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
