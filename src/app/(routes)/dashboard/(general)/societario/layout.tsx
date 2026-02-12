@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Flowtec - Societário',
+  title: 'meu societário - Societário',
   description:
     'Gestão de processos societários - abertura, alteração e baixa de empresas',
 };

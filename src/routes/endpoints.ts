@@ -32,7 +32,7 @@ export const API_ENDPOINTS = {
         withBase(`/societario/update-form-abertura/?form_id=${id}`),
     },
     partner: {
-      createSocios: withBase('/societario/create-socios/'),
+      createPartners: withBase('/societario/create-socios/'),
     },
     stage: {
       listStages: withBase('/societario/list-etapas/'),
@@ -52,6 +52,11 @@ export const API_ENDPOINTS = {
         withBase(`/societario/get-processo/?processo_id=${id}`),
       deleteProcess: (id: string) =>
         withBase(`/societario/delete-processo/?id=${id}`),
+    },
+  },
+  external: {
+    viacep: {
+      get: (cep: string) => `https://viacep.com.br/ws/${cep}/json/`,
     },
   },
 };

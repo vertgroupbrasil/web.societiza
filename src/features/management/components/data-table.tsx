@@ -51,7 +51,7 @@ export function DataTableDemo() {
 
   // opcional: filtro client-side (ou remova se fizer server-side)
   const filteredData = React.useMemo(() => {
-    const list = data?.results.empresas ?? [];
+    const list = data?.results?.empresas ?? [];
     return list.filter((d) => {
       const byTitle =
         !title || d.nome_fantasia.toLowerCase().includes(title.toLowerCase());
@@ -65,7 +65,7 @@ export function DataTableDemo() {
     data: filteredData,
     columns,
     pageCount: data
-      ? Math.ceil(data.count / (data.results.empresas.length || 1))
+      ? Math.ceil(data.count / (data.results?.empresas?.length || 1))
       : 1,
     initialState: {
       sorting: [{ id: 'nome_fantasia', desc: true }],

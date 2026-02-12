@@ -11,7 +11,7 @@ export default function LoginPage() {
             <Icon />
             <div className=' text-center '>
               <h1 className="text-2xl font-bold">
-                Iniciar sessão na Flowtec
+                Iniciar sessão no meu societário
               </h1>
               <p>
                 Esqueça as milhares de planilhas e se concentre em uma

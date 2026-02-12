@@ -4,7 +4,7 @@ import '@flowtec/app/globals.css';
 import Sidebar from '@flowtec/features/dashboard/components/sidebar';
 
 export const metadata: Metadata = {
-  title: 'Flowtec - Dashboard',
+  title: 'meu societário - Dashboard',
   description: 'O futuro contábil em uma plataforma só.',
 };
 

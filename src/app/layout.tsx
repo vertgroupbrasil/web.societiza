@@ -11,7 +11,7 @@ import { ThemeProvider } from 'next-themes';
 import { TooltipProvider } from '@flowtec/components/ui/shadcnui';
 
 export const metadata: Metadata = {
-  title: 'Flowtec',
+  title: 'meu societário',
   description: 'O futuro contábil em uma plataforma só.',
 };
 

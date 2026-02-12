@@ -48,29 +48,7 @@ export function NewProcessForm({
       onSuccess,
     });
 
-  // ✅ CORREÇÃO: Verificar se dados necessários estão presentes
-  if (!accounties?.results?.empresas?.length) {
-    return (
-      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-        <p className="text-sm text-yellow-700">
-          Nenhuma contabilidade disponível. Verifique se os dados foram
-          carregados corretamente.
-        </p>
-      </div>
-    );
-  }
 
-  // ✅ CORREÇÃO: Verificar se tipos de processo estão disponíveis
-  if (!processTypes?.tipo_processo?.length) {
-    return (
-      <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
-        <p className="text-sm text-yellow-700">
-          Nenhum tipo de processo disponível. Verifique se os dados foram
-          carregados corretamente.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <Form {...form}>

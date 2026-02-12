@@ -19,6 +19,7 @@ import {
 import { toast } from 'sonner';
 import { CopyIcon } from '@icons/index';
 import { DeleteModal } from '@components/index';
+import Link from 'next/link';
 
 export function CorporateDrawer() {
   const {
@@ -33,6 +34,12 @@ export function CorporateDrawer() {
     (() => Promise<void>) | null
   >(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const formUrl = (processId: string): string => {
+    return `${FORM_URL}${processId}/fill`;
+  };
+  const viewFormUrl = (formId: string): string => {
+    return `${FORM_URL}${formId}/view`;
+  };
 
   const { data: processData, isLoading: processLoading } =
     useCorporateProcessById(selectedProcessId || '');
@@ -134,11 +141,27 @@ export function CorporateDrawer() {
           {processData?.processo && !processLoading && !typesLoading && (
             <div className="border-t bg-background/95 flex-col backdrop-blur-sm p-4 flex gap-3 justify-end">
               <Label className="flex gap-2 items-start flex-col w-full">
-                <span>Link para formulário</span>
+                <div className="gap-2 flex items-start">
+                  <span>Link para formulário</span>
+                  {processData.processo.formulario_abertura_id ? (
+                    <Link
+                      target="_"
+                      href={viewFormUrl(
+                        processData.processo.formulario_abertura_id,
+                      )}
+                    >
+                      <span className="underline text-blue-500">
+                        Visualizar
+                      </span>
+                    </Link>
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <div className="flex items-center w-full gap-2">
                   <Input
                     type="url"
-                    value={FORM_URL + `${processData.processo.id}`}
+                    value={formUrl(processData.processo.id)}
                     className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
                     readOnly
                   />
@@ -147,7 +170,7 @@ export function CorporateDrawer() {
                     size="sm"
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        FORM_URL + `${processData.processo.id}`,
+                        formUrl(processData?.processo?.id),
                       );
                       toast.info('Link copiado para a área de transferência!');
                     }}
