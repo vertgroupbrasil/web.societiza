@@ -1,9 +1,6 @@
 import React from 'react';
 import { cn } from '@flowtec/lib/utils';
-import {
-  CORPORATE_URGENCY_THRESHOLDS,
-  ensureDate,
-} from '@corporate/index';
+import { CORPORATE_URGENCY_THRESHOLDS, ensureDate } from '@corporate/index';
 
 interface ProcessProgressBarProps {
   expireAt: Date | string | null;

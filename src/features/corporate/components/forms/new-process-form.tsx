@@ -48,8 +48,6 @@ export function NewProcessForm({
       onSuccess,
     });
 
-
-
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-6 grid grid-cols-1 gap-2">

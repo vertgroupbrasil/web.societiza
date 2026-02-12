@@ -24,7 +24,6 @@ export const useFormNavigation = () => {
       goToStep(nextStep);
     }
   }, [currentStep, canNavigateToStep, goToStep]);
-  
 
   const goToPreviousStep = useCallback(() => {
     if (currentStep > 0) {

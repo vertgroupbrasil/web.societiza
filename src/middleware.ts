@@ -29,4 +29,3 @@ export async function middleware(request: NextRequest) {
   // Redireciona para o login se não autenticado
   return NextResponse.redirect(new URL(api.auth.login, request.url));
 }
-

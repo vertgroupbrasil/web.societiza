@@ -48,7 +48,7 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -59,7 +59,7 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -124,7 +124,7 @@ const DeleteIcon = forwardRef<DeleteIconHandle, DeleteIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 DeleteIcon.displayName = 'DeleteIcon';

@@ -1,10 +1,10 @@
 'use client';
 
 import { Card } from '@shadcn/index';
-import { 
-  useFormQueries, 
-  CompanyViewSection, 
-  PartnersViewSection 
+import {
+  useFormQueries,
+  CompanyViewSection,
+  PartnersViewSection,
 } from '@form/index';
 
 interface Props {

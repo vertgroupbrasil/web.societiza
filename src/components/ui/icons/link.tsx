@@ -54,7 +54,7 @@ const LinkIcon = forwardRef<LinkIconHandle, LinkIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -65,7 +65,7 @@ const LinkIcon = forwardRef<LinkIconHandle, LinkIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
     return (
       <div
@@ -98,7 +98,7 @@ const LinkIcon = forwardRef<LinkIconHandle, LinkIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 LinkIcon.displayName = 'LinkIcon';

@@ -1,4 +1,3 @@
-
 import { FormRenderer, FormProvider } from '@form/index';
 
 interface FormPageProps {
@@ -6,7 +5,10 @@ interface FormPageProps {
   searchParams: Promise<{ step?: string }>;
 }
 
-export default async function FormPage({ params, searchParams }: FormPageProps) {
+export default async function FormPage({
+  params,
+  searchParams,
+}: FormPageProps) {
   const { id } = await params;
   const { step } = await searchParams;
   const initialStep = step ? parseInt(step) : 0;

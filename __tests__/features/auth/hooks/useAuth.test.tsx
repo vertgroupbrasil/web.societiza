@@ -30,7 +30,7 @@ describe('useAuthMutations', () => {
     mockedAuth.login.mockResolvedValue({
       data: { token: 'fake-token' },
     } as unknown as AxiosResponse<{ token: string }>);
-    
+
     const { result } = renderHook(() => useAuthMutations(), {
       wrapper,
     });

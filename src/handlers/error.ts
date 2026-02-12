@@ -103,34 +103,33 @@ export function formatErrorMessage<T extends object>(
  * @param setGlobalError Função setState para definir erro global
  */
 
-
 export function handleFormError<T extends FieldValues>(
   err: unknown,
   setError: UseFormSetError<T>,
   setGlobalError?: (msg?: string) => void,
 ): { globalError?: string } {
-  let globalError: string | undefined
+  let globalError: string | undefined;
 
   // 1) ZodError
   if (err instanceof ZodError) {
-    const flat = err.flatten().fieldErrors
+    const flat = err.flatten().fieldErrors;
     Object.entries(flat).forEach(([key, msgs]) => {
       if (msgs?.[0]) {
-        setError(key as Path<T>, { message: msgs[0] })
+        setError(key as Path<T>, { message: msgs[0] });
       }
-    })
-    globalError = undefined
+    });
+    globalError = undefined;
   }
   // 2) HttpError personalizada
   else if (err instanceof HttpError) {
     // se tiver detalhes de campo (ValidationError, por exemplo)
     if ((err as any).details && typeof (err as any).details === 'object') {
-      const details = (err as any).details as Record<string,string>
+      const details = (err as any).details as Record<string, string>;
       Object.entries(details).forEach(([key, msg]) => {
-        setError(key as Path<T>, { message: msg })
-      })
+        setError(key as Path<T>, { message: msg });
+      });
     }
-    globalError = err.message
+    globalError = err.message;
   }
   // 3) AxiosError sem subclass (fallback)
   else if (
@@ -139,22 +138,21 @@ export function handleFormError<T extends FieldValues>(
     'response' in err &&
     (err as any).response?.data
   ) {
-    const data = (err as any).response.data as any
+    const data = (err as any).response.data as any;
 
     if (data.errors && typeof data.errors === 'object') {
       Object.entries(data.errors).forEach(([key, msg]) => {
-        setError(key as Path<T>, { message: String(msg) })
-      })
+        setError(key as Path<T>, { message: String(msg) });
+      });
     }
-    globalError = data.message ?? data.detail ?? 'Erro na requisição'
+    globalError = data.message ?? data.detail ?? 'Erro na requisição';
   }
   // 4) qualquer outro erro JS
   else {
-    globalError = err instanceof Error ? err.message : String(err)
+    globalError = err instanceof Error ? err.message : String(err);
   }
 
-  setGlobalError?.(globalError)
+  setGlobalError?.(globalError);
 
-  return { ...(globalError ? { globalError } : {}) }
+  return { ...(globalError ? { globalError } : {}) };
 }
-

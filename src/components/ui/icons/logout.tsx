@@ -24,7 +24,6 @@ const pathVariants: Variants = {
   },
 };
 
-
 const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const controls = useAnimation();
@@ -47,7 +46,7 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -58,7 +57,7 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -96,7 +95,7 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 LogoutIcon.displayName = 'LogoutIcon';

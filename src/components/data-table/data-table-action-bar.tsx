@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@flowtec/components/ui/shadcnui/button";
-import { Separator } from "@flowtec/components/ui/shadcnui/separator";
+import { Button } from '@flowtec/components/ui/shadcnui/button';
+import { Separator } from '@flowtec/components/ui/shadcnui/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@flowtec/components/ui/shadcnui/tooltip";
-import { cn } from "@flowtec/lib/utils";
-import type { Table } from "@tanstack/react-table";
-import { Loader, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+} from '@flowtec/components/ui/shadcnui/tooltip';
+import { cn } from '@flowtec/lib/utils';
+import type { Table } from '@tanstack/react-table';
+import { Loader, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 interface DataTableActionBarProps<TData>
   extends React.ComponentProps<typeof motion.div> {
@@ -37,13 +37,13 @@ function DataTableActionBar<TData>({
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         table.toggleAllRowsSelected(false);
       }
     }
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [table]);
 
   const container =
@@ -63,9 +63,9 @@ function DataTableActionBar<TData>({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
           className={cn(
-            "fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm",
+            'fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm',
             className,
           )}
           {...props}
@@ -81,13 +81,19 @@ function DataTableActionBar<TData>({
 interface DataTableActionBarActionProps {
   tooltip?: string;
   isPending?: boolean;
-  size?: "sm" | "icon" | "default" | "lg";
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: 'sm' | 'icon' | 'default' | 'lg';
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link';
   disabled?: boolean;
   className?: string;
   children?: React.ReactNode;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   form?: string;
   name?: string;
   value?: string;
@@ -99,7 +105,7 @@ interface DataTableActionBarActionProps {
 }
 
 function DataTableActionBarAction({
-  size = "sm",
+  size = 'sm',
   tooltip,
   isPending,
   disabled,
@@ -112,8 +118,8 @@ function DataTableActionBarAction({
       variant="secondary"
       size={size}
       className={cn(
-        "gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5",
-        size === "icon" ? "size-7" : "h-7",
+        'gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5',
+        size === 'icon' ? 'size-7' : 'h-7',
         className,
       )}
       disabled={disabled || isPending}

@@ -52,7 +52,7 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -63,7 +63,7 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -114,7 +114,7 @@ const IdCardIcon = forwardRef<IdCardIconHandle, IdCardIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 IdCardIcon.displayName = 'IdCardIcon';

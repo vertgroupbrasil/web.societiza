@@ -69,7 +69,7 @@ const MapPinIcon = forwardRef<MapPinIconHandle, MapPinIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -80,7 +80,7 @@ const MapPinIcon = forwardRef<MapPinIconHandle, MapPinIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -116,7 +116,7 @@ const MapPinIcon = forwardRef<MapPinIconHandle, MapPinIconProps>(
         </motion.svg>
       </div>
     );
-  }
+  },
 );
 
 MapPinIcon.displayName = 'MapPinIcon';

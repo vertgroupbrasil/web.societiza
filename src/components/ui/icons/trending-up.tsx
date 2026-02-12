@@ -25,7 +25,6 @@ const svgVariants: Variants = {
   },
 };
 
-
 const pathVariants: Variants = {
   normal: {
     opacity: 1,

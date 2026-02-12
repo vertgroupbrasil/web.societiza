@@ -45,7 +45,11 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
                   const cleanValue = value.replace(/\D/g, '');
                   field.onChange(cleanValue);
                 }}
-                className={hasFieldError('endereco.cep') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasFieldError('endereco.cep')
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -63,7 +67,11 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
               <Input
                 placeholder="Nome da rua"
                 {...field}
-                className={hasFieldError('endereco.rua') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasFieldError('endereco.rua')
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -84,7 +92,11 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
                   placeholder="123"
                   value={field.value || ''}
                   onChange={(value: string) => field.onChange(Number(value))}
-                  className={hasFieldError('endereco.numero') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasFieldError('endereco.numero')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -102,7 +114,11 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
                 <Input
                   placeholder="Nome do bairro"
                   {...field}
-                  className={hasFieldError('endereco.bairro') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasFieldError('endereco.bairro')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -136,7 +152,11 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
                 <Input
                   placeholder="Nome do município"
                   {...field}
-                  className={hasFieldError('endereco.municipio') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasFieldError('endereco.municipio')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -152,7 +172,13 @@ export const AddressSection = ({ form, hasFieldError }: Props) => (
               <FormLabel>UF *</FormLabel>
               <Select onValueChange={field.onChange} value={field.value || ''}>
                 <FormControl>
-                  <SelectTrigger className={hasFieldError('endereco.uf') ? 'border-red-500 bg-red-50' : ''}>
+                  <SelectTrigger
+                    className={
+                      hasFieldError('endereco.uf')
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
+                  >
                     <SelectValue placeholder="Selecione" />
                   </SelectTrigger>
                 </FormControl>

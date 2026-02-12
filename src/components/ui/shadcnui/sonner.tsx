@@ -14,9 +14,7 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
       theme={theme as 'light' | 'dark' | 'system'}
       className="toaster group"
       toastOptions={{
-        style: {
-
-        },
+        style: {},
         classNames: {
           toast:
             'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',

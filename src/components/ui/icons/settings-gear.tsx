@@ -38,7 +38,7 @@ const SettingsGearIcon = forwardRef<
         onMouseEnter?.(e);
       }
     },
-    [controls, onMouseEnter]
+    [controls, onMouseEnter],
   );
 
   const handleMouseLeave = useCallback(
@@ -49,7 +49,7 @@ const SettingsGearIcon = forwardRef<
         onMouseLeave?.(e);
       }
     },
-    [controls, onMouseLeave]
+    [controls, onMouseLeave],
   );
 
   return (

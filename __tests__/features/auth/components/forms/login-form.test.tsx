@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
 import { test, expect, Page } from '@playwright/test';
 
-const api = API_ENDPOINTS
+const api = API_ENDPOINTS;
 
 // Page Object Model para LoginForm
 class LoginFormPage {
@@ -33,7 +33,9 @@ class LoginFormPage {
   }
 
   get passwordError() {
-    return this.page.locator('[role="alert"]').filter({ hasText: /senha|password/i });
+    return this.page
+      .locator('[role="alert"]')
+      .filter({ hasText: /senha|password/i });
   }
 
   get globalError() {
@@ -83,12 +85,11 @@ class LoginFormPage {
   }
 }
 
-test.describe("Login-Form - E2E Complete test", () => {
+test.describe('Login-Form - E2E Complete test', () => {
   let loginPage: LoginFormPage;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginFormPage(page);
-    
 
     await page.goto('/login');
 
@@ -106,8 +107,14 @@ test.describe("Login-Form - E2E Complete test", () => {
       await expect(loginPage.passwordInput).toBeVisible();
 
       // Verificar placeholders
-      await expect(loginPage.emailInput).toHaveAttribute('placeholder', 'seu@email.com');
-      await expect(loginPage.passwordInput).toHaveAttribute('placeholder', '********');
+      await expect(loginPage.emailInput).toHaveAttribute(
+        'placeholder',
+        'seu@email.com',
+      );
+      await expect(loginPage.passwordInput).toHaveAttribute(
+        'placeholder',
+        '********',
+      );
 
       // Verificar tipo do input de senha
       await expect(loginPage.passwordInput).toHaveAttribute('type', 'password');
@@ -117,7 +124,6 @@ test.describe("Login-Form - E2E Complete test", () => {
       await expect(loginPage.submitButton).toContainText('Entrar');
       await expect(loginPage.submitButton).toHaveAttribute('type', 'submit');
     });
-
   });
 
   test.describe('Basic interation', () => {
@@ -136,7 +142,7 @@ test.describe("Login-Form - E2E Complete test", () => {
     test('should clear inputs', async () => {
       await loginPage.fillForm('test@test.com', 'password123');
       await loginPage.clearForm();
-      
+
       await expect(loginPage.emailInput).toHaveValue('');
       await expect(loginPage.passwordInput).toHaveValue('');
     });
@@ -145,7 +151,7 @@ test.describe("Login-Form - E2E Complete test", () => {
       await loginPage.emailInput.focus();
       await loginPage.emailInput.press('Tab');
       await expect(loginPage.passwordInput).toBeFocused();
-      
+
       await loginPage.passwordInput.press('Tab');
       await expect(loginPage.submitButton).toBeFocused();
     });
@@ -175,7 +181,6 @@ test.describe("Login-Form - E2E Complete test", () => {
       await expect(loginPage.passwordError).toBeVisible();
     });
 
-
     test('should clear errors when fields are correct', async () => {
       // Gerar erro primeiro
       await loginPage.submitForm();
@@ -183,7 +188,7 @@ test.describe("Login-Form - E2E Complete test", () => {
 
       // Corrigir o campo
       await loginPage.fillEmail('user@valid.com');
-      
+
       // Erro deve desaparecer
       await expect(loginPage.emailError).not.toBeVisible();
     });
@@ -192,12 +197,12 @@ test.describe("Login-Form - E2E Complete test", () => {
   test.describe('Submission state', () => {
     test('Should show submission state while APIs being called', async () => {
       // Mock da API para simular delay
-      await loginPage.page.route(api.auth.login, async route => {
-        await new Promise(resolve => setTimeout(resolve, 2000));
+      await loginPage.page.route(api.auth.login, async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -209,12 +214,12 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should disable button during submission', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      await loginPage.page.route(api.auth.login, async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -225,11 +230,11 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should reable button after submission', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 400,
           contentType: 'application/json',
-          body: JSON.stringify({ error: 'Credenciais inválidas' })
+          body: JSON.stringify({ error: 'Credenciais inválidas' }),
         });
       });
 
@@ -244,11 +249,11 @@ test.describe("Login-Form - E2E Complete test", () => {
   test.describe('Success scenarios', () => {
     test('should do login with valid credentials', async () => {
       // Mock de sucesso
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -260,14 +265,14 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should show success toast', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
-      
+
       await loginPage.fillForm('test@gmail.com', '123456789');
       await loginPage.submitForm();
 
@@ -279,14 +284,14 @@ test.describe("Login-Form - E2E Complete test", () => {
 
   test.describe('Erros scenarios', () => {
     test('should show global error for invalid credentials', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 401,
           contentType: 'application/json',
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             error: 'Credenciais inválidas',
-            message: 'Email ou senha incorretos'
-          })
+            message: 'Email ou senha incorretos',
+          }),
         });
       });
 
@@ -294,32 +299,36 @@ test.describe("Login-Form - E2E Complete test", () => {
       await loginPage.submitForm();
 
       await expect(loginPage.globalError).toBeVisible();
-      await expect(loginPage.globalError).toContainText('Email ou senha incorretos');
+      await expect(loginPage.globalError).toContainText(
+        'Email ou senha incorretos',
+      );
     });
 
     test('should show toast error', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 500,
           contentType: 'application/json',
-          body: JSON.stringify({ error: 'Erro interno do servidor' })
+          body: JSON.stringify({ error: 'Erro interno do servidor' }),
         });
       });
 
       await loginPage.fillForm('user@test.com', 'password123');
       await loginPage.submitForm();
 
-      const errorToast = loginPage.page.locator('[data-sonner-toast]').filter({ hasText: /erro/i });
+      const errorToast = loginPage.page
+        .locator('[data-sonner-toast]')
+        .filter({ hasText: /erro/i });
       await expect(errorToast).toBeVisible();
     });
 
     test('should clear global error while trying again', async () => {
       // Primeiro: gerar erro
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 401,
           contentType: 'application/json',
-          body: JSON.stringify({ error: 'Credenciais inválidas' })
+          body: JSON.stringify({ error: 'Credenciais inválidas' }),
         });
       });
 
@@ -328,11 +337,11 @@ test.describe("Login-Form - E2E Complete test", () => {
       await expect(loginPage.globalError).toBeVisible();
 
       // Segundo: sucesso
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -349,15 +358,18 @@ test.describe("Login-Form - E2E Complete test", () => {
       const passwordId = await loginPage.passwordInput.getAttribute('id');
 
       await expect(loginPage.emailLabel).toHaveAttribute('for', emailId || '');
-      await expect(loginPage.passwordLabel).toHaveAttribute('for', passwordId || '');
+      await expect(loginPage.passwordLabel).toHaveAttribute(
+        'for',
+        passwordId || '',
+      );
     });
 
     test('shoud allow submission with enter at e-mail', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -368,11 +380,11 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('shoud allow submission with enter at password', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({ success: true })
+          body: JSON.stringify({ success: true }),
         });
       });
 
@@ -381,7 +393,6 @@ test.describe("Login-Form - E2E Complete test", () => {
 
       await expect(loginPage.page).toHaveURL('/dashboard');
     });
-
   });
 
   test.describe('Extreme cases and Edge Cases', () => {
@@ -404,7 +415,7 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should handle network error', async () => {
-      await loginPage.page.route(api.auth.login, route => route.abort());
+      await loginPage.page.route(api.auth.login, (route) => route.abort());
 
       await loginPage.fillForm('test@gmail.com', '123456789');
       await loginPage.submitForm();
@@ -414,9 +425,9 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should handle APIs timeout', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         // Simular timeout muito longo
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise((resolve) => setTimeout(resolve, 10000));
       });
 
       await loginPage.fillForm('test@gmail.com', '123456789');
@@ -427,11 +438,11 @@ test.describe("Login-Form - E2E Complete test", () => {
     });
 
     test('should keep form data after error', async () => {
-      await loginPage.page.route(api.auth.login, async route => {
+      await loginPage.page.route(api.auth.login, async (route) => {
         await route.fulfill({
           status: 401,
           contentType: 'application/json',
-          body: JSON.stringify({ error: 'Erro' })
+          body: JSON.stringify({ error: 'Erro' }),
         });
       });
 

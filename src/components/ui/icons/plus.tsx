@@ -36,7 +36,7 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -47,7 +47,7 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -83,7 +83,7 @@ const PlusIcon = forwardRef<PlusIconHandle, PlusIconProps>(
         </motion.svg>
       </div>
     );
-  }
+  },
 );
 
 PlusIcon.displayName = 'PlusIcon';

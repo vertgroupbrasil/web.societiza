@@ -118,7 +118,6 @@ export const PartnersDataForm = () => {
   return (
     <Form {...form}>
       <div className="space-y-8">
-
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">Dados dos Sócios</h2>
           <Button type="button" variant={'ghost'} onClick={addPartner}>

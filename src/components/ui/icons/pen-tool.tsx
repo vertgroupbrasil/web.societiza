@@ -23,7 +23,6 @@ const svgVariants: Variants = {
   },
 };
 
-
 const pathVariants: Variants = {
   normal: { pathLength: 1, opacity: 1, pathOffset: 0 },
   animate: {
@@ -55,7 +54,7 @@ const PenToolIcon = forwardRef<PenToolIconHandle, PenToolIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -66,7 +65,7 @@ const PenToolIcon = forwardRef<PenToolIconHandle, PenToolIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -106,7 +105,7 @@ const PenToolIcon = forwardRef<PenToolIconHandle, PenToolIconProps>(
         </motion.svg>
       </div>
     );
-  }
+  },
 );
 
 PenToolIcon.displayName = 'PenToolIcon';

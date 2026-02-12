@@ -55,7 +55,7 @@ const FileCheckIcon = forwardRef<FileCheckIconHandle, FileCheckIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -66,7 +66,7 @@ const FileCheckIcon = forwardRef<FileCheckIconHandle, FileCheckIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -99,7 +99,7 @@ const FileCheckIcon = forwardRef<FileCheckIconHandle, FileCheckIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 FileCheckIcon.displayName = 'FileCheckIcon';

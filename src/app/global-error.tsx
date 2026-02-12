@@ -1,9 +1,12 @@
-"use client";
+'use client';
 
-import NextError from "next/error";
+import NextError from 'next/error';
 
-export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
-
+export default function GlobalError({
+  error,
+}: {
+  error: Error & { digest?: string };
+}) {
   return (
     <html>
       <body>

@@ -70,8 +70,7 @@ export const useCorporateMutations = () => {
       });
     },
 
-    onError: (error) => {
-    },
+    onError: (error) => {},
   });
 
   return {

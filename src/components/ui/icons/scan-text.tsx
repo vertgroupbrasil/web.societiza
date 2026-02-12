@@ -67,7 +67,7 @@ const ScanTextIcon = forwardRef<ScanTextIconHandle, ScanTextIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -78,7 +78,7 @@ const ScanTextIcon = forwardRef<ScanTextIconHandle, ScanTextIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -127,7 +127,7 @@ const ScanTextIcon = forwardRef<ScanTextIconHandle, ScanTextIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 ScanTextIcon.displayName = 'ScanTextIcon';

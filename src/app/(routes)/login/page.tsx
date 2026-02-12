@@ -4,12 +4,12 @@ import Icon from '@flowtec/components/icon';
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen w-screen grid grid-cols-2">
+    <div className="min-h-screen w-screen flex justify-center">
       <div className="flex flex-col justify-center items-center p-8">
         <div className="w-full max-w-md space-y-6">
           <div className="flex flex-col items-center justify-center space-y-4">
             <Icon />
-            <div className=' text-center '>
+            <div className=" text-center ">
               <h1 className="text-2xl font-bold">
                 Iniciar sessão no meu societário
               </h1>
@@ -21,16 +21,6 @@ export default function LoginPage() {
           </div>
           <LoginForm />
         </div>
-      </div>
-
-      {/* Lado direito - Imagem */}
-      <div className="relative">
-        <Image
-          className="rounded-4xl p-4"
-          src="/gradient-login.jpeg"
-          fill
-          alt="Background de login"
-        />
       </div>
     </div>
   );

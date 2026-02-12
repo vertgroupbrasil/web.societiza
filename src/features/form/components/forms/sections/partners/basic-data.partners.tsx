@@ -19,7 +19,11 @@ import { PartnersData, maskCPF, maskRG, UFs } from '@form/index';
 
 interface Props {
   form: UseFormReturn<PartnersData>;
-  hasArrayFieldError: (arrayName: string, index: number, fieldName: string) => boolean;
+  hasArrayFieldError: (
+    arrayName: string,
+    index: number,
+    fieldName: string,
+  ) => boolean;
   partnerIndex: number;
 }
 
@@ -38,7 +42,11 @@ const REGIMES_CASAMENTO = [
   { value: 'participacao_final', label: 'Participação Final' },
 ];
 
-export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: Props) => {
+export const BasicPartnerSection = ({
+  form,
+  hasArrayFieldError,
+  partnerIndex,
+}: Props) => {
   const watchEstadoCivil = form.watch(`socios.${partnerIndex}.estado_civil`);
 
   return (
@@ -54,7 +62,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                 <Input
                   placeholder="Nome completo do sócio"
                   {...field}
-                  className={hasArrayFieldError('socios', partnerIndex, 'nome') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'nome')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -72,7 +84,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                 <Input
                   placeholder="Ex: Brasileira"
                   {...field}
-                  className={hasArrayFieldError('socios', partnerIndex, 'nacionalidade') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'nacionalidade')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -87,7 +103,7 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
           name={`socios.${partnerIndex}.data_nascimento`}
           render={({ field }) => {
             const { value, onChange } = field;
-            
+
             return (
               <FormItem>
                 <FormLabel>Data de Nascimento *</FormLabel>
@@ -95,11 +111,21 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                   <DatePicker
                     value={value ? new Date(value + 'T00:00:00') : undefined}
                     onChange={(date) => {
-                      const dateString = date ? date.toISOString().split('T')[0] : '';
+                      const dateString = date
+                        ? date.toISOString().split('T')[0]
+                        : '';
                       onChange(dateString);
                     }}
                     placeholder="Selecione a data"
-                    className={hasArrayFieldError('socios', partnerIndex, 'data_nascimento') ? 'border-red-500 bg-red-50' : ''}
+                    className={
+                      hasArrayFieldError(
+                        'socios',
+                        partnerIndex,
+                        'data_nascimento',
+                      )
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
                     maxDate={new Date()}
                   />
                 </FormControl>
@@ -119,7 +145,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                 <Input
                   placeholder="Ex: Empresário"
                   {...field}
-                  className={hasArrayFieldError('socios', partnerIndex, 'profissao') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'profissao')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -137,7 +167,13 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
               <FormLabel>Estado Civil *</FormLabel>
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className={hasArrayFieldError('socios', partnerIndex, 'estado_civil') ? 'border-red-500 bg-red-50' : ''}>
+                  <SelectTrigger
+                    className={
+                      hasArrayFieldError('socios', partnerIndex, 'estado_civil')
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
+                  >
                     <SelectValue placeholder="Selecione o estado civil" />
                   </SelectTrigger>
                 </FormControl>
@@ -161,15 +197,28 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
             rules={{
               required: {
                 value: watchEstadoCivil === 'casado',
-                message: 'Regime de casamento é obrigatório para casados'
-              }
+                message: 'Regime de casamento é obrigatório para casados',
+              },
             }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Regime de Casamento *</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value || ''}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ''}
+                >
                   <FormControl>
-                    <SelectTrigger className={hasArrayFieldError('socios', partnerIndex, 'regime_casamento') ? 'border-red-500 bg-red-50' : ''}>
+                    <SelectTrigger
+                      className={
+                        hasArrayFieldError(
+                          'socios',
+                          partnerIndex,
+                          'regime_casamento',
+                        )
+                          ? 'border-red-500 bg-red-50'
+                          : ''
+                      }
+                    >
                       <SelectValue placeholder="Selecione o regime" />
                     </SelectTrigger>
                   </FormControl>
@@ -203,7 +252,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                     const cleanValue = value.replace(/\D/g, '');
                     field.onChange(cleanValue);
                   }}
-                  className={hasArrayFieldError('socios', partnerIndex, 'cpf') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'cpf')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -224,7 +277,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                   min="1"
                   value={field.value || ''}
                   onChange={(value: string) => field.onChange(Number(value))}
-                  className={hasArrayFieldError('socios', partnerIndex, 'qtd_cotas') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'qtd_cotas')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -245,7 +302,11 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                   placeholder="00.000.000-0"
                   value={maskRG(field.value || '')}
                   onChange={(value: string) => field.onChange(value)}
-                  className={hasArrayFieldError('socios', partnerIndex, 'rg') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'rg')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -263,7 +324,15 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
                 <Input
                   placeholder="SSP"
                   {...field}
-                  className={hasArrayFieldError('socios', partnerIndex, 'orgao_expedidor') ? 'border-red-500 bg-red-50' : ''}
+                  className={
+                    hasArrayFieldError(
+                      'socios',
+                      partnerIndex,
+                      'orgao_expedidor',
+                    )
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
                 />
               </FormControl>
               <FormMessage />
@@ -279,7 +348,13 @@ export const BasicPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: 
               <FormLabel>UF *</FormLabel>
               <Select onValueChange={field.onChange} value={field.value || ''}>
                 <FormControl>
-                  <SelectTrigger className={hasArrayFieldError('socios', partnerIndex, 'uf') ? 'border-red-500 bg-red-50' : ''}>
+                  <SelectTrigger
+                    className={
+                      hasArrayFieldError('socios', partnerIndex, 'uf')
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
+                  >
                     <SelectValue placeholder="UF" />
                   </SelectTrigger>
                 </FormControl>

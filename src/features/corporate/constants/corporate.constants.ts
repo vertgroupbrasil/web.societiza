@@ -106,4 +106,4 @@ export const CORPORATE_STALE_TIME = {
 
 export const DEFAULT_DEBOUNCE_TIME = 300;
 
-export const FORM_URL = 'https://flowtec.dev/forms/';
+export const FORM_URL = 'http://localhost:3000/forms/';

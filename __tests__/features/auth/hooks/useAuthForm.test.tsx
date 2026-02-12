@@ -1,4 +1,3 @@
-
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { handleFormError } from '@flowtec/handlers/error';
 import { toast } from 'sonner';
@@ -15,7 +14,7 @@ jest.mock('next/navigation');
 // Mock do schema para testes
 jest.mock('../schemas/auth-schema', () => ({
   authSchema: { parse: jest.fn(), safeParse: jest.fn() },
-  emptyAuth: { email: '', password: '' }
+  emptyAuth: { email: '', password: '' },
 }));
 
 // Mock do react-hook-form
@@ -24,7 +23,11 @@ const mockHandleSubmit = jest.fn();
 const mockFormState = { isSubmitting: false, errors: {} };
 
 jest.mock('react-hook-form', () => ({
-  useForm: jest.fn(() => ({ handleSubmit: mockHandleSubmit, setError: mockSetError, formState: mockFormState }))
+  useForm: jest.fn(() => ({
+    handleSubmit: mockHandleSubmit,
+    setError: mockSetError,
+    formState: mockFormState,
+  })),
 }));
 
 describe('useLoginForm', () => {
@@ -68,7 +71,7 @@ describe('useLoginForm', () => {
       expect(mockLogin.mutateAsync).toHaveBeenCalledWith(mockData);
       expect(mockToastSuccess).toHaveBeenCalledWith(
         'Autenticado com sucesso!',
-        { description: 'Você está sendo redirecionado...' }
+        { description: 'Você está sendo redirecionado...' },
       );
       expect(mockPush).toHaveBeenCalledWith('/dashboard');
       expect(result.current.globalError).toBeUndefined();
@@ -78,7 +81,10 @@ describe('useLoginForm', () => {
       mockLogin.mutateAsync.mockResolvedValue({ success: true });
       const { result } = renderHook(() => useLoginForm());
       await act(async () => {
-        await result.current.onSubmit({ email: 'a@b.com', password: '123' } as any);
+        await result.current.onSubmit({
+          email: 'a@b.com',
+          password: '123',
+        } as any);
       });
       expect(result.current.globalError).toBeUndefined();
     });
@@ -100,12 +106,11 @@ describe('useLoginForm', () => {
       expect(mockHandleFormError).toHaveBeenCalledWith(
         error,
         mockSetError,
-        expect.any(Function)
+        expect.any(Function),
       );
-      expect(mockToastError).toHaveBeenCalledWith(
-        'Erro ao autenticar!',
-        { description: 'Email ou senha incorretos' }
-      );
+      expect(mockToastError).toHaveBeenCalledWith('Erro ao autenticar!', {
+        description: 'Email ou senha incorretos',
+      });
       expect(mockPush).not.toHaveBeenCalled();
     });
 
@@ -115,26 +120,31 @@ describe('useLoginForm', () => {
 
       const { result } = renderHook(() => useLoginForm());
       await act(async () => {
-        await result.current.onSubmit({ email: 'test@test.com', password: '123456' } as any);
+        await result.current.onSubmit({
+          email: 'test@test.com',
+          password: '123456',
+        } as any);
       });
-      expect(mockToastError).toHaveBeenCalledWith(
-        'Erro ao autenticar!',
-        { description: 'Algo deu errado' }
-      );
+      expect(mockToastError).toHaveBeenCalledWith('Erro ao autenticar!', {
+        description: 'Algo deu errado',
+      });
     });
 
     it('define globalError quando handleFormError retorna mensagem', async () => {
       mockLogin.mutateAsync.mockRejectedValue(new Error('Server'));
       mockHandleFormError.mockImplementation((_, __, setGlobalError) =>
-        setGlobalError('Servidor indisponível')
+        setGlobalError('Servidor indisponível'),
       );
 
       const { result } = renderHook(() => useLoginForm());
       await act(async () => {
-        await result.current.onSubmit({ email: 'test@test.com', password: '123456' } as any);
+        await result.current.onSubmit({
+          email: 'test@test.com',
+          password: '123456',
+        } as any);
       });
       await waitFor(() =>
-        expect(result.current.globalError).toBe('Servidor indisponível')
+        expect(result.current.globalError).toBe('Servidor indisponível'),
       );
     });
   });
@@ -159,10 +169,15 @@ describe('useLoginForm', () => {
 
   describe('Casos extremos', () => {
     it('lida com exceção síncrona', async () => {
-      mockLogin.mutateAsync.mockImplementation(() => { throw new Error('Sync'); });
+      mockLogin.mutateAsync.mockImplementation(() => {
+        throw new Error('Sync');
+      });
       const { result } = renderHook(() => useLoginForm());
       await act(async () => {
-        await result.current.onSubmit({ email: 'x@y.com', password: 'z' } as any);
+        await result.current.onSubmit({
+          email: 'x@y.com',
+          password: 'z',
+        } as any);
       });
       expect(mockToastError).toHaveBeenCalled();
     });
@@ -178,10 +193,14 @@ describe('useLoginForm', () => {
 
     it('ignora falha no push', async () => {
       mockLogin.mutateAsync.mockResolvedValue({ success: true });
-      mockPush.mockImplementation(() => { throw new Error('Nav'); });
+      mockPush.mockImplementation(() => {
+        throw new Error('Nav');
+      });
       const { result } = renderHook(() => useLoginForm());
       await act(async () => {
-        expect(async () => { await result.current.onSubmit({ email: 'a', password: 'b' } as any); }).not.toThrow();
+        expect(async () => {
+          await result.current.onSubmit({ email: 'a', password: 'b' } as any);
+        }).not.toThrow();
       });
     });
   });
@@ -198,4 +217,3 @@ describe('useLoginForm', () => {
     });
   });
 });
-

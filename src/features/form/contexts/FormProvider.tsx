@@ -245,10 +245,9 @@ export const FormProvider = ({
     (response: OpeningForm) => {
       try {
         const formData = response.formulario;
-  
+
         const extractedData: CorporateFormData = {
           companyData: {
-
             processo_id: processoId, // Usar o processoId do contexto/props
             opcoes_nome_empresa: formData.opcoes_nome_empresa || [],
             nome_fantasia: formData.nome_fantasia || '',
@@ -273,8 +272,10 @@ export const FormProvider = ({
             info_adicionais: {
               resp_tecnica: formData.info_adicionais?.resp_tecnica || false,
               uf: formData.info_adicionais?.uf || '',
-              nome_responsavel: formData.info_adicionais?.nome_responsavel || '',
-              nmr_carteira_profissional: formData.info_adicionais?.nmr_carteira_profissional || '',
+              nome_responsavel:
+                formData.info_adicionais?.nome_responsavel || '',
+              nmr_carteira_profissional:
+                formData.info_adicionais?.nmr_carteira_profissional || '',
               area_resp: formData.info_adicionais?.area_resp || '',
             },
             // ✅ ID do formulário vem da API
@@ -314,12 +315,12 @@ export const FormProvider = ({
                 }
               : undefined,
         };
-  
+
         // ✅ Atualizar createdFormId se vier da API
         if (formData.id) {
           setCreatedFormId(formData.id);
         }
-  
+
         dispatch({ type: 'UPDATE_FROM_API', payload: extractedData });
       } catch (error) {
         // Handle error silently
@@ -327,7 +328,6 @@ export const FormProvider = ({
     },
     [processoId, setCreatedFormId], // ✅ Adicionar setCreatedFormId às dependências
   );
-  
 
   // ✅ Funções auxiliares de validação
   const validateCompanyData = (companyData?: any): boolean => {

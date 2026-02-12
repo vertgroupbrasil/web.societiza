@@ -83,9 +83,7 @@ export function Board() {
                 <SearchBar placeholder="Buscar por nome, contabilidade..." />
               </div>
               <div className="flex-shrink-0">
-                <FiltersDialog 
-                accounties={accounties}
-                />
+                <FiltersDialog accounties={accounties} />
               </div>
             </div>
           </div>

@@ -59,7 +59,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -70,7 +70,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
     return (
       <div
@@ -110,7 +110,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 UserIcon.displayName = 'UserIcon';

@@ -35,7 +35,6 @@ const pathVariants: Variants = {
   },
 };
 
-
 const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const controls = useAnimation();
@@ -58,7 +57,7 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -69,7 +68,7 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -105,7 +104,7 @@ const UsersIcon = forwardRef<UsersIconHandle, UsersIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 UsersIcon.displayName = 'UsersIcon';

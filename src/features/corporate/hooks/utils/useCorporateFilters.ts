@@ -21,7 +21,6 @@ export const useCorporateFilters = () => {
   // Função para filtrar processos - CORRIGIDA
   const applyFilters = useMemo(() => {
     return (processes: Process[]): Process[] => {
-
       return processes.filter((process) => {
         // Filtro de busca global - CORRIGIDO
         if (filters.searchTerm && filters.searchTerm.trim() !== '') {

@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { CompanyData, infoAdicionaisSchema, addressSchema, Socio } from '@form/index';
+import {
+  CompanyData,
+  infoAdicionaisSchema,
+  addressSchema,
+  Socio,
+} from '@form/index';
 
 const defaultAddress: z.infer<typeof addressSchema> = {
   rua: '',

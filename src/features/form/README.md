@@ -4,39 +4,39 @@ Esta feature implementa um sistema completo de gestão de processos societários
 Estrutura de Arquivos
 text
 features/societario/
-├── components/                 # Componentes React
-│   ├── ui/                    # Componentes de interface específicos
-│   │   ├── ProcessProgressBar.tsx
-│   │   ├── SearchBar.tsx
-│   │   ├── FiltersDialog.tsx
-│   │   └── TaskChecklist.tsx
-│   ├── KanbanBoard.tsx        # Componente principal
-│   ├── KanbanColumn.tsx       # Coluna do kanban
-│   ├── ProcessCard.tsx        # Card do processo
-│   └── ProcessDrawer.tsx      # Drawer de detalhes
-├── hooks/                     # Hooks customizados
-│   ├── queries/              # Hooks de consulta
-│   │   ├── queryOptions.ts   # Factory de query options
-│   │   └── useSocietarioQueries.ts
-│   ├── mutations/            # Hooks de mutação
-│   │   └── useSocietarioMutations.ts
-│   └── utils/                # Hooks utilitários
-│       ├── useSocietarioFilters.ts
-│       └── useTaskSequentialLogic.ts
-├── server/                   # Camada de servidor
-│   ├── services/            # Chamadas para API
-│   │   └── societario.service.ts
-│   ├── types/               # Tipos TypeScript
-│   │   └── societario.types.ts
-│   └── validators/          # Validação de dados
-│       └── societario.validators.ts
-├── schemas/                 # Schemas Zod
-│   └── societario.schema.ts
-├── constants/              # Constantes
-│   └── societario.constants.ts
-├── contexts/              # Contextos React
-│   └── societario.context.tsx
-└── index.ts              # Ponto único de exportação
+├── components/ # Componentes React
+│ ├── ui/ # Componentes de interface específicos
+│ │ ├── ProcessProgressBar.tsx
+│ │ ├── SearchBar.tsx
+│ │ ├── FiltersDialog.tsx
+│ │ └── TaskChecklist.tsx
+│ ├── KanbanBoard.tsx # Componente principal
+│ ├── KanbanColumn.tsx # Coluna do kanban
+│ ├── ProcessCard.tsx # Card do processo
+│ └── ProcessDrawer.tsx # Drawer de detalhes
+├── hooks/ # Hooks customizados
+│ ├── queries/ # Hooks de consulta
+│ │ ├── queryOptions.ts # Factory de query options
+│ │ └── useSocietarioQueries.ts
+│ ├── mutations/ # Hooks de mutação
+│ │ └── useSocietarioMutations.ts
+│ └── utils/ # Hooks utilitários
+│ ├── useSocietarioFilters.ts
+│ └── useTaskSequentialLogic.ts
+├── server/ # Camada de servidor
+│ ├── services/ # Chamadas para API
+│ │ └── societario.service.ts
+│ ├── types/ # Tipos TypeScript
+│ │ └── societario.types.ts
+│ └── validators/ # Validação de dados
+│ └── societario.validators.ts
+├── schemas/ # Schemas Zod
+│ └── societario.schema.ts
+├── constants/ # Constantes
+│ └── societario.constants.ts
+├── contexts/ # Contextos React
+│ └── societario.context.tsx
+└── index.ts # Ponto único de exportação
 Principais Funcionalidades
 Kanban Board: Visualização em colunas por etapa do processo
 
@@ -55,16 +55,16 @@ Stage Navigation: Avanço e retorno entre etapas
 Como Usar
 tsx
 import {
-  KanbanBoard,
-  SocietarioProvider
+KanbanBoard,
+SocietarioProvider
 } from '@flowtec/features/societario';
 
 function SocietarioPage() {
-  return (
-    <SocietarioProvider>
-      <KanbanBoard />
-    </SocietarioProvider>
-  );
+return (
+<SocietarioProvider>
+<KanbanBoard />
+</SocietarioProvider>
+);
 }
 Tecnologias Utilizadas
 React 18+ com TypeScript

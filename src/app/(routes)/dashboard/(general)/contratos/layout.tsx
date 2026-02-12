@@ -2,7 +2,6 @@ import React from 'react';
 import type { Metadata } from 'next';
 import '@flowtec/app/globals.css';
 
-
 export const metadata: Metadata = {
   title: 'meu societário - Certificados Digitais',
   description: 'O futuro contábil em uma plataforma só.',
@@ -13,10 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <main>
-
-    {children}
-    </main>
-  );
+  return <main>{children}</main>;
 }

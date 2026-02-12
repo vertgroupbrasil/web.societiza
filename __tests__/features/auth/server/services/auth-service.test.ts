@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as authService from '@flowtec/features/auth/server/services/auth-service';
 import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
 
-const api = API_ENDPOINTS
+const api = API_ENDPOINTS;
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -20,7 +20,7 @@ describe('authService', () => {
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
       expect.stringContaining(api.auth.login),
-      data
+      data,
     );
   });
 
@@ -30,7 +30,7 @@ describe('authService', () => {
     await authService.logout();
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      expect.stringContaining(api.auth.logout)
+      expect.stringContaining(api.auth.logout),
     );
   });
 
@@ -40,7 +40,7 @@ describe('authService', () => {
     await authService.refresh();
 
     expect(mockedAxios.post).toHaveBeenCalledWith(
-      expect.stringContaining(api.auth.refresh)
+      expect.stringContaining(api.auth.refresh),
     );
   });
 });

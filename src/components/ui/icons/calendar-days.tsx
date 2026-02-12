@@ -65,7 +65,7 @@ const CalendarDaysIcon = forwardRef<
         onMouseEnter?.(e);
       }
     },
-    [controls, onMouseEnter]
+    [controls, onMouseEnter],
   );
 
   const handleMouseLeave = useCallback(
@@ -76,7 +76,7 @@ const CalendarDaysIcon = forwardRef<
         onMouseLeave?.(e);
       }
     },
-    [controls, onMouseLeave]
+    [controls, onMouseLeave],
   );
 
   return (

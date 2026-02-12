@@ -1,2 +1,2 @@
-export * from './CompanyViewSection'
-export * from './PartnersViewSection'
+export * from './CompanyViewSection';
+export * from './PartnersViewSection';

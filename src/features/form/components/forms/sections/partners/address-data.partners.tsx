@@ -18,14 +18,22 @@ import { PartnersData, maskCEP, UFs } from '@form/index';
 
 interface Props {
   form: UseFormReturn<PartnersData>;
-  hasArrayFieldError: (arrayName: string, index: number, fieldName: string) => boolean;
+  hasArrayFieldError: (
+    arrayName: string,
+    index: number,
+    fieldName: string,
+  ) => boolean;
   partnerIndex: number;
 }
 
-export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }: Props) => (
+export const AddressPartnerSection = ({
+  form,
+  hasArrayFieldError,
+  partnerIndex,
+}: Props) => (
   <div className="space-y-6">
     <h4 className="font-medium text-lg">Endereço</h4>
-    
+
     <FormField
       control={form.control}
       name={`socios.${partnerIndex}.endereco.cep`}
@@ -40,7 +48,11 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
                 const cleanValue = value.replace(/\D/g, '');
                 field.onChange(cleanValue);
               }}
-              className={hasArrayFieldError('socios', partnerIndex, 'endereco.cep') ? 'border-red-500 bg-red-50' : ''}
+              className={
+                hasArrayFieldError('socios', partnerIndex, 'endereco.cep')
+                  ? 'border-red-500 bg-red-50'
+                  : ''
+              }
             />
           </FormControl>
           <FormMessage />
@@ -58,7 +70,11 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
             <Input
               placeholder="Nome da rua"
               {...field}
-              className={hasArrayFieldError('socios', partnerIndex, 'endereco.rua') ? 'border-red-500 bg-red-50' : ''}
+              className={
+                hasArrayFieldError('socios', partnerIndex, 'endereco.rua')
+                  ? 'border-red-500 bg-red-50'
+                  : ''
+              }
             />
           </FormControl>
           <FormMessage />
@@ -79,7 +95,11 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
                 placeholder="123"
                 value={field.value || ''}
                 onChange={(value: string) => field.onChange(Number(value))}
-                className={hasArrayFieldError('socios', partnerIndex, 'endereco.numero') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasArrayFieldError('socios', partnerIndex, 'endereco.numero')
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -97,7 +117,11 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
               <Input
                 placeholder="Nome do bairro"
                 {...field}
-                className={hasArrayFieldError('socios', partnerIndex, 'endereco.bairro') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasArrayFieldError('socios', partnerIndex, 'endereco.bairro')
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -131,7 +155,15 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
               <Input
                 placeholder="Nome do município"
                 {...field}
-                className={hasArrayFieldError('socios', partnerIndex, 'endereco.municipio') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasArrayFieldError(
+                    'socios',
+                    partnerIndex,
+                    'endereco.municipio',
+                  )
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -147,7 +179,13 @@ export const AddressPartnerSection = ({ form, hasArrayFieldError, partnerIndex }
             <FormLabel>UF *</FormLabel>
             <Select onValueChange={field.onChange} value={field.value || ''}>
               <FormControl>
-                <SelectTrigger className={hasArrayFieldError('socios', partnerIndex, 'endereco.uf') ? 'border-red-500 bg-red-50' : ''}>
+                <SelectTrigger
+                  className={
+                    hasArrayFieldError('socios', partnerIndex, 'endereco.uf')
+                      ? 'border-red-500 bg-red-50'
+                      : ''
+                  }
+                >
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
               </FormControl>

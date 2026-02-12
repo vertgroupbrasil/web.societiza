@@ -1,10 +1,6 @@
 import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
 import fetcher from '@flowtec/lib/axios';
-import {
-  CompanyData,
-  OpeningForm,
-  PartnersData,
-} from '@form/index';
+import { CompanyData, OpeningForm, PartnersData } from '@form/index';
 
 const api = API_ENDPOINTS;
 

@@ -50,7 +50,7 @@ const AttachFileIcon = forwardRef<AttachFileIconHandle, AttachFileIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -61,7 +61,7 @@ const AttachFileIcon = forwardRef<AttachFileIconHandle, AttachFileIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -91,7 +91,7 @@ const AttachFileIcon = forwardRef<AttachFileIconHandle, AttachFileIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 AttachFileIcon.displayName = 'AttachFileIcon';

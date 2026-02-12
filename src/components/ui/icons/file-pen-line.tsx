@@ -55,7 +55,7 @@ const FilePenLineIcon = forwardRef<FilePenLineIconHandle, FilePenLineIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -66,7 +66,7 @@ const FilePenLineIcon = forwardRef<FilePenLineIconHandle, FilePenLineIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -106,7 +106,7 @@ const FilePenLineIcon = forwardRef<FilePenLineIconHandle, FilePenLineIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 FilePenLineIcon.displayName = 'FilePenLineIcon';

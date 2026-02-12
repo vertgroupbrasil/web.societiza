@@ -26,7 +26,7 @@ export const useTaskSequentialLogic = (
   process: Process,
   currentTasks?: Tasks[],
 ): TaskSequenceLogic => {
-  const [userNAState, ] = useState<TaskState[]>([]);
+  const [userNAState] = useState<TaskState[]>([]);
   const activeTasks = currentTasks || process?.tarefas || [];
 
   const sequentialTaskOrder = useMemo(() => {

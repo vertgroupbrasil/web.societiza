@@ -17,7 +17,7 @@ export default function RootLayout({
     // Remover overflow-hidden do main para permitir scroll horizontal controlado
     <main className="h-screen w-screen">
       <div className="h-full w-full">
-        <Sidebar children={children} />
+        <Sidebar>{children}</Sidebar>
       </div>
     </main>
   );

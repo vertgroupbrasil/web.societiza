@@ -189,7 +189,6 @@ export const CompanyDataForm = () => {
     enabled: true,
   });
 
-  
   return (
     <Form {...form}>
       <div className="space-y-8">

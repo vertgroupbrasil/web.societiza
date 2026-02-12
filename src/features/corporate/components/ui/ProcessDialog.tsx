@@ -52,7 +52,7 @@ export default function ProcessDialog({
           </DialogDescription>
         </DialogHeader>
         <Separator />
-        
+
         <div className="py-4">
           {/* ✅ CORREÇÃO: Só renderizar se accounties existir */}
           {accounties ? (

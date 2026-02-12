@@ -21,7 +21,11 @@ interface Props {
   hasArrayFieldError: (fieldName: string, index: number) => boolean;
 }
 
-export const BasicDataSection = ({ form, hasFieldError, hasArrayFieldError }: Props) => (
+export const BasicDataSection = ({
+  form,
+  hasFieldError,
+  hasArrayFieldError,
+}: Props) => (
   <Card>
     <CardHeader>
       <CardTitle>Dados Básicos da Empresa</CardTitle>
@@ -44,7 +48,11 @@ export const BasicDataSection = ({ form, hasFieldError, hasArrayFieldError }: Pr
                       newValue[index] = value;
                       field.onChange(newValue);
                     }}
-                    className={hasArrayFieldError('opcoes_nome_empresa', index) ? 'border-red-500 bg-red-50' : ''}
+                    className={
+                      hasArrayFieldError('opcoes_nome_empresa', index)
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
                   />
                 </FormControl>
               ))}
@@ -64,7 +72,11 @@ export const BasicDataSection = ({ form, hasFieldError, hasArrayFieldError }: Pr
               <Input
                 placeholder="Digite o nome fantasia"
                 {...field}
-                className={hasFieldError('nome_fantasia') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasFieldError('nome_fantasia')
+                    ? 'border-red-500 bg-red-50'
+                    : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -83,7 +95,9 @@ export const BasicDataSection = ({ form, hasFieldError, hasArrayFieldError }: Pr
                 type="email"
                 placeholder="exemplo@email.com"
                 {...field}
-                className={hasFieldError('email') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasFieldError('email') ? 'border-red-500 bg-red-50' : ''
+                }
               />
             </FormControl>
             <FormMessage />
@@ -105,7 +119,9 @@ export const BasicDataSection = ({ form, hasFieldError, hasArrayFieldError }: Pr
                   const cleanValue = value.replace(/\D/g, '');
                   field.onChange(cleanValue);
                 }}
-                className={hasFieldError('telefone') ? 'border-red-500 bg-red-50' : ''}
+                className={
+                  hasFieldError('telefone') ? 'border-red-500 bg-red-50' : ''
+                }
               />
             </FormControl>
             <FormMessage />

@@ -18,7 +18,11 @@ import { PartnersData } from '@form/index';
 
 interface Props {
   form: UseFormReturn<PartnersData>;
-  hasArrayFieldError: (arrayName: string, index: number, fieldName: string) => boolean;
+  hasArrayFieldError: (
+    arrayName: string,
+    index: number,
+    fieldName: string,
+  ) => boolean;
   partnerIndex: number;
 }
 
@@ -28,13 +32,17 @@ const TIPOS_ADMINISTRADOR = [
   { value: 'nao_aplica', label: 'Não se aplica' },
 ];
 
-export const AdministratorSection = ({ form, hasArrayFieldError, partnerIndex }: Props) => {
+export const AdministratorSection = ({
+  form,
+  hasArrayFieldError,
+  partnerIndex,
+}: Props) => {
   const watchAdministrador = form.watch(`socios.${partnerIndex}.administrador`);
 
   return (
     <div className="space-y-6">
       <h4 className="font-medium text-lg">Administração da Empresa</h4>
-      
+
       <FormField
         control={form.control}
         name={`socios.${partnerIndex}.administrador`}
@@ -60,15 +68,25 @@ export const AdministratorSection = ({ form, hasArrayFieldError, partnerIndex }:
           rules={{
             required: {
               value: watchAdministrador,
-              message: 'Tipo de administrador é obrigatório'
-            }
+              message: 'Tipo de administrador é obrigatório',
+            },
           }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tipo de Administrador *</FormLabel>
               <Select onValueChange={field.onChange} value={field.value || ''}>
                 <FormControl>
-                  <SelectTrigger className={hasArrayFieldError('socios', partnerIndex, 'tipo_administrador') ? 'border-red-500 bg-red-50' : ''}>
+                  <SelectTrigger
+                    className={
+                      hasArrayFieldError(
+                        'socios',
+                        partnerIndex,
+                        'tipo_administrador',
+                      )
+                        ? 'border-red-500 bg-red-50'
+                        : ''
+                    }
+                  >
                     <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
                 </FormControl>

@@ -57,7 +57,7 @@ const ClipboardCheckIcon = forwardRef<
         onMouseEnter?.(e);
       }
     },
-    [controls, onMouseEnter]
+    [controls, onMouseEnter],
   );
 
   const handleMouseLeave = useCallback(
@@ -68,7 +68,7 @@ const ClipboardCheckIcon = forwardRef<
         onMouseLeave?.(e);
       }
     },
-    [controls, onMouseLeave]
+    [controls, onMouseLeave],
   );
 
   return (

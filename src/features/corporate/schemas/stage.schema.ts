@@ -9,4 +9,3 @@ export const stageSchema = z.object({
 export const stagesSchema = z.object({
   etapas: z.array(stageSchema),
 });
-

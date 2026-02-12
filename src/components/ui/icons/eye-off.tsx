@@ -47,7 +47,7 @@ const EyeOffIcon = forwardRef<EyeOffIconHandle, EyeOffIconProps>(
           onMouseEnter?.(e);
         }
       },
-      [controls, onMouseEnter]
+      [controls, onMouseEnter],
     );
 
     const handleMouseLeave = useCallback(
@@ -58,7 +58,7 @@ const EyeOffIcon = forwardRef<EyeOffIconHandle, EyeOffIconProps>(
           onMouseLeave?.(e);
         }
       },
-      [controls, onMouseLeave]
+      [controls, onMouseLeave],
     );
 
     return (
@@ -90,7 +90,7 @@ const EyeOffIcon = forwardRef<EyeOffIconHandle, EyeOffIconProps>(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 EyeOffIcon.displayName = 'EyeOffIcon';
