@@ -1,5 +1,4 @@
 import { LoginForm } from '@flowtec/features/auth/components/forms/login-form';
-import Image from 'next/image';
 import Icon from '@flowtec/components/icon';
 
 export default function LoginPage() {
