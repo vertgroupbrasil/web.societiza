@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { cn } from "@societiza/lib/utils"
+import { cn } from '@societiza/lib/utils';
 
 interface Avatar {
-  imageUrl: string
-  profileUrl: string
+  imageUrl: string;
+  profileUrl: string;
 }
 interface AvatarCirclesProps {
-  className?: string
-  numPeople?: number
-  avatarUrls: Avatar[]
+  className?: string;
+  numPeople?: number;
+  avatarUrls: Avatar[];
 }
 
 export const AvatarCircles = ({
@@ -18,7 +18,7 @@ export const AvatarCircles = ({
   avatarUrls,
 }: AvatarCirclesProps) => {
   return (
-    <div className={cn("z-10 flex -space-x-4 rtl:space-x-reverse", className)}>
+    <div className={cn('z-10 flex -space-x-4 rtl:space-x-reverse', className)}>
       {avatarUrls.map((url, index) => (
         <a
           key={index}
@@ -45,5 +45,5 @@ export const AvatarCircles = ({
         </a>
       )}
     </div>
-  )
-}
+  );
+};

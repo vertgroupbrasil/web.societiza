@@ -5,7 +5,12 @@ import Link from 'next/link';
 import { ArrowRight, Zap, Shield } from 'lucide-react';
 import { motion } from 'motion/react';
 
-const avatarColors = ['bg-orange-400', 'bg-amber-500', 'bg-rose-400', 'bg-orange-600'];
+const avatarColors = [
+  'bg-orange-400',
+  'bg-amber-500',
+  'bg-rose-400',
+  'bg-orange-600',
+];
 const avatarInitials = ['A', 'R', 'C', 'M'];
 
 export function HeroSection() {
@@ -62,8 +67,9 @@ export function HeroSection() {
               transition={{ delay: 0.26, duration: 0.45 }}
               className="mt-6 text-lg text-muted-foreground leading-relaxed"
             >
-              Substitua planilhas e e-mails por um workflow societário inteligente.
-              Feito para contadores, despachantes e escritórios de contabilidade.
+              Substitua planilhas e e-mails por um workflow societário
+              inteligente. Feito para contadores, despachantes e escritórios de
+              contabilidade.
             </motion.p>
 
             {/* CTAs */}
@@ -100,8 +106,12 @@ export function HeroSection() {
                   <Zap className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground leading-none">Rápido</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Setup em minutos</p>
+                  <p className="text-sm font-semibold text-foreground leading-none">
+                    Rápido
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Setup em minutos
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">
@@ -109,8 +119,12 @@ export function HeroSection() {
                   <Shield className="w-4 h-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground leading-none">Seguro</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Dados criptografados</p>
+                  <p className="text-sm font-semibold text-foreground leading-none">
+                    Seguro
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Dados criptografados
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -175,8 +189,20 @@ export function HeroSection() {
               <div className="w-3 h-3 rounded-full bg-[#28C840]" />
             </div>
           </div>
-          <Image src="/societario-light.png" alt="Societiza app" width={1920} height={1080} className="w-full h-auto block dark:hidden" />
-          <Image src="/societario-dark.png" alt="Societiza app" width={1920} height={1080} className="w-full h-auto hidden dark:block" />
+          <Image
+            src="/societario-light.png"
+            alt="Societiza app"
+            width={1920}
+            height={1080}
+            className="w-full h-auto block dark:hidden"
+          />
+          <Image
+            src="/societario-dark.png"
+            alt="Societiza app"
+            width={1920}
+            height={1080}
+            className="w-full h-auto hidden dark:block"
+          />
         </div>
       </div>
 

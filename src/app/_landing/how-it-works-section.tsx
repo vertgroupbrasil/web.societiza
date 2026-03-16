@@ -42,17 +42,20 @@ export function HowItWorksSection() {
             Como funciona
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mt-3 leading-tight">
-            Comece em{' '}
-            <span className="text-primary">minutos</span>, não em semanas
+            Comece em <span className="text-primary">minutos</span>, não em
+            semanas
           </h2>
           <p className="text-lg text-muted-foreground mt-4 leading-relaxed">
-            Sabemos que seu tempo é precioso. Por isso, o setup foi feito para ser
-            o mais rápido e indolor possível.
+            Sabemos que seu tempo é precioso. Por isso, o setup foi feito para
+            ser o mais rápido e indolor possível.
           </p>
         </FadeIn>
 
         {/* Steps */}
-        <StaggerContainer className="grid lg:grid-cols-3 gap-8" staggerDelay={0.15}>
+        <StaggerContainer
+          className="grid lg:grid-cols-3 gap-8"
+          staggerDelay={0.15}
+        >
           {steps.map((step, idx) => (
             <StaggerItem key={step.step}>
               <div className="relative">

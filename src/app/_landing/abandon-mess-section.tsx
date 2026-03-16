@@ -1,30 +1,46 @@
-"use client";
+'use client';
 
-import { Button } from "@societiza/components/ui/button";
-import { ArrowRight, FileSpreadsheet, StickyNote, Mail, MessageCircle, FileText, Table } from "lucide-react";
-import { motion } from "motion/react";
+import { Button } from '@societiza/components/ui/button';
+import {
+  ArrowRight,
+  FileSpreadsheet,
+  StickyNote,
+  Mail,
+  MessageCircle,
+  FileText,
+  Table,
+} from 'lucide-react';
+import { motion } from 'motion/react';
 
 const floatingItems = [
-  { name: "Google Sheets", icon: FileSpreadsheet, position: { top: "15%", left: "8%" } },
-  { name: "Notion", icon: StickyNote, position: { top: "20%", right: "10%" } },
-  { name: "Excel", icon: Table, position: { top: "45%", left: "3%" } },
-  { name: "WhatsApp", icon: MessageCircle, position: { bottom: "30%", right: "5%" } },
-  { name: "E-mails", icon: Mail, position: { bottom: "20%", left: "10%" } },
-  { name: "Papelada", icon: FileText, position: { top: "50%", right: "8%" } },
+  {
+    name: 'Google Sheets',
+    icon: FileSpreadsheet,
+    position: { top: '15%', left: '8%' },
+  },
+  { name: 'Notion', icon: StickyNote, position: { top: '20%', right: '10%' } },
+  { name: 'Excel', icon: Table, position: { top: '45%', left: '3%' } },
+  {
+    name: 'WhatsApp',
+    icon: MessageCircle,
+    position: { bottom: '30%', right: '5%' },
+  },
+  { name: 'E-mails', icon: Mail, position: { bottom: '20%', left: '10%' } },
+  { name: 'Papelada', icon: FileText, position: { top: '50%', right: '8%' } },
 ];
 
 export function AbandonMessSection() {
   return (
     <section className="relative py-24 overflow-hidden">
       {/* Subtle grid background */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
+          backgroundSize: '60px 60px',
         }}
       />
-      
+
       {/* Floating badges */}
       {floatingItems.map((item, index) => (
         <motion.div
@@ -35,7 +51,7 @@ export function AbandonMessSection() {
           transition={{
             duration: 3 + index * 0.5,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
             delay: index * 0.3,
           }}
         >
@@ -60,8 +76,9 @@ export function AbandonMessSection() {
 
         {/* Subtitle */}
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-          Chega de planilhas perdidas, anotações espalhadas e processos manuais. 
-          Centralize tudo em um só lugar e tenha controle total do seu escritório.
+          Chega de planilhas perdidas, anotações espalhadas e processos manuais.
+          Centralize tudo em um só lugar e tenha controle total do seu
+          escritório.
         </p>
 
         {/* CTA Button */}

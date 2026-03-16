@@ -3,9 +3,14 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 const withBase = (endpoint?: string) => `${api}${endpoint}`;
 
 export const API_ENDPOINTS = {
+  accountings: {
+    createContabilidade: withBase('/societario/create-contabilidade/'),
+    listContabilidades: withBase('/societario/list-contabilidades/'),
+    deleteContabilidade: (id: string) =>
+      withBase(`/societario/delete-contabilidade/?id=${id}`),
+  },
   accountancy: {
-    accountancy: (id: string) =>
-      withBase(`/accountancy/${id}`),
+    accountancy: (id: string) => withBase(`/accountancy/${id}`),
   },
   auth: {
     login: withBase('/accounts/token/'),

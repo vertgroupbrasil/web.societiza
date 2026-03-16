@@ -51,7 +51,10 @@ export function StatsSection() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-3xl sm:text-4xl font-extrabold text-foreground">
-                    <NumberTicker value={stat.value} className="text-foreground" />
+                    <NumberTicker
+                      value={stat.value}
+                      className="text-foreground"
+                    />
                     {stat.suffix}
                   </p>
                   <p className="text-sm font-semibold text-foreground">

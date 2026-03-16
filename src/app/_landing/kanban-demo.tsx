@@ -33,7 +33,8 @@ const columns: KanbanColumn[] = [
       {
         title: 'Contrato Social - Tech Solutions',
         tag: 'Contrato',
-        tagColor: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400',
+        tagColor:
+          'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400',
         icon: FileText,
         priority: 'Alta',
       },
@@ -108,8 +109,7 @@ export function KanbanDemo() {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium flex items-center gap-1">
-            <Zap className="w-3 h-3" />
-            3 automações ativas
+            <Zap className="w-3 h-3" />3 automações ativas
           </span>
         </div>
       </div>
@@ -188,8 +188,8 @@ export function KanbanDemo() {
         <div className="flex items-center gap-1.5">
           <Bot className="w-3.5 h-3.5 text-primary" />
           <span>
-            <strong className="text-primary">Automação:</strong> Alvará do Pet Shop Amigo 
-            atualizado automaticamente
+            <strong className="text-primary">Automação:</strong> Alvará do Pet
+            Shop Amigo atualizado automaticamente
           </span>
         </div>
         <span className="text-[9px]">há 2 min</span>

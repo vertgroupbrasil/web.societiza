@@ -1,7 +1,14 @@
 import type React from 'react';
 import { cn } from '@societiza/lib/utils';
 import { DecorIcon } from '@societiza/components/ui/decor-icon';
-import { Kanban, SlidersHorizontal, LayoutTemplate, Zap, MapPin, Settings2 } from 'lucide-react';
+import {
+  Kanban,
+  SlidersHorizontal,
+  LayoutTemplate,
+  Zap,
+  MapPin,
+  Settings2,
+} from 'lucide-react';
 
 type Feature = {
   title: string;
@@ -58,7 +65,7 @@ function FeatureCard({
       className={cn(
         'relative flex flex-col gap-6 bg-background px-6 pt-8 pb-6',
         'dark:bg-[radial-gradient(50%_80%_at_25%_0%,oklch(from_var(--foreground)_l_c_h_/_0.06),transparent)]',
-        className
+        className,
       )}
       {...props}
     >
@@ -71,15 +78,19 @@ function FeatureCard({
       <div
         className={cn(
           'relative z-10 flex w-fit items-center justify-center rounded-lg border bg-muted/20 p-3',
-          '[&_svg]:size-5 [&_svg]:stroke-[1.5] [&_svg]:text-primary'
+          '[&_svg]:size-5 [&_svg]:stroke-[1.5] [&_svg]:text-primary',
         )}
       >
         {feature.icon}
       </div>
 
       <div className="relative z-10 space-y-2">
-        <h3 className="font-semibold text-base text-foreground">{feature.title}</h3>
-        <p className="text-muted-foreground text-xs leading-relaxed">{feature.description}</p>
+        <h3 className="font-semibold text-base text-foreground">
+          {feature.title}
+        </h3>
+        <p className="text-muted-foreground text-xs leading-relaxed">
+          {feature.description}
+        </p>
       </div>
     </div>
   );
@@ -90,14 +101,17 @@ export function FeaturesSection() {
     <div id="diferenciais" className="py-20 md:py-28">
       <div className="mx-auto mb-14 max-w-2xl space-y-3 text-center">
         <div className="flex justify-center">
-          <div className="rounded-md border px-4 py-1 text-sm">Diferenciais</div>
+          <div className="rounded-md border px-4 py-1 text-sm">
+            Diferenciais
+          </div>
         </div>
         <h2 className="font-bold text-3xl tracking-tight md:text-5xl">
           Diferente de qualquer sistema{' '}
           <span className="text-primary">do mercado.</span>
         </h2>
         <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
-          A maioria dos softwares força sua contabilidade a se adaptar ao sistema. A Societiza faz o contrário.
+          A maioria dos softwares força sua contabilidade a se adaptar ao
+          sistema. A Societiza faz o contrário.
         </p>
       </div>
 

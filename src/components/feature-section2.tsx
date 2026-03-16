@@ -1,8 +1,9 @@
-"use client";
+'use client';
+/* eslint-disable unicorn/prefer-single-call */
 
-import { cn } from "@societiza/lib/utils";
-import type React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { cn } from '@societiza/lib/utils';
+import type React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   LayoutTemplateIcon,
   FileTextIcon,
@@ -13,8 +14,8 @@ import {
   Mail,
   Building,
   X,
-} from "lucide-react";
-import { DecorIcon } from "@societiza/components/ui/decor-icon";
+} from 'lucide-react';
+import { DecorIcon } from '@societiza/components/ui/decor-icon';
 
 type FeatureType = {
   title: string;
@@ -51,15 +52,15 @@ function FeatureCard({
   feature,
   className,
   ...props
-}: React.ComponentProps<"div"> & {
+}: React.ComponentProps<'div'> & {
   feature: FeatureType;
 }) {
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between gap-6 bg-background px-6 pt-8 pb-6 shadow-xs",
-        "dark:bg-[radial-gradient(50%_80%_at_25%_0%,--theme(--color-foreground/.1),transparent)]",
-        className
+        'relative flex flex-col justify-between gap-6 bg-background px-6 pt-8 pb-6 shadow-xs',
+        'dark:bg-[radial-gradient(50%_80%_at_25%_0%,--theme(--color-foreground/.1),transparent)]',
+        className,
       )}
       {...props}
     >
@@ -80,8 +81,8 @@ function FeatureCard({
       <div className="relative z-10 flex items-start justify-between gap-2">
         <div
           className={cn(
-            "flex w-fit items-center justify-center rounded-lg border bg-muted/20 p-3",
-            "[&_svg]:size-5 [&_svg]:stroke-[1.5] [&_svg]:text-foreground"
+            'flex w-fit items-center justify-center rounded-lg border bg-muted/20 p-3',
+            '[&_svg]:size-5 [&_svg]:stroke-[1.5] [&_svg]:text-foreground',
           )}
         >
           {feature.icon}
@@ -107,11 +108,15 @@ function FeatureCard({
 function KanbanAnimation() {
   const [cardColumn, setCardColumn] = useState(0);
   const [showSheet, setShowSheet] = useState(false);
-  const [checkedTasks, setCheckedTasks] = useState<boolean[]>([false, false, false]);
+  const [checkedTasks, setCheckedTasks] = useState<boolean[]>([
+    false,
+    false,
+    false,
+  ]);
   const [isAnimatingClick, setIsAnimatingClick] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 20, y: 50 });
 
-  const columns = ["Proposta", "Viabilidade", "Registro"];
+  const columns = ['Proposta', 'Viabilidade', 'Registro'];
 
   const resetAnimation = useCallback(() => {
     setCardColumn(0);
@@ -122,84 +127,118 @@ function KanbanAnimation() {
   }, []);
 
   useEffect(() => {
-    let timeouts: NodeJS.Timeout[] = [];
+    const timeouts: NodeJS.Timeout[] = [];
 
     const runAnimation = () => {
       // Phase 1: Move cursor to card and click
-      timeouts.push(setTimeout(() => {
-        setCursorPosition({ x: 30, y: 65 });
-      }, 500));
+      timeouts.push(
+        setTimeout(() => {
+          setCursorPosition({ x: 30, y: 65 });
+        }, 500),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setIsAnimatingClick(true);
-      }, 1000));
+      timeouts.push(
+        setTimeout(() => {
+          setIsAnimatingClick(true);
+        }, 1000),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setIsAnimatingClick(false);
-        setShowSheet(true);
-      }, 1200));
+      timeouts.push(
+        setTimeout(() => {
+          setIsAnimatingClick(false);
+          setShowSheet(true);
+        }, 1200),
+      );
 
       // Phase 2: Check tasks one by one
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, false, false]);
-      }, 2000));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, false, false]);
+        }, 2000),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, true, false]);
-      }, 2600));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, true, false]);
+        }, 2600),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, true, true]);
-      }, 3200));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, true, true]);
+        }, 3200),
+      );
 
       // Phase 3: Close sheet and move card
-      timeouts.push(setTimeout(() => {
-        setShowSheet(false);
-      }, 3800));
+      timeouts.push(
+        setTimeout(() => {
+          setShowSheet(false);
+        }, 3800),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCardColumn(1);
-        setCheckedTasks([false, false, false]);
-      }, 4200));
+      timeouts.push(
+        setTimeout(() => {
+          setCardColumn(1);
+          setCheckedTasks([false, false, false]);
+        }, 4200),
+      );
 
       // Repeat for second column
-      timeouts.push(setTimeout(() => {
-        setCursorPosition({ x: 95, y: 65 });
-      }, 4800));
+      timeouts.push(
+        setTimeout(() => {
+          setCursorPosition({ x: 95, y: 65 });
+        }, 4800),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setIsAnimatingClick(true);
-      }, 5300));
+      timeouts.push(
+        setTimeout(() => {
+          setIsAnimatingClick(true);
+        }, 5300),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setIsAnimatingClick(false);
-        setShowSheet(true);
-      }, 5500));
+      timeouts.push(
+        setTimeout(() => {
+          setIsAnimatingClick(false);
+          setShowSheet(true);
+        }, 5500),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, false, false]);
-      }, 6200));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, false, false]);
+        }, 6200),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, true, false]);
-      }, 6800));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, true, false]);
+        }, 6800),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCheckedTasks([true, true, true]);
-      }, 7400));
+      timeouts.push(
+        setTimeout(() => {
+          setCheckedTasks([true, true, true]);
+        }, 7400),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setShowSheet(false);
-      }, 8000));
+      timeouts.push(
+        setTimeout(() => {
+          setShowSheet(false);
+        }, 8000),
+      );
 
-      timeouts.push(setTimeout(() => {
-        setCardColumn(2);
-      }, 8400));
+      timeouts.push(
+        setTimeout(() => {
+          setCardColumn(2);
+        }, 8400),
+      );
 
       // Reset and loop
-      timeouts.push(setTimeout(() => {
-        resetAnimation();
-      }, 10000));
+      timeouts.push(
+        setTimeout(() => {
+          resetAnimation();
+        }, 10000),
+      );
     };
 
     runAnimation();
@@ -214,13 +253,13 @@ function KanbanAnimation() {
       {/* Cursor */}
       <div
         className={cn(
-          "absolute z-30 transition-all duration-500 ease-out pointer-events-none",
-          isAnimatingClick && "scale-90"
+          'absolute z-30 transition-all duration-500 ease-out pointer-events-none',
+          isAnimatingClick && 'scale-90',
         )}
         style={{
           left: `${cursorPosition.x}%`,
           top: `${cursorPosition.y}%`,
-          transform: "translate(-50%, -50%)",
+          transform: 'translate(-50%, -50%)',
         }}
       >
         <svg
@@ -256,16 +295,16 @@ function KanbanAnimation() {
             {colIndex === 1 && cardColumn >= 1 && cardColumn < 2 && (
               <div
                 className={cn(
-                  "h-6 rounded bg-primary/20 border border-primary/40 shadow-sm transition-all duration-500",
-                  cardColumn === 1 && "ring-2 ring-primary/30"
+                  'h-6 rounded bg-primary/20 border border-primary/40 shadow-sm transition-all duration-500',
+                  cardColumn === 1 && 'ring-2 ring-primary/30',
                 )}
               />
             )}
             {colIndex === 0 && cardColumn === 0 && (
               <div
                 className={cn(
-                  "h-6 rounded bg-primary/20 border border-primary/40 shadow-sm transition-all duration-300",
-                  isAnimatingClick && "ring-2 ring-primary/50 scale-95"
+                  'h-6 rounded bg-primary/20 border border-primary/40 shadow-sm transition-all duration-300',
+                  isAnimatingClick && 'ring-2 ring-primary/50 scale-95',
                 )}
               />
             )}
@@ -295,18 +334,18 @@ function KanbanAnimation() {
                 <div
                   key={taskIndex}
                   className={cn(
-                    "flex items-center gap-2 p-1.5 rounded border transition-all duration-300",
+                    'flex items-center gap-2 p-1.5 rounded border transition-all duration-300',
                     checkedTasks[taskIndex]
-                      ? "bg-primary/10 border-primary/30"
-                      : "bg-muted/20 border-transparent"
+                      ? 'bg-primary/10 border-primary/30'
+                      : 'bg-muted/20 border-transparent',
                   )}
                 >
                   <div
                     className={cn(
-                      "flex h-3 w-3 items-center justify-center rounded border transition-all duration-300 shrink-0",
+                      'flex h-3 w-3 items-center justify-center rounded border transition-all duration-300 shrink-0',
                       checkedTasks[taskIndex]
-                        ? "bg-primary border-primary"
-                        : "bg-background border-muted-foreground/30"
+                        ? 'bg-primary border-primary'
+                        : 'bg-background border-muted-foreground/30',
                     )}
                   >
                     {checkedTasks[taskIndex] && (
@@ -315,8 +354,8 @@ function KanbanAnimation() {
                   </div>
                   <div
                     className={cn(
-                      "h-2 rounded bg-muted flex-1",
-                      checkedTasks[taskIndex] ? "opacity-50" : "animate-pulse"
+                      'h-2 rounded bg-muted flex-1',
+                      checkedTasks[taskIndex] ? 'opacity-50' : 'animate-pulse',
                     )}
                     style={{ width: `${60 + taskIndex * 10}%` }}
                   />
@@ -332,28 +371,35 @@ function KanbanAnimation() {
 
 // Form Animation Component
 function FormAnimation() {
-  const NAME = "Empresa ABC Ltda";
-  const CNPJ = "00.000.000/0001";
-  const [nameText, setNameText] = useState("");
-  const [cnpjText, setCnpjText] = useState("");
+  const NAME = 'Empresa ABC Ltda';
+  const CNPJ = '00.000.000/0001';
+  const [nameText, setNameText] = useState('');
+  const [cnpjText, setCnpjText] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const timers: NodeJS.Timeout[] = [];
 
     const run = () => {
-      setNameText("");
-      setCnpjText("");
+      setNameText('');
+      setCnpjText('');
       setSubmitted(false);
 
-      NAME.split("").forEach((_, i) => {
-        timers.push(setTimeout(() => setNameText(NAME.slice(0, i + 1)), 400 + i * 65));
+      NAME.split('').forEach((_, i) => {
+        timers.push(
+          setTimeout(() => setNameText(NAME.slice(0, i + 1)), 400 + i * 65),
+        );
       });
 
       const afterName = 400 + NAME.length * 65 + 300;
 
-      CNPJ.split("").forEach((_, i) => {
-        timers.push(setTimeout(() => setCnpjText(CNPJ.slice(0, i + 1)), afterName + i * 50));
+      CNPJ.split('').forEach((_, i) => {
+        timers.push(
+          setTimeout(
+            () => setCnpjText(CNPJ.slice(0, i + 1)),
+            afterName + i * 50,
+          ),
+        );
       });
 
       const afterCnpj = afterName + CNPJ.length * 50 + 400;
@@ -388,7 +434,9 @@ function FormAnimation() {
           <div className="space-y-0.5">
             <div className="text-[7px] text-muted-foreground">CNPJ</div>
             <div className="h-4 rounded border bg-muted/30 flex items-center px-1 gap-0.5">
-              <span className="text-[8px] text-muted-foreground">{cnpjText}</span>
+              <span className="text-[8px] text-muted-foreground">
+                {cnpjText}
+              </span>
               {cnpjText.length > 0 && cnpjText.length < CNPJ.length && (
                 <span className="w-px h-2.5 bg-foreground animate-pulse" />
               )}
@@ -398,18 +446,20 @@ function FormAnimation() {
             <div className="text-[7px] text-muted-foreground">E-mail</div>
             <div className="h-4 rounded border bg-muted/30 flex items-center gap-1 px-1">
               <Mail className="h-2 w-2 text-muted-foreground" />
-              <span className="text-[8px] text-muted-foreground">contato@...</span>
+              <span className="text-[8px] text-muted-foreground">
+                contato@...
+              </span>
             </div>
           </div>
         </div>
         <div
           className={cn(
-            "h-5 rounded flex items-center justify-center transition-all duration-300",
-            submitted ? "bg-primary" : "bg-primary/40"
+            'h-5 rounded flex items-center justify-center transition-all duration-300',
+            submitted ? 'bg-primary' : 'bg-primary/40',
           )}
         >
           <span className="text-[8px] text-primary-foreground font-medium">
-            {submitted ? "Enviado ✓" : "Enviar"}
+            {submitted ? 'Enviado ✓' : 'Enviar'}
           </span>
         </div>
       </div>
@@ -420,10 +470,10 @@ function FormAnimation() {
 // Tasks & Automations Animation Component
 function TasksAnimation() {
   const tasks = [
-    { label: "Consulta CNPJ" },
-    { label: "Viabilidade" },
-    { label: "Registro Junta" },
-    { label: "Alvará" },
+    { label: 'Consulta CNPJ' },
+    { label: 'Viabilidade' },
+    { label: 'Registro Junta' },
+    { label: 'Alvará' },
   ];
   const [checkedCount, setCheckedCount] = useState(0);
 
@@ -454,24 +504,36 @@ function TasksAnimation() {
             <div
               key={task.label}
               className={cn(
-                "flex items-center gap-1.5 rounded border bg-background p-1.5 transition-all duration-500",
-                done && "bg-primary/5 border-primary/30"
+                'flex items-center gap-1.5 rounded border bg-background p-1.5 transition-all duration-500',
+                done && 'bg-primary/5 border-primary/30',
               )}
             >
               <div
                 className={cn(
-                  "flex h-3 w-3 items-center justify-center rounded-full border transition-all duration-300 shrink-0",
-                  done ? "bg-primary border-primary" : "bg-muted/30 border-muted-foreground/30",
-                  active && "animate-pulse border-primary/50"
+                  'flex h-3 w-3 items-center justify-center rounded-full border transition-all duration-300 shrink-0',
+                  done
+                    ? 'bg-primary border-primary'
+                    : 'bg-muted/30 border-muted-foreground/30',
+                  active && 'animate-pulse border-primary/50',
                 )}
               >
                 {done && <Check className="h-2 w-2 text-primary-foreground" />}
               </div>
-              <span className={cn("text-[9px] font-medium transition-colors duration-300", done && "text-primary")}>
+              <span
+                className={cn(
+                  'text-[9px] font-medium transition-colors duration-300',
+                  done && 'text-primary',
+                )}
+              >
                 {task.label}
               </span>
               {index === 2 && (
-                <ZapIcon className={cn("ml-auto h-2.5 w-2.5 transition-colors duration-300", done ? "text-primary" : "text-muted-foreground/40")} />
+                <ZapIcon
+                  className={cn(
+                    'ml-auto h-2.5 w-2.5 transition-colors duration-300',
+                    done ? 'text-primary' : 'text-muted-foreground/40',
+                  )}
+                />
               )}
             </div>
           );
@@ -490,9 +552,9 @@ function TasksAnimation() {
 // Notifications Animation Component
 function NotificationsAnimation() {
   const notifications = [
-    { title: "Processo atualizado", desc: "Viabilidade aprovada" },
-    { title: "Novo documento", desc: "Contrato disponível" },
-    { title: "Ação necessária", desc: "Assinar CNPJ" },
+    { title: 'Processo atualizado', desc: 'Viabilidade aprovada' },
+    { title: 'Novo documento', desc: 'Contrato disponível' },
+    { title: 'Ação necessária', desc: 'Assinar CNPJ' },
   ];
   const [visibleCount, setVisibleCount] = useState(0);
 
@@ -520,7 +582,9 @@ function NotificationsAnimation() {
               <BellIcon className="h-4 w-4 text-foreground" />
             </div>
             <div className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-destructive flex items-center justify-center">
-              <span className="text-[7px] font-bold text-white">{visibleCount}</span>
+              <span className="text-[7px] font-bold text-white">
+                {visibleCount}
+              </span>
             </div>
           </div>
         </div>
@@ -529,16 +593,22 @@ function NotificationsAnimation() {
             <div
               key={notif.title}
               className={cn(
-                "flex items-start gap-1.5 rounded border bg-background p-1.5 shadow-sm transition-all duration-500",
-                i < visibleCount ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+                'flex items-start gap-1.5 rounded border bg-background p-1.5 shadow-sm transition-all duration-500',
+                i < visibleCount
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-2',
               )}
             >
               <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                 <Building className="h-2.5 w-2.5 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[8px] font-medium truncate">{notif.title}</div>
-                <div className="text-[7px] text-muted-foreground truncate">{notif.desc}</div>
+                <div className="text-[8px] font-medium truncate">
+                  {notif.title}
+                </div>
+                <div className="text-[7px] text-muted-foreground truncate">
+                  {notif.desc}
+                </div>
               </div>
               {i < visibleCount && (
                 <div className="h-1 w-1 rounded-full bg-primary shrink-0 mt-1 animate-pulse" />
@@ -553,35 +623,35 @@ function NotificationsAnimation() {
 
 const features: FeatureType[] = [
   {
-    step: "01",
-    title: "Kanban personalizado",
+    step: '01',
+    title: 'Kanban personalizado',
     icon: <LayoutTemplateIcon />,
     description:
-      "Selecione um template de kanban pronto ou monte um fluxo sob medida para cada tipo de abertura de empresa.",
+      'Selecione um template de kanban pronto ou monte um fluxo sob medida para cada tipo de abertura de empresa.',
     animation: <KanbanAnimation />,
   },
   {
-    step: "02",
-    title: "Formulário para o cliente",
+    step: '02',
+    title: 'Formulário para o cliente',
     icon: <FileTextIcon />,
     description:
-      "Crie o card e envie um link de formulário para o cliente preencher os dados da empresa. Sem e-mails perdidos.",
+      'Crie o card e envie um link de formulário para o cliente preencher os dados da empresa. Sem e-mails perdidos.',
     animation: <FormAnimation />,
   },
   {
-    step: "03",
-    title: "Tarefas e automações",
+    step: '03',
+    title: 'Tarefas e automações',
     icon: <ZapIcon />,
     description:
-      "Marque as etapas concluídas e ative automações nos sites de prefeitura: viabilidade, alvará, e muito mais.",
+      'Marque as etapas concluídas e ative automações nos sites de prefeitura: viabilidade, alvará, e muito mais.',
     animation: <TasksAnimation />,
   },
   {
-    step: "04",
-    title: "Notificações automáticas",
+    step: '04',
+    title: 'Notificações automáticas',
     icon: <BellIcon />,
     description:
-      "Cliente e contabilidade são avisados a cada avanço e quando o processo fica parado por muito tempo.",
+      'Cliente e contabilidade são avisados a cada avanço e quando o processo fica parado por muito tempo.',
     animation: <NotificationsAnimation />,
   },
 ];

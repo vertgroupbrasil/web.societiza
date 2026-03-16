@@ -1,5 +1,5 @@
-import React from "react";
-import { DottedGlowBackground } from "@societiza/components/ui/shadcnui/dotted-glow-background";
+import React from 'react';
+import { DottedGlowBackground } from '@societiza/components/ui/shadcnui/dotted-glow-background';
 
 export default function DottedGlowBackgroundDemo() {
   return (

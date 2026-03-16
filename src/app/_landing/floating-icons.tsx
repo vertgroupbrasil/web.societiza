@@ -17,7 +17,14 @@ const icons = [
   { icon: Building2, x: '102%', y: '20%', delay: 0.3, size: 20, rotate: 8 },
   { icon: Kanban, x: '-6%', y: '55%', delay: 0.6, size: 16, rotate: 15 },
   { icon: Bot, x: '104%', y: '60%', delay: 0.2, size: 22, rotate: -6 },
-  { icon: ClipboardCheck, x: '-4%', y: '85%', delay: 0.5, size: 14, rotate: -20 },
+  {
+    icon: ClipboardCheck,
+    x: '-4%',
+    y: '85%',
+    delay: 0.5,
+    size: 14,
+    rotate: -20,
+  },
   { icon: MapPin, x: '102%', y: '85%', delay: 0.4, size: 16, rotate: 10 },
   { icon: LayoutTemplate, x: '10%', y: '-5%', delay: 0.1, size: 16, rotate: 5 },
   { icon: Shield, x: '88%', y: '-5%', delay: 0.7, size: 18, rotate: -8 },
@@ -34,7 +41,7 @@ export function FloatingIcons() {
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{
-            delay: 1.0 + item.delay,
+            delay: 1 + item.delay,
             duration: 0.4,
             type: 'spring',
             stiffness: 200,

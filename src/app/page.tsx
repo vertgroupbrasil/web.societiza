@@ -19,7 +19,7 @@ import { AbandonMessSection } from './_landing/abandon-mess-section';
 export default function Home() {
   return (
     <LandingGrid>
-    <Header />
+      <Header />
       <GridSection isHero>
         <HeroSection />
       </GridSection>

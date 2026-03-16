@@ -42,7 +42,10 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="mx-auto w-full max-w-5xl px-4 py-20 md:px-8 md:py-28">
+    <section
+      id="faq"
+      className="mx-auto w-full max-w-5xl px-4 py-20 md:px-8 md:py-28"
+    >
       <div className="mx-auto mb-14 max-w-2xl space-y-3 text-center">
         <div className="flex justify-center">
           <div className="rounded-md border px-4 py-1 text-sm">FAQ</div>

@@ -40,13 +40,15 @@ export function ObjectionsSection() {
             FAQ
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mt-3 leading-tight">
-            Suas dúvidas,{' '}
-            <span className="text-primary">nossas respostas</span>
+            Suas dúvidas, <span className="text-primary">nossas respostas</span>
           </h2>
         </FadeIn>
 
         {/* Objection cards */}
-        <StaggerContainer className="grid sm:grid-cols-2 gap-6" staggerDelay={0.1}>
+        <StaggerContainer
+          className="grid sm:grid-cols-2 gap-6"
+          staggerDelay={0.1}
+        >
           {objections.map((item) => (
             <StaggerItem key={item.question}>
               <div className="bg-card border border-border rounded-2xl p-6 h-full hover:border-primary/30 transition-all group">

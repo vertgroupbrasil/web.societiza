@@ -1,1 +1,1 @@
-export * from "./dotted-glow-background-demo"
+export * from './dotted-glow-background-demo';

@@ -1,42 +1,42 @@
-import type { HTMLAttributes } from "react"
+import type { HTMLAttributes } from 'react';
 
-const SAFARI_WIDTH = 1203
-const SAFARI_HEIGHT = 753
-const SCREEN_X = 1
-const SCREEN_Y = 52
-const SCREEN_WIDTH = 1200
-const SCREEN_HEIGHT = 700
+const SAFARI_WIDTH = 1203;
+const SAFARI_HEIGHT = 753;
+const SCREEN_X = 1;
+const SCREEN_Y = 52;
+const SCREEN_WIDTH = 1200;
+const SCREEN_HEIGHT = 700;
 
 // Calculated percentages
-const LEFT_PCT = (SCREEN_X / SAFARI_WIDTH) * 100
-const TOP_PCT = (SCREEN_Y / SAFARI_HEIGHT) * 100
-const WIDTH_PCT = (SCREEN_WIDTH / SAFARI_WIDTH) * 100
-const HEIGHT_PCT = (SCREEN_HEIGHT / SAFARI_HEIGHT) * 100
+const LEFT_PCT = (SCREEN_X / SAFARI_WIDTH) * 100;
+const TOP_PCT = (SCREEN_Y / SAFARI_HEIGHT) * 100;
+const WIDTH_PCT = (SCREEN_WIDTH / SAFARI_WIDTH) * 100;
+const HEIGHT_PCT = (SCREEN_HEIGHT / SAFARI_HEIGHT) * 100;
 
-type SafariMode = "default" | "simple"
+type SafariMode = 'default' | 'simple';
 
 export interface SafariProps extends HTMLAttributes<HTMLDivElement> {
-  url?: string
-  imageSrc?: string
-  videoSrc?: string
-  mode?: SafariMode
+  url?: string;
+  imageSrc?: string;
+  videoSrc?: string;
+  mode?: SafariMode;
 }
 
 export function Safari({
   imageSrc,
   videoSrc,
   url,
-  mode = "default",
+  mode = 'default',
   className,
   style,
   ...props
 }: SafariProps) {
-  const hasVideo = !!videoSrc
-  const hasMedia = hasVideo || !!imageSrc
+  const hasVideo = !!videoSrc;
+  const hasMedia = hasVideo || !!imageSrc;
 
   return (
     <div
-      className={`relative inline-block w-full align-middle leading-none ${className ?? ""}`}
+      className={`relative inline-block w-full align-middle leading-none ${className ?? ''}`}
       style={{
         aspectRatio: `${SAFARI_WIDTH}/${SAFARI_HEIGHT}`,
         ...style,
@@ -73,7 +73,7 @@ export function Safari({
             top: `${TOP_PCT}%`,
             width: `${WIDTH_PCT}%`,
             height: `${HEIGHT_PCT}%`,
-            borderRadius: "0 0 11px 11px",
+            borderRadius: '0 0 11px 11px',
           }}
         >
           <img
@@ -89,7 +89,7 @@ export function Safari({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="absolute inset-0 z-10 size-full"
-        style={{ transform: "translateZ(0)" }}
+        style={{ transform: 'translateZ(0)' }}
       >
         <defs>
           <mask id="safariPunch" maskUnits="userSpaceOnUse">
@@ -120,7 +120,7 @@ export function Safari({
 
         <g
           clipPath="url(#path0)"
-          mask={hasMedia ? "url(#safariPunch)" : undefined}
+          mask={hasMedia ? 'url(#safariPunch)' : undefined}
         >
           <path
             d="M0 52H1202V741C1202 747.627 1196.63 753 1190 753H12C5.37258 753 0 747.627 0 741V52Z"
@@ -179,7 +179,7 @@ export function Safari({
             </text>
           </g>
 
-          {mode === "default" ? (
+          {mode === 'default' ? (
             <>
               <g className="mix-blend-luminosity">
                 <path
@@ -234,5 +234,5 @@ export function Safari({
         </g>
       </svg>
     </div>
-  )
+  );
 }

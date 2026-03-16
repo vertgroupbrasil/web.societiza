@@ -1,7 +1,11 @@
 import type React from 'react';
 import { cn } from '@societiza/lib/utils';
 import { DecorIcon } from '@societiza/components/ui/decor-icon';
-import { Avatar, AvatarFallback, AvatarImage } from '@societiza/components/ui/shadcnui/avatar';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@societiza/components/ui/shadcnui/avatar';
 import { QuoteIcon } from 'lucide-react';
 
 type Testimonial = {
@@ -50,13 +54,18 @@ export function TestimonialsSection() {
           Quem usa, <span className="text-primary">não volta atrás</span>
         </h2>
         <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
-          Contabilidades de todo o Brasil já transformaram seu processo societário com o Societiza.
+          Contabilidades de todo o Brasil já transformaram seu processo
+          societário com o Societiza.
         </p>
       </div>
 
       <div className="grid w-full gap-8 md:grid-cols-3 md:gap-6">
         {testimonials.map((testimonial, index) => (
-          <TestimonialCard index={index} key={testimonial.name} testimonial={testimonial} />
+          <TestimonialCard
+            index={index}
+            key={testimonial.name}
+            testimonial={testimonial}
+          />
         ))}
       </div>
     </div>
@@ -79,7 +88,7 @@ function TestimonialCard({
       className={cn(
         'relative flex flex-col justify-between gap-6 px-8 pt-8 pb-6 shadow-xs md:translate-y-[calc(3rem*var(--t-card-index))]',
         'dark:bg-[radial-gradient(50%_80%_at_25%_0%,oklch(from_var(--foreground)_l_c_h_/_0.1),transparent)]',
-        className
+        className,
       )}
       style={{ '--t-card-index': index } as React.CSSProperties}
       {...props}
@@ -103,7 +112,9 @@ function TestimonialCard({
           <AvatarFallback>{name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <cite className="font-medium text-foreground text-sm not-italic">{name}</cite>
+          <cite className="font-medium text-foreground text-sm not-italic">
+            {name}
+          </cite>
           <p className="text-muted-foreground text-xs">
             {role}, <span className="text-foreground/80">{company}</span>
           </p>

@@ -82,8 +82,8 @@ export function ComparisonSection() {
             <span className="text-primary">diferente</span>?
           </h2>
           <p className="text-lg text-muted-foreground mt-4 leading-relaxed">
-            Não somos apenas mais um kanban. Somos o único workflow societário com
-            automações reais no Brasil.
+            Não somos apenas mais um kanban. Somos o único workflow societário
+            com automações reais no Brasil.
           </p>
         </FadeIn>
 
@@ -98,7 +98,9 @@ export function ComparisonSection() {
                 </span>
               </div>
               <div className="p-4 sm:p-5 text-center bg-primary/5 border-x border-border">
-                <span className="text-sm font-bold text-primary">Societiza</span>
+                <span className="text-sm font-bold text-primary">
+                  Societiza
+                </span>
               </div>
               <div className="p-4 sm:p-5 text-center">
                 <span className="text-sm font-semibold text-muted-foreground">

@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'motion/react': require.resolve('framer-motion'),
-      'motion': require.resolve('framer-motion'),
+      motion: require.resolve('framer-motion'),
     };
     return config;
   },

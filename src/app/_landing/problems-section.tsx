@@ -55,8 +55,8 @@ export function ProblemsSection() {
             vive todo dia
           </h2>
           <p className="text-lg text-muted-foreground mt-4 leading-relaxed">
-            Se você é contador, sabe: o processo societário brasileiro é um labirinto
-            de burocracia, sistemas e improviso.
+            Se você é contador, sabe: o processo societário brasileiro é um
+            labirinto de burocracia, sistemas e improviso.
           </p>
         </FadeIn>
 
@@ -88,9 +88,7 @@ export function ProblemsSection() {
               <AlertTriangle className="w-5 h-5 text-destructive" />
             </div>
             <p className="text-left text-sm sm:text-base text-muted-foreground">
-              <strong className="text-foreground">
-                67% dos contadores
-              </strong>{' '}
+              <strong className="text-foreground">67% dos contadores</strong>{' '}
               dizem que processos societários são a maior dor do dia a dia.
               <br />
               <span className="text-xs text-muted-foreground/70">
