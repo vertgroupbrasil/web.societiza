@@ -25,7 +25,7 @@ import {
   Stages,
   useProcessForm,
 } from '@corporate/index';
-import { Accounties } from '@flowtec/features/management/schemas/management.schema';
+import { Accounties } from '@societiza/features/management/schemas/management.schema';
 
 interface NewProcessFormProps {
   accounties: Accounties; // ✅ Não opcional, pois só chega aqui se tiver dados

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { stageSchema, stagesSchema } from './stage.schema';
-import { accountingSchema } from '@flowtec/features/management/schemas/management.schema';
+import { accountingSchema } from '@societiza/features/management/schemas/management.schema';
 
 export const taskSchema = z.object({
   id: z.string().uuid(),

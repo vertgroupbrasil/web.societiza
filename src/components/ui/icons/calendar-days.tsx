@@ -5,7 +5,7 @@ import type { Variants } from 'motion/react';
 import { useCallback, useImperativeHandle, useRef } from 'react';
 import type { HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 export interface CalendarDaysIconHandle {
   startAnimation: () => void;

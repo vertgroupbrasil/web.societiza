@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
 
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 function Drawer({
   ...props

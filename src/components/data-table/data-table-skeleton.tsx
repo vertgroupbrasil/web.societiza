@@ -1,4 +1,4 @@
-import { Skeleton } from '@flowtec/components/ui/shadcnui/skeleton';
+import { Skeleton } from '@societiza/components/ui/shadcnui/skeleton';
 import {
   Table,
   TableBody,
@@ -6,8 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@flowtec/components/ui/shadcnui/table';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/table';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTableSkeletonProps extends React.ComponentProps<'div'> {
   columnCount: number;

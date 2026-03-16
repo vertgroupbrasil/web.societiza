@@ -24,7 +24,7 @@
 
 #       # ESLint and Prettier must be in `package.json`
 #       - name: Install Node.js dependencies
-#         run: cd flowtec && npm ci
+#         run: cd societiza && npm ci
 
 #       - name: Run ESLint
 #         run: npm run lint

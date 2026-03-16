@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
+import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 import { create, _delete } from '../../server/services/management.service';
 
 const api = API_ENDPOINTS;

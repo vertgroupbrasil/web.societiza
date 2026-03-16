@@ -1,6 +1,6 @@
 import axios from 'axios';
-import * as authService from '@flowtec/features/auth/server/services/auth-service';
-import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
+import * as authService from '@societiza/features/auth/server/services/auth-service';
+import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 
 const api = API_ENDPOINTS;
 

@@ -10,12 +10,17 @@
     "cssVariables": true,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
-    "components": "@flowtec/components",
-    "utils": "@flowtec/lib/utils",
-    "ui": "@flowtec/components/ui",
-    "lib": "@flowtec/lib",
-    "hooks": "@flowtec/hooks"
+    "components": "@societiza/components",
+    "utils": "@societiza/lib/utils",
+    "ui": "@societiza/components/ui",
+    "lib": "@societiza/lib",
+    "hooks": "@societiza/hooks"
   },
-  "iconLibrary": "lucide"
+  "registries": {
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}",
+    "@efferd": "https://efferd.com/r/{name}.json"
+  }
 }

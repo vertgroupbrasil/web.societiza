@@ -1,5 +1,5 @@
 'use client';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTheme } from 'next-themes';

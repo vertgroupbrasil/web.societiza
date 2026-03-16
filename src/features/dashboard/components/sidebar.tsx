@@ -1,10 +1,10 @@
-import { AppSidebar } from '@flowtec/components/ui/shadcnui/app-sidebar';
+import { AppSidebar } from '@societiza/components/ui/shadcnui/app-sidebar';
 
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
-} from '@flowtec/components/ui/shadcnui/sidebar';
+} from '@societiza/components/ui/shadcnui/sidebar';
 
 export default function Sidebar({
   children,

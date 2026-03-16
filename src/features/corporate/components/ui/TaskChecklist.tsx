@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Target, ChevronRight, CheckCircle } from 'lucide-react';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import { motion } from 'framer-motion';
 import {
   type Process,
@@ -24,7 +24,7 @@ import {
   SelectValue,
   FormLabel,
 } from '@shadcn/index';
-import { Status } from '@flowtec/components/ui/kiboui';
+import { Status } from '@societiza/components/ui/kiboui';
 
 interface TaskChecklistProps {
   process?: Process;

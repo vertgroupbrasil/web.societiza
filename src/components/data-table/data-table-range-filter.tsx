@@ -3,8 +3,8 @@
 import type { Column } from '@tanstack/react-table';
 import * as React from 'react';
 
-import { cn } from '@flowtec/lib/utils';
-import type { ExtendedColumnFilter } from '@flowtec/types/data-table';
+import { cn } from '@societiza/lib/utils';
+import type { ExtendedColumnFilter } from '@societiza/types/data-table';
 import { Input } from '../ui/shadcnui/input';
 
 interface DataTableRangeFilterProps<TData> extends React.ComponentProps<'div'> {

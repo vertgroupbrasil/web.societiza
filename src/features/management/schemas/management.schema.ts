@@ -1,7 +1,7 @@
-import { z } from '@flowtec/lib/zod-portuguese';
+import { z } from '@societiza/lib/zod-portuguese';
 import { Document } from '../domain/cnpj-cpf-validation';
-import { formatDateBR, formatISOToBRDate } from '@flowtec/lib/format';
-import { paginationSchema } from '@flowtec/types/pagination';
+import { formatDateBR, formatISOToBRDate } from '@societiza/lib/format';
+import { paginationSchema } from '@societiza/types/pagination';
 
 export const accountingSchema = z.object({
   id: z.string(),

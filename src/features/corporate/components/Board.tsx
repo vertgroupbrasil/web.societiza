@@ -11,7 +11,7 @@ import {
 } from '@corporate/index';
 
 import ProcessDialog from './ui/ProcessDialog';
-import { useManagement } from '@flowtec/features/management/hooks/queries/useManagementQueries';
+import { useManagement } from '@societiza/features/management/hooks/queries/useManagementQueries';
 
 export function Board() {
   const { filters, applyFilters } = useCorporateFilters();

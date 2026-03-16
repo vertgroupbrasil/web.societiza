@@ -1,4 +1,4 @@
-import { formatCNPJ } from '@flowtec/lib/format';
+import { formatCNPJ } from '@societiza/lib/format';
 import { z } from 'zod';
 
 export const Document = z

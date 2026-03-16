@@ -1,13 +1,64 @@
-import { Button } from '@flowtec/components/ui/shadcnui';
+import {
+  FeaturesShowcase,
+  FeaturesSection,
+  ProblemSection,
+  FeatureHighlightsSection,
+  PositioningSection,
+  PricingSection,
+  TestimonialsSection,
+  CTASection,
+  FaqSection,
+  Footer,
+} from './_landing';
+import { LandingGrid, GridSection } from './_landing/landing-grid';
+import { Header } from '@societiza/components/header';
+import { HeroSection } from '@societiza/components/hero3';
+import { FeatureSection2 } from '@societiza/components/feature-section2';
+import { AbandonMessSection } from './_landing/abandon-mess-section';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Button variant="ghost">
-          <a href="/login">Ir para login</a>
-        </Button>
-      </main>
-    </div>
+    <LandingGrid>
+    <Header />
+      <GridSection isHero>
+        <HeroSection />
+      </GridSection>
+      <GridSection>
+        <FeatureSection2 />
+      </GridSection>
+      <GridSection>
+        <FeaturesShowcase />
+      </GridSection>
+      <GridSection>
+        <ProblemSection />
+      </GridSection>
+      <GridSection>
+        <AbandonMessSection />
+      </GridSection>
+      <GridSection>
+        <FeaturesSection />
+      </GridSection>
+      <GridSection>
+        <FeatureHighlightsSection />
+      </GridSection>
+      <GridSection>
+        <TestimonialsSection />
+      </GridSection>
+      <GridSection>
+        <PositioningSection />
+      </GridSection>
+      <GridSection>
+        <PricingSection />
+      </GridSection>
+      <section className="">
+        <div className="mx-auto w-full max-w-7xl">
+          <CTASection />
+        </div>
+      </section>
+      <GridSection>
+        <FaqSection />
+      </GridSection>
+      <Footer />
+    </LandingGrid>
   );
 }

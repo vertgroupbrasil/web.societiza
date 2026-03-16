@@ -1,6 +1,6 @@
 import { Auth } from '../../schemas/auth.schema';
-import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
-import fetcher from '@flowtec/lib/axios';
+import { API_ENDPOINTS } from '@societiza/routes/endpoints';
+import fetcher from '@societiza/lib/axios';
 
 const api = API_ENDPOINTS;
 

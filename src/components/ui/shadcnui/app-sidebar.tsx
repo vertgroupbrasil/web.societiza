@@ -10,7 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@flowtec/components/ui/shadcnui/sidebar';
+} from '@societiza/components/ui/shadcnui/sidebar';
 import {
   TrendingUpIcon,
   type TrendingUpIconHandle,
@@ -22,12 +22,12 @@ import { ClipboardCheckIcon } from '../icons/clipboard-check';
 import { CircleHelpIcon } from '../icons/circle-help';
 import { SettingsGearIcon } from '../icons/settings-gear';
 import { FilePenLineIcon } from '../icons/file-pen-line';
-import Logo from '@flowtec/components/logo';
+import LogoOrange from '@societiza/components/logo-orange';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeSwitcher } from '../kiboui/theme-switcher';
 import React from 'react';
-import Logout from '@flowtec/features/auth/components/ui/logout-button';
+import Logout from '@societiza/features/auth/components/ui/logout-button';
 
 type NavItem = {
   title: string;
@@ -122,7 +122,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     <Sidebar variant="floating" {...props}>
       <SidebarHeader className="p-6 !pb-2">
         <Link href="/" className="flex">
-          <Logo />
+          <LogoOrange />
         </Link>
       </SidebarHeader>
       <SidebarContent>

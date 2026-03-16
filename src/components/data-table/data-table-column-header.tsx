@@ -15,8 +15,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@flowtec/components/ui/shadcnui/dropdown-menu';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/dropdown-menu';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.ComponentProps<typeof DropdownMenuTrigger> {

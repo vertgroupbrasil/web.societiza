@@ -1,7 +1,7 @@
-import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
+import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 import { CNPJ } from '../../domain/cnpj-cpf-validation';
 import { Management } from '../../schemas/management.schema';
-import fetcher from '@flowtec/lib/axios';
+import fetcher from '@societiza/lib/axios';
 
 const api = API_ENDPOINTS;
 

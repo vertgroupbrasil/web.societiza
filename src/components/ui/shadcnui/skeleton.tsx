@@ -1,4 +1,4 @@
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {
   return (

@@ -1,13 +1,13 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { handleFormError } from '@flowtec/handlers/error';
+import { handleFormError } from '@societiza/handlers/error';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useLoginForm } from '@flowtec/features/auth/hooks/useAuthForm';
-import { useAuthMutations } from '@flowtec/features/auth/hooks/useAuth';
+import { useLoginForm } from '@societiza/features/auth/hooks/useAuthForm';
+import { useAuthMutations } from '@societiza/features/auth/hooks/useAuth';
 
 // Mocks
 jest.mock('./useAuth.test');
-jest.mock('@flowtec/handlers/error');
+jest.mock('@societiza/handlers/error');
 jest.mock('sonner');
 jest.mock('next/navigation');
 

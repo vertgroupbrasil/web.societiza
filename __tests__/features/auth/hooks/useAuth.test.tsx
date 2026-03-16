@@ -1,10 +1,10 @@
 import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import * as authService from '@flowtec/features/auth/server/services/auth-service';
-import { useAuthMutations } from '@flowtec/features/auth/hooks/useAuth';
+import * as authService from '@societiza/features/auth/server/services/auth-service';
+import { useAuthMutations } from '@societiza/features/auth/hooks/useAuth';
 import { AxiosResponse } from 'axios';
 
-jest.mock('@flowtec/features/auth/server/services/auth-service');
+jest.mock('@societiza/features/auth/server/services/auth-service');
 const mockedAuth = authService as jest.Mocked<typeof authService>;
 
 describe('useAuthMutations', () => {

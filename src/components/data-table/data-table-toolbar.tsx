@@ -4,13 +4,13 @@ import type { Column, Table } from '@tanstack/react-table';
 import { X } from 'lucide-react';
 import * as React from 'react';
 
-import { DataTableDateFilter } from '@flowtec/components/data-table/data-table-date-filter';
-import { DataTableFacetedFilter } from '@flowtec/components/data-table/data-table-faceted-filter';
-import { DataTableSliderFilter } from '@flowtec/components/data-table/data-table-slider-filter';
-import { DataTableViewOptions } from '@flowtec/components/data-table/data-table-view-options';
-import { Button } from '@flowtec/components/ui/shadcnui/button';
-import { Input } from '@flowtec/components/ui/shadcnui/input';
-import { cn } from '@flowtec/lib/utils';
+import { DataTableDateFilter } from '@societiza/components/data-table/data-table-date-filter';
+import { DataTableFacetedFilter } from '@societiza/components/data-table/data-table-faceted-filter';
+import { DataTableSliderFilter } from '@societiza/components/data-table/data-table-slider-filter';
+import { DataTableViewOptions } from '@societiza/components/data-table/data-table-view-options';
+import { Button } from '@societiza/components/ui/shadcnui/button';
+import { Input } from '@societiza/components/ui/shadcnui/input';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTableToolbarProps<TData> extends React.ComponentProps<'div'> {
   table: Table<TData>;

@@ -1,5 +1,5 @@
-import type { DataTableConfig } from '@flowtec/config/data-table';
-import type { FilterItemSchema } from '@flowtec/lib/parsers';
+import type { DataTableConfig } from '@societiza/config/data-table';
+import type { FilterItemSchema } from '@societiza/lib/parsers';
 import type { ColumnSort, Row, RowData } from '@tanstack/react-table';
 
 declare module '@tanstack/react-table' {

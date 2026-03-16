@@ -7,8 +7,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@flowtec/components/ui/shadcnui/popover';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/popover';
+import { cn } from '@societiza/lib/utils';
 import { PlusCircle, XCircle } from 'lucide-react';
 import { Button } from '../ui/shadcnui/button';
 import { Separator } from '../ui/shadcnui/separator';

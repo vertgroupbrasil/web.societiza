@@ -19,9 +19,9 @@ import {
   Label,
   Separator,
 } from '@shadcn/index';
-import { DateRangePicker } from '@flowtec/components/ui/date-range-picker';
+import { DateRangePicker } from '@societiza/components/ui/date-range-picker';
 import { useCorporateFiltersContext } from '@corporate/index';
-import { Accounties } from '@flowtec/features/management/schemas/management.schema';
+import { Accounties } from '@societiza/features/management/schemas/management.schema';
 
 interface FiltersDialogProps {
   accounties: Accounties | undefined;

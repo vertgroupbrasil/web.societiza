@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from '@flowtec/components/data-table/data-table-column-header';
+import { DataTableColumnHeader } from '@societiza/components/data-table/data-table-column-header';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { XCircle, CheckCircle, MoreHorizontal, Trash2Icon } from 'lucide-react';
 import React from 'react';
@@ -7,14 +7,14 @@ import {
   Status,
   StatusIndicator,
   StatusLabel,
-} from '@flowtec/components/ui/kiboui/status';
+} from '@societiza/components/ui/kiboui/status';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@flowtec/components/ui/shadcnui/dropdown-menu';
-import { Button } from '@flowtec/components/ui/shadcnui/button';
+} from '@societiza/components/ui/shadcnui/dropdown-menu';
+import { Button } from '@societiza/components/ui/shadcnui/button';
 
 export function makeManagementColumns(
   openDeleteModal: (

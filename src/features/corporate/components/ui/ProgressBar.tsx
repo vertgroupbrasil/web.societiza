@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import { CORPORATE_URGENCY_THRESHOLDS, ensureDate } from '@corporate/index';
 
 interface ProcessProgressBarProps {

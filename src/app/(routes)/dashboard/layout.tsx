@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import '@flowtec/app/globals.css';
-import Sidebar from '@flowtec/features/dashboard/components/sidebar';
+import '@societiza/app/globals.css';
+import Sidebar from '@societiza/features/dashboard/components/sidebar';
 
 export const metadata: Metadata = {
-  title: 'meu societário - Dashboard',
+  title: 'Societiza - Dashboard',
   description: 'O futuro contábil em uma plataforma só.',
 };
 

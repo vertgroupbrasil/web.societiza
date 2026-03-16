@@ -2,18 +2,18 @@
 
 import * as React from 'react';
 import { useQueryState, parseAsString, parseAsArrayOf } from 'nuqs';
-import { DataTable } from '@flowtec/components/data-table/data-table';
-import { DataTableToolbar } from '@flowtec/components/data-table/data-table-toolbar';
-import { useDataTable } from '@flowtec/hooks/use-data-table';
+import { DataTable } from '@societiza/components/data-table/data-table';
+import { DataTableToolbar } from '@societiza/components/data-table/data-table-toolbar';
+import { useDataTable } from '@societiza/hooks/use-data-table';
 import { toast } from 'sonner';
 
 import { useManagement } from '../hooks/queries/useManagementQueries';
 import { useManagementMutations } from '../hooks/mutations/useManagementMutations';
 import { makeManagementColumns } from './columns';
-import { DeleteModal } from '@flowtec/components/delete-modal';
+import { DeleteModal } from '@societiza/components/delete-modal';
 
 import type { Accounting } from '../schemas/management.schema';
-import { handleFormError } from '@flowtec/handlers/error';
+import { handleFormError } from '@societiza/handlers/error';
 
 export function DataTableDemo() {
   const [, setGlobalError] = React.useState<string | undefined>();

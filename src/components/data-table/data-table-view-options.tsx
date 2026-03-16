@@ -3,7 +3,7 @@
 import type { Table } from '@tanstack/react-table';
 import { Check, ChevronsUpDown, Settings2 } from 'lucide-react';
 
-import { Button } from '@flowtec/components/ui/shadcnui/button';
+import { Button } from '@societiza/components/ui/shadcnui/button';
 import {
   Command,
   CommandEmpty,
@@ -11,13 +11,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@flowtec/components/ui/shadcnui/command';
+} from '@societiza/components/ui/shadcnui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@flowtec/components/ui/shadcnui/popover';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/popover';
+import { cn } from '@societiza/lib/utils';
 import * as React from 'react';
 
 interface DataTableViewOptionsProps<TData> {

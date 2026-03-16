@@ -1,13 +1,13 @@
 'use client';
 
-import { Button } from '@flowtec/components/ui/shadcnui/button';
-import { Separator } from '@flowtec/components/ui/shadcnui/separator';
+import { Button } from '@societiza/components/ui/shadcnui/button';
+import { Separator } from '@societiza/components/ui/shadcnui/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@flowtec/components/ui/shadcnui/tooltip';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/tooltip';
+import { cn } from '@societiza/lib/utils';
 import type { Table } from '@tanstack/react-table';
 import { Loader, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';

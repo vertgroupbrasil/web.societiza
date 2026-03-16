@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import '@flowtec/app/globals.css';
+import '@societiza/app/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Flowtec - Ajuda',
+  title: 'Societiza - Ajuda',
   description: 'O futuro contábil em uma plataforma só.',
 };
 

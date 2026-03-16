@@ -3,8 +3,8 @@
 import type { Table } from '@tanstack/react-table';
 import type * as React from 'react';
 
-import { DataTableViewOptions } from '@flowtec/components/data-table/data-table-view-options';
-import { cn } from '@flowtec/lib/utils';
+import { DataTableViewOptions } from '@societiza/components/data-table/data-table-view-options';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTableAdvancedToolbarProps<TData>
   extends React.ComponentProps<'div'> {

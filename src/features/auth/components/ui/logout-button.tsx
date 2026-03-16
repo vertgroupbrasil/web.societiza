@@ -1,7 +1,7 @@
 'use client';
-import { Button } from '@flowtec/components/ui/shadcnui';
+import { Button } from '@societiza/components/ui/shadcnui';
 import { useAuthMutations } from '../../hooks/mutations/useAuthMutations';
-import { LogoutIcon } from '@flowtec/components/ui/icons/logout';
+import { LogoutIcon } from '@societiza/components/ui/icons/logout';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 

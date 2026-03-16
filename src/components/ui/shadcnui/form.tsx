@@ -12,8 +12,8 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
-import { cn } from '@flowtec/lib/utils';
-import { Label } from '@flowtec/components/ui/shadcnui/label';
+import { cn } from '@societiza/lib/utils';
+import { Label } from '@societiza/components/ui/shadcnui/label';
 
 const Form = FormProvider;
 

@@ -6,15 +6,15 @@ import {
   ChevronsRight,
 } from 'lucide-react';
 
-import { Button } from '@flowtec/components/ui/shadcnui/button';
+import { Button } from '@societiza/components/ui/shadcnui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@flowtec/components/ui/shadcnui/select';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/select';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTablePaginationProps<TData> extends React.ComponentProps<'div'> {
   table: Table<TData>;

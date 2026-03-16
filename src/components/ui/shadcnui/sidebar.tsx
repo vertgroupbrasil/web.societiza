@@ -5,25 +5,25 @@ import { Slot } from '@radix-ui/react-slot';
 import { VariantProps, cva } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
 
-import { useIsMobile } from '@flowtec/hooks/use-mobile';
-import { cn } from '@flowtec/lib/utils';
-import { Button } from '@flowtec/components/ui/shadcnui/button';
-import { Input } from '@flowtec/components/ui/shadcnui/input';
-import { Separator } from '@flowtec/components/ui/shadcnui/separator';
+import { useIsMobile } from '@societiza/hooks/use-mobile';
+import { cn } from '@societiza/lib/utils';
+import { Button } from '@societiza/components/ui/shadcnui/button';
+import { Input } from '@societiza/components/ui/shadcnui/input';
+import { Separator } from '@societiza/components/ui/shadcnui/separator';
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@flowtec/components/ui/shadcnui/sheet';
-import { Skeleton } from '@flowtec/components/ui/shadcnui/skeleton';
+} from '@societiza/components/ui/shadcnui/sheet';
+import { Skeleton } from '@societiza/components/ui/shadcnui/skeleton';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@flowtec/components/ui/shadcnui/tooltip';
+} from '@societiza/components/ui/shadcnui/tooltip';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

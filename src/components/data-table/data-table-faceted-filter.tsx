@@ -1,6 +1,6 @@
 'use client';
 
-import type { Option } from '@flowtec/types/data-table';
+import type { Option } from '@societiza/types/data-table';
 import type { Column } from '@tanstack/react-table';
 import { Check, PlusCircle, XCircle } from 'lucide-react';
 
@@ -12,13 +12,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@flowtec/components/ui/shadcnui/command';
+} from '@societiza/components/ui/shadcnui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@flowtec/components/ui/shadcnui/popover';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/popover';
+import { cn } from '@societiza/lib/utils';
 import * as React from 'react';
 import { Button } from '../ui/shadcnui/button';
 import { Badge } from '../ui/shadcnui/badge';

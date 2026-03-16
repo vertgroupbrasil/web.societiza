@@ -57,7 +57,7 @@ tsx
 import {
 KanbanBoard,
 SocietarioProvider
-} from '@flowtec/features/societario';
+} from '@societiza/features/societario';
 
 function SocietarioPage() {
 return (

@@ -2,10 +2,10 @@ import type {
   ExtendedColumnFilter,
   FilterOperator,
   FilterVariant,
-} from '@flowtec/types/data-table';
+} from '@societiza/types/data-table';
 import type { Column } from '@tanstack/react-table';
 
-import { dataTableConfig } from '@flowtec/config/data-table';
+import { dataTableConfig } from '@societiza/config/data-table';
 
 export function getCommonPinningStyles<TData>({
   column,

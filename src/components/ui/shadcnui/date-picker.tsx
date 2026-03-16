@@ -5,7 +5,7 @@ import { format, isValid, isAfter, isBefore } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import {
   Calendar,
   Button,

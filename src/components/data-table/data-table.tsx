@@ -1,7 +1,7 @@
 import { type Table as TanstackTable, flexRender } from '@tanstack/react-table';
 import type * as React from 'react';
 
-import { DataTablePagination } from '@flowtec/components/data-table/data-table-pagination';
+import { DataTablePagination } from '@societiza/components/data-table/data-table-pagination';
 import {
   Table,
   TableBody,
@@ -9,9 +9,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@flowtec/components/ui/shadcnui/table';
-import { getCommonPinningStyles } from '@flowtec/lib/data-table';
-import { cn } from '@flowtec/lib/utils';
+} from '@societiza/components/ui/shadcnui/table';
+import { getCommonPinningStyles } from '@societiza/lib/data-table';
+import { cn } from '@societiza/lib/utils';
 
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>;

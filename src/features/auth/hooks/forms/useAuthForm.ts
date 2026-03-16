@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { handleFormError } from '@flowtec/handlers/error';
+import { handleFormError } from '@societiza/handlers/error';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Auth, authSchema, emptyAuth } from '../../schemas/auth.schema';

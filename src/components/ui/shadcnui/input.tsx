@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import IMask from 'imask';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 import { Info } from 'lucide-react';
 

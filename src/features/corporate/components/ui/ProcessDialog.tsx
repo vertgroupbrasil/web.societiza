@@ -12,7 +12,7 @@ import {
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { NewProcessForm, ProcessTypes, Stages } from '@corporate/index';
-import { Accounties } from '@flowtec/features/management/schemas/management.schema';
+import { Accounties } from '@societiza/features/management/schemas/management.schema';
 
 interface ProcessDialogProps {
   accounties?: Accounties;

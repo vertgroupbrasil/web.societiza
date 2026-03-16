@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'meu societário - Societário',
+  title: 'Societiza - Societário',
   description:
     'Gestão de processos societários - abertura, alteração e baixa de empresas',
 };

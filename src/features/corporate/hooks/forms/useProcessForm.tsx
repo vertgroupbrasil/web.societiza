@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect, useCallback } from 'react';
-import { handleFormError } from '@flowtec/handlers/error';
+import { handleFormError } from '@societiza/handlers/error';
 import { toast } from 'sonner';
 import {
   emptyProcess,
@@ -12,7 +12,7 @@ import {
   Stages,
   useCorporateMutations,
 } from '@corporate/index';
-import { Accounties } from '@flowtec/features/management/schemas/management.schema';
+import { Accounties } from '@societiza/features/management/schemas/management.schema';
 
 interface UseProcessFormProps {
   accounties: Accounties;

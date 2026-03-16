@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '@flowtec/routes/endpoints';
+import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 import { test, expect, Page } from '@playwright/test';
 
 const api = API_ENDPOINTS;

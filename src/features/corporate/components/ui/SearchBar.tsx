@@ -4,7 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@shadcn/index';
 import { useCorporateFilters, useDebounce } from '@corporate/index';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 interface SearchBarProps {
   className?: string;

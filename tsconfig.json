@@ -22,9 +22,11 @@
       }
     ],
     "paths": {
-      "@flowtec/*": ["./src/*"],
+      "@societiza/*": ["./src/*"],
       "@shadcn/*": ["./src/components/ui/shadcnui/*"],
       "@kibo/*": ["./src/components/ui/kiboui/*"],
+      "@magic/*": ["./src/components/ui/magicui/*"],
+      "@aceternity/*": ["./src/components/ui/aceternityui/*"],
       "@icons/*": ["./src/components/ui/icons/*"],
       "@components/*": ["./src/components/*"],
       "@features/*": ["./src/features/*"],

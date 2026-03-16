@@ -5,7 +5,7 @@ import prettyBytes from 'pretty-bytes';
 import * as React from 'react';
 
 import { Button, Progress } from '@shadcn/index';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 function FileList({ className, ...props }: React.ComponentProps<'div'>) {
   return (

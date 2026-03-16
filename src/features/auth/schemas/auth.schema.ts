@@ -2,7 +2,7 @@ import {
   z,
   customMessage,
   portugueseMessages,
-} from '@flowtec/lib/zod-portuguese';
+} from '@societiza/lib/zod-portuguese';
 
 export const authSchema = z.object({
   email: z

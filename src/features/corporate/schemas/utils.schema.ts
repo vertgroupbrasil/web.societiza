@@ -1,4 +1,4 @@
-import { z } from '@flowtec/lib/zod-portuguese';
+import { z } from '@societiza/lib/zod-portuguese';
 
 export const corporateFiltersSchema = z
   .object({

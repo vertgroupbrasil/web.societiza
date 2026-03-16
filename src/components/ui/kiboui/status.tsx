@@ -1,5 +1,5 @@
 import { Badge } from '@shadcn/index';
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 import type { ComponentProps, HTMLAttributes } from 'react';
 
 export type StatusProps = ComponentProps<typeof Badge> & {

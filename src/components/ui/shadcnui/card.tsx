@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '@flowtec/lib/utils';
+import { cn } from '@societiza/lib/utils';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (

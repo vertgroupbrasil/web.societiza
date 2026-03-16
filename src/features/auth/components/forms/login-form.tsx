@@ -6,9 +6,9 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from '@flowtec/components/ui/shadcnui/form';
-import { Button } from '@flowtec/components/ui/shadcnui/button';
-import { Input } from '@flowtec/components/ui/shadcnui/input';
+} from '@societiza/components/ui/shadcnui/form';
+import { Button } from '@societiza/components/ui/shadcnui/button';
+import { Input } from '@societiza/components/ui/shadcnui/input';
 import { Mail } from 'lucide-react';
 import { useLoginForm } from '../../hooks/forms/useAuthForm';
 
