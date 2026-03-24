@@ -2,24 +2,23 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Button,
-  Separator,
-  TooltipProvider,
-} from '@shadcn/index';
-import {
-  ArrowLeft,
-  CheckCircle,
-  Archive,
-  Layers,
-} from 'lucide-react';
+import { Button, Separator, TooltipProvider } from '@shadcn/index';
+import { ArrowLeft, CheckCircle, Archive, Layers } from 'lucide-react';
 import { useWorkflowTemplateById } from '../hooks/queries/use-workflow-template-queries';
 import {
   useActivateTemplate,
   useArchiveTemplate,
 } from '../hooks/mutations/use-template-mutations';
-import { useAddStep, useUpdateStep, useRemoveStep } from '../hooks/mutations/use-step-mutations';
-import { useAddTask, useUpdateTask, useRemoveTask } from '../hooks/mutations/use-task-mutations';
+import {
+  useAddStep,
+  useUpdateStep,
+  useRemoveStep,
+} from '../hooks/mutations/use-step-mutations';
+import {
+  useAddTask,
+  useUpdateTask,
+  useRemoveTask,
+} from '../hooks/mutations/use-task-mutations';
 import {
   useAddStepField,
   useUpdateStepField,
@@ -303,12 +302,8 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
                     onUpdateTask={(taskId, data) =>
                       handleUpdateTask(step.id, taskId, data)
                     }
-                    onRemoveTask={(taskId) =>
-                      handleRemoveTask(step.id, taskId)
-                    }
-                    onAddStepField={(data) =>
-                      handleAddStepField(step.id, data)
-                    }
+                    onRemoveTask={(taskId) => handleRemoveTask(step.id, taskId)}
+                    onAddStepField={(data) => handleAddStepField(step.id, data)}
                     onUpdateStepField={(fieldId, data) =>
                       handleUpdateStepField(step.id, fieldId, data)
                     }

@@ -37,7 +37,12 @@ export const useUpdateStepField = () => {
 
   return useMutation<void, Error, UpdateStepFieldParams>({
     mutationFn: ({ templateId, stepId, fieldId, data }) =>
-      workflowTemplateService.updateStepField(templateId, stepId, fieldId, data),
+      workflowTemplateService.updateStepField(
+        templateId,
+        stepId,
+        fieldId,
+        data,
+      ),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: templateQueries.detail(variables.templateId).queryKey,

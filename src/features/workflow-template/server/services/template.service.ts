@@ -102,10 +102,7 @@ export const workflowTemplateService = {
     stepId: string,
     data: UpdateStepDTO,
   ): Promise<void> => {
-    await fetcher.put(
-      api.updateWorkflowTemplateStep(templateId, stepId),
-      data,
-    );
+    await fetcher.put(api.updateWorkflowTemplateStep(templateId, stepId), data);
   },
 
   removeStep: async (templateId: string, stepId: string): Promise<void> => {

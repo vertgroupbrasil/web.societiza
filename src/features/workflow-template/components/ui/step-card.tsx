@@ -86,7 +86,12 @@ function FieldItem({
           field={field}
           onSubmit={onEdit}
           trigger={
-            <Button type="button" variant="ghost" size="sm" className="h-6 w-6 p-0">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0"
+            >
               <Pencil className="h-3 w-3" />
             </Button>
           }
@@ -153,7 +158,12 @@ function TaskItem({
             task={task}
             onSubmit={onEdit}
             trigger={
-              <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0"
+              >
                 <Pencil className="h-3.5 w-3.5" />
               </Button>
             }

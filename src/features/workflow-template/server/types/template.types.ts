@@ -21,8 +21,12 @@ import {
 export type WorkflowTemplateField = z.infer<typeof workflowTemplateFieldSchema>;
 export type WorkflowTemplateTask = z.infer<typeof workflowTemplateTaskSchema>;
 export type WorkflowTemplateStep = z.infer<typeof workflowTemplateStepSchema>;
-export type WorkflowTemplateListItem = z.infer<typeof workflowTemplateListItemSchema>;
-export type WorkflowTemplateDetail = z.infer<typeof workflowTemplateDetailSchema>;
+export type WorkflowTemplateListItem = z.infer<
+  typeof workflowTemplateListItemSchema
+>;
+export type WorkflowTemplateDetail = z.infer<
+  typeof workflowTemplateDetailSchema
+>;
 export type TemplateStatus = z.infer<typeof templateStatusEnum>;
 export type FieldType = z.infer<typeof fieldTypeEnum>;
 

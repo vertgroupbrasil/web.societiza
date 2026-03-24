@@ -2,11 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from '@shadcn/index';
+import { Card, CardContent, CardHeader } from '@shadcn/index';
 import { FileText, ArrowRight, Layers } from 'lucide-react';
 import { useWorkflowTemplates } from '../hooks/queries/use-workflow-template-queries';
 import { CreateTemplateDialog } from './ui/create-template-dialog';

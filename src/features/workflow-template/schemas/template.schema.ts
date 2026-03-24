@@ -23,7 +23,9 @@ export const workflowTemplateDetailSchema = z.object({
   steps: z.array(workflowTemplateStepSchema),
 });
 
-export const workflowTemplateListSchema = z.array(workflowTemplateListItemSchema);
+export const workflowTemplateListSchema = z.array(
+  workflowTemplateListItemSchema,
+);
 
 export const createTemplateSchemaDTO = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),

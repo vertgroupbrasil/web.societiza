@@ -20,11 +20,17 @@ const workflowTemplateEndpoints = {
   updateWorkflowTemplateStep: (
     workflowTemplateId: string,
     workflowStepId: string,
-  ) => withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`),
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`,
+    ),
   removeWorkflowTemplateStep: (
     workflowTemplateId: string,
     workflowStepId: string,
-  ) => withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`),
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`,
+    ),
   addWorkflowTemplateStepTask: (
     workflowTemplateId: string,
     workflowStepId: string,
