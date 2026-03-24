@@ -1,17 +1,103 @@
 const api = process.env.NEXT_PUBLIC_API_URL;
 
-const withBase = (endpoint?: string) => `${api}${endpoint}`;
+const withBase = (endpoint = '') => `${api}${endpoint}`;
+
+const WORKFLOW_TEMPLATE_BASE = '/workflow-template';
+
+const workflowTemplateEndpoints = {
+  createWorkflowTemplate: withBase(WORKFLOW_TEMPLATE_BASE),
+  updateWorkflowTemplate: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}`),
+  activateWorkflowTemplate: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/activate`),
+  archiveWorkflowTemplate: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/archive`),
+  getAllWorkflowTemplates: withBase(WORKFLOW_TEMPLATE_BASE),
+  getWorkflowTemplateById: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}`),
+  addWorkflowTemplateStep: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step`),
+  updateWorkflowTemplateStep: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+  ) => withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`),
+  removeWorkflowTemplateStep: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+  ) => withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}`),
+  addWorkflowTemplateStepTask: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task`,
+    ),
+  updateWorkflowTemplateStepTask: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowTaskId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task/${workflowTaskId}`,
+    ),
+  removeWorkflowTemplateStepTask: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowTaskId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task/${workflowTaskId}`,
+    ),
+  addTemplateStepField: (workflowTemplateId: string, workflowStepId: string) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/fields`,
+    ),
+  updateTemplateStepField: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowFieldId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/fields/${workflowFieldId}`,
+    ),
+  removeTemplateStepField: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowFieldId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/fields/${workflowFieldId}`,
+    ),
+  addTemplateStepTaskField: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowTaskId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task/${workflowTaskId}/fields`,
+    ),
+  updateTemplateStepTaskField: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowTaskId: string,
+    workflowFieldId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task/${workflowTaskId}/fields/${workflowFieldId}`,
+    ),
+  removeTemplateStepTaskField: (
+    workflowTemplateId: string,
+    workflowStepId: string,
+    workflowTaskId: string,
+    workflowFieldId: string,
+  ) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/step/${workflowStepId}/task/${workflowTaskId}/fields/${workflowFieldId}`,
+    ),
+};
 
 export const API_ENDPOINTS = {
-  accountings: {
-    createContabilidade: withBase('/societario/create-contabilidade/'),
-    listContabilidades: withBase('/societario/list-contabilidades/'),
-    deleteContabilidade: (id: string) =>
-      withBase(`/societario/delete-contabilidade/?id=${id}`),
-  },
-  accountancy: {
-    accountancy: (id: string) => withBase(`/accountancy/${id}`),
-  },
+  workflowTemplate: workflowTemplateEndpoints,
   auth: {
     login: withBase('/accounts/token/'),
     logout: withBase('/accounts/token/logout/'),
@@ -24,35 +110,45 @@ export const API_ENDPOINTS = {
     updateUserById: (id: string) => withBase(`/accounts/get-user/?id=${id}`),
     deleteUser: (id: string) => withBase(`/accounts/delete-user/?id=${id}`),
   },
+  accountancy: {
+    accountancy: (id: string) => withBase(`/accountancy/${id}`),
+  },
+  accountings: {
+    createContabilidade: workflowTemplateEndpoints.createWorkflowTemplate,
+    listContabilidades: workflowTemplateEndpoints.getAllWorkflowTemplates,
+    deleteContabilidade: (id: string) =>
+      workflowTemplateEndpoints.archiveWorkflowTemplate(id),
+  },
   corporate: {
     form: {
-      createOpeningForm: withBase('/societario/create-form-abertura/'),
+      createOpeningForm: workflowTemplateEndpoints.createWorkflowTemplate,
       getOpeningFormById: (id: string) =>
-        withBase(`/societario/get-form-abertura/?form_id=${id}`),
+        workflowTemplateEndpoints.getWorkflowTemplateById(id),
       updateOpeningForm: (id: string) =>
-        withBase(`/societario/update-form-abertura/?form_id=${id}`),
+        workflowTemplateEndpoints.updateWorkflowTemplate(id),
     },
     partner: {
-      createPartners: withBase('/societario/create-socios/'),
+      createPartners: workflowTemplateEndpoints.createWorkflowTemplate,
     },
     stage: {
-      listStages: withBase('/societario/list-etapas/'),
+      listStages: workflowTemplateEndpoints.getAllWorkflowTemplates,
       getStageById: (id: string) =>
-        withBase(`/societario/get-etapa/?etapa_id=${id}`),
+        workflowTemplateEndpoints.getWorkflowTemplateById(id),
     },
     process: {
       type: {
-        listProcessTypes: withBase('/societario/list-tipo-processo/'),
+        listProcessTypes: workflowTemplateEndpoints.getAllWorkflowTemplates,
         getProcessTypeById: (id: string) =>
-          withBase(`/societario/get-tipo-processo/?tipo_processo_id=${id}`),
+          workflowTemplateEndpoints.getWorkflowTemplateById(id),
       },
-      listProcessessByStages: withBase('/societario/list-processos-etapas/'),
-      createProcess: withBase('/societario/create-processo/'),
-      updateProcess: withBase('/societario/update-processo/'),
+      listProcessessByStages: workflowTemplateEndpoints.getAllWorkflowTemplates,
+      createProcess: workflowTemplateEndpoints.createWorkflowTemplate,
+      updateProcess: (id: string) =>
+        workflowTemplateEndpoints.updateWorkflowTemplate(id),
       getProcessById: (id: string) =>
-        withBase(`/societario/get-processo/?processo_id=${id}`),
+        workflowTemplateEndpoints.getWorkflowTemplateById(id),
       deleteProcess: (id: string) =>
-        withBase(`/societario/delete-processo/?id=${id}`),
+        workflowTemplateEndpoints.archiveWorkflowTemplate(id),
     },
   },
   external: {

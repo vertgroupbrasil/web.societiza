@@ -1,5 +1,5 @@
 'use client';
-import { Board, CorporateProvider } from '@corporate/index';
+import { Board, CorporateProvider } from '@workflow/index';
 
 export default function CorporatePage() {
   return (
