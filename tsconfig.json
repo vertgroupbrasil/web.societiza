@@ -32,7 +32,7 @@
       "@features/*": ["./src/features/*"],
       "@workflow/*": ["./src/features/workflow/*"],
       "@auth/*": ["./src/features/auth/*"],
-      "@management/*": ["./src/features/management/*"],
+      "@accountancy/*": ["./src/features/accountancy/*"],
       "@dashboard/*": ["./src/features/dashboard/*"],
       "@form/*": ["./src/features/form/*"],
       "@user/*": ["./src/features/user/*"],

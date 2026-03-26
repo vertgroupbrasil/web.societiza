@@ -1,4 +1,4 @@
-import { DataTableDemo } from '@societiza/features/management/components/data-table';
+import { DataTableDemo } from '@accountancy/components/data-table';
 
 export default function Page() {
   return (

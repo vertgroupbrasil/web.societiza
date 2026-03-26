@@ -117,13 +117,11 @@ export const API_ENDPOINTS = {
     deleteUser: (id: string) => withBase(`/accounts/delete-user/?id=${id}`),
   },
   accountancy: {
-    accountancy: (id: string) => withBase(`/accountancy/${id}`),
-  },
-  accountings: {
-    createContabilidade: workflowTemplateEndpoints.createWorkflowTemplate,
-    listContabilidades: workflowTemplateEndpoints.getAllWorkflowTemplates,
-    deleteContabilidade: (id: string) =>
-      workflowTemplateEndpoints.archiveWorkflowTemplate(id),
+    create:  withBase('/accountancy'),
+    getAll:  withBase('/accountancy'),
+    getById: (id: string) => withBase(`/accountancy/${id}`),
+    update:  (id: string) => withBase(`/accountancy/${id}`),
+    delete:  (id: string) => withBase(`/accountancy/${id}`),
   },
   corporate: {
     form: {
