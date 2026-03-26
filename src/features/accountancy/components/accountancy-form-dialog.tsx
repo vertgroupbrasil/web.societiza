@@ -48,15 +48,15 @@ export function AccountancyFormDialog({
   const form = useForm<CreateAccountancyInput>({
     resolver: zodResolver(createAccountancyDTO),
     defaultValues: {
-      cnpj:       accountancy?.cnpj       ?? '',
-      legalName:  accountancy?.legalName  ?? '',
-      tradeName:  accountancy?.tradeName  ?? '',
-      address:    accountancy?.address    ?? '',
-      city:       accountancy?.city       ?? '',
-      state:      accountancy?.state      ?? '',
+      cnpj: accountancy?.cnpj ?? '',
+      legalName: accountancy?.legalName ?? '',
+      tradeName: accountancy?.tradeName ?? '',
+      address: accountancy?.address ?? '',
+      city: accountancy?.city ?? '',
+      state: accountancy?.state ?? '',
       postalCode: accountancy?.postalCode ?? '',
-      phone:      accountancy?.phone      ?? '',
-      email:      accountancy?.email      ?? '',
+      phone: accountancy?.phone ?? '',
+      email: accountancy?.email ?? '',
     },
   });
 
@@ -73,8 +73,8 @@ export function AccountancyFormDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {trigger ?? (
-          isEditing ? (
+        {trigger ??
+          (isEditing ? (
             <Button type="button" variant="ghost" size="icon">
               <Pencil className="h-4 w-4" />
               <span className="sr-only">Editar</span>
@@ -84,8 +84,7 @@ export function AccountancyFormDialog({
               <Plus className="h-4 w-4 mr-2" />
               Nova Contabilidade
             </Button>
-          )
-        )}
+          ))}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">

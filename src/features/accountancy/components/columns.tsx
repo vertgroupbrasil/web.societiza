@@ -47,7 +47,9 @@ export function makeAccountancyColumns(
       ),
       cell: ({ cell }) => {
         const value = cell.getValue<Accountancy['tradeName']>();
-        return <div>{value ?? <span className="text-muted-foreground">—</span>}</div>;
+        return (
+          <div>{value ?? <span className="text-muted-foreground">—</span>}</div>
+        );
       },
       meta: {
         label: 'Nome Fantasia',

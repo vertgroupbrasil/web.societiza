@@ -12,10 +12,10 @@ import {
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { NewProcessForm, ProcessTypes, Stages } from '@workflow/index';
-import { Accounties } from '@societiza/features/management/schemas/management.schema';
+import type { Accountancy } from '@accountancy/schemas/accountancy.schema';
 
 interface ProcessDialogProps {
-  accounties?: Accounties;
+  accounties?: Accountancy[];
   processTypes: ProcessTypes;
   stages: Stages;
   trigger?: React.ReactNode;

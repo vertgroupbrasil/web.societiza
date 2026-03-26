@@ -21,10 +21,10 @@ import {
 } from '@shadcn/index';
 import { DateRangePicker } from '@societiza/components/ui/date-range-picker';
 import { useCorporateFiltersContext } from '@workflow/index';
-import { Accounties } from '@societiza/features/management/schemas/management.schema';
+import type { Accountancy } from '@accountancy/schemas/accountancy.schema';
 
 interface FiltersDialogProps {
-  accounties: Accounties | undefined;
+  accounties: Accountancy[] | undefined;
 }
 
 export function FiltersDialog({ accounties }: FiltersDialogProps) {
@@ -207,9 +207,9 @@ export function FiltersDialog({ accounties }: FiltersDialogProps) {
                   <SelectValue placeholder="Selecione a contabilidade" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(accounties?.results?.empresas ?? []).map((a) => (
-                    <SelectItem key={a.id} value={a.nome}>
-                      {a.nome}
+                  {(accounties ?? []).map((a) => (
+                    <SelectItem key={a.id} value={a.tradeName ?? a.legalName}>
+                      {a.tradeName ?? a.legalName}
                     </SelectItem>
                   ))}
                 </SelectContent>

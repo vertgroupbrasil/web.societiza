@@ -25,10 +25,10 @@ import {
   Stages,
   useProcessForm,
 } from '@workflow/index';
-import { Accounties } from '@societiza/features/management/schemas/management.schema';
+import type { Accountancy } from '@accountancy/schemas/accountancy.schema';
 
 interface NewProcessFormProps {
-  accounties: Accounties; // ✅ Não opcional, pois só chega aqui se tiver dados
+  accounties: Accountancy[];
   processTypes: ProcessTypes;
   stages: Stages;
   onSuccess?: () => void;
@@ -98,13 +98,11 @@ export function NewProcessForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {accounties?.results?.empresas?.map((accounting) => {
-                      return (
-                        <SelectItem key={accounting?.id} value={accounting?.id}>
-                          {accounting?.nome_fantasia}
-                        </SelectItem>
-                      );
-                    })}
+                    {accounties.map((accounting) => (
+                      <SelectItem key={accounting.id} value={accounting.id}>
+                        {accounting.tradeName ?? accounting.legalName}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 {fieldState.error && (

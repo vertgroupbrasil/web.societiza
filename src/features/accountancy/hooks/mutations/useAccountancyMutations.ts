@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { accountancyService } from '../../server/services/accountancy.service';
-import type {
-  CreateAccountancyInput,
-} from '../../schemas/accountancy.schema';
+import type { CreateAccountancyInput } from '../../schemas/accountancy.schema';
 import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 
 const LIST_KEY = [API_ENDPOINTS.accountancy.getAll];

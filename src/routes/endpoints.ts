@@ -117,11 +117,11 @@ export const API_ENDPOINTS = {
     deleteUser: (id: string) => withBase(`/accounts/delete-user/?id=${id}`),
   },
   accountancy: {
-    create:  withBase('/accountancy'),
-    getAll:  withBase('/accountancy'),
+    create: withBase('/accountancy'),
+    getAll: withBase('/accountancy'),
     getById: (id: string) => withBase(`/accountancy/${id}`),
-    update:  (id: string) => withBase(`/accountancy/${id}`),
-    delete:  (id: string) => withBase(`/accountancy/${id}`),
+    update: (id: string) => withBase(`/accountancy/${id}`),
+    delete: (id: string) => withBase(`/accountancy/${id}`),
   },
   corporate: {
     form: {

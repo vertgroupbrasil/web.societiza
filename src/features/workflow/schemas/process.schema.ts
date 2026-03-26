@@ -1,6 +1,23 @@
 import { z } from 'zod';
 import { stageSchema, stagesSchema } from './stage.schema';
-import { accountingSchema } from '@societiza/features/management/schemas/management.schema';
+
+const contabilidadeSchema = z.object({
+  id: z.string(),
+  cnpj: z.string(),
+  data_abertura: z.string(),
+  situacao: z.string(),
+  tipo: z.string(),
+  nome: z.string(),
+  nome_fantasia: z.string(),
+  porte: z.string(),
+  natureza_juridica: z.string(),
+  cod_atividade_principal: z.string(),
+  desc_atividade_principal: z.string(),
+  endereco: z.string(),
+  cep: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
 
 export const taskSchema = z.object({
   id: z.string().uuid(),
@@ -45,7 +62,7 @@ export const processTypesSchema = z.object({
 export const processSchema = z.object({
   id: z.string().uuid(),
   nome: z.string(),
-  contabilidade: accountingSchema.partial(),
+  contabilidade: contabilidadeSchema.partial(),
   etapa: stageSchema,
   tipo_processo: processTypeSchema,
   observacao: z.string().nullable(),

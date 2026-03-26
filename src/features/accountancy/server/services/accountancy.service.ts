@@ -20,7 +20,9 @@ export const accountancyService = {
     return response.data as Accountancy;
   },
 
-  create: async (data: CreateAccountancyInput): Promise<CreateEntityResponse> => {
+  create: async (
+    data: CreateAccountancyInput,
+  ): Promise<CreateEntityResponse> => {
     const response = await fetcher.post(api.create, data);
     return response.data as CreateEntityResponse;
   },

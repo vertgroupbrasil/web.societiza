@@ -12,10 +12,10 @@ import {
   Stages,
   useCorporateMutations,
 } from '@workflow/index';
-import { Accounties } from '@societiza/features/management/schemas/management.schema';
+import type { Accountancy } from '@accountancy/schemas/accountancy.schema';
 
 interface UseProcessFormProps {
-  accounties: Accounties;
+  accounties: Accountancy[];
   processTypes?: ProcessTypes;
   stages?: Stages;
   onSuccess?: (() => void) | undefined;

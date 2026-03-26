@@ -14,7 +14,7 @@ import {
   useWorkflowTemplateById,
 } from '@workflow-template/hooks/queries/use-workflow-template-queries';
 import ProcessDialog from './ui/ProcessDialog';
-import { useManagement } from '@societiza/features/management/hooks/queries/useManagementQueries';
+import { useAccountancies } from '@accountancy/hooks/queries/useAccountancyQueries';
 import {
   Select,
   SelectContent,
@@ -28,7 +28,7 @@ import Link from 'next/link';
 export function Board() {
   const { filters, applyFilters } = useCorporateFilters();
   const { processTypes, stages, processes } = useCorporateBoard();
-  const { data: accounties } = useManagement();
+  const { data: accounties } = useAccountancies();
 
   // Template-driven columns
   const { data: templates } = useWorkflowTemplates();
@@ -175,7 +175,7 @@ export function Board() {
               <div className="flex items-center gap-2 flex-shrink-0">
                 <FiltersDialog accounties={accounties} />
                 <Link
-                  href="/dashboard/gerenciamento/templates"
+                  href="/dashboard/societario/templates"
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
                 >
                   Gerenciar templates
@@ -203,7 +203,7 @@ export function Board() {
                   <p className="text-sm text-muted-foreground">
                     Nenhum template ativo.{' '}
                     <Link
-                      href="/dashboard/gerenciamento/templates"
+                      href="/dashboard/societario/templates"
                       className="text-primary hover:underline"
                     >
                       Crie um template
