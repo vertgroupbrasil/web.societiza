@@ -181,7 +181,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
           </p>
           <Button
             variant="outline"
-            onClick={() => router.push('/dashboard/gerenciamento/templates')}
+            onClick={() => router.push('/dashboard/societario/templates')}
           >
             Voltar à lista
           </Button>
@@ -212,9 +212,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() =>
-                  router.push('/dashboard/gerenciamento/templates')
-                }
+                onClick={() => router.push('/dashboard/societario/templates')}
               >
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Voltar

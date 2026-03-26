@@ -15,7 +15,7 @@ function TemplateCard({ template }: { template: WorkflowTemplateListItem }) {
     <Card
       className="cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 group"
       onClick={() =>
-        router.push(`/dashboard/gerenciamento/templates/${template.id}`)
+        router.push(`/dashboard/societario/templates/${template.id}`)
       }
     >
       <CardHeader className="pb-3">

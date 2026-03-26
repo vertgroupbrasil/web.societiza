@@ -47,7 +47,7 @@ export function CreateTemplateDialog({ trigger }: CreateTemplateDialogProps) {
     const result = await createTemplate.mutateAsync(data);
     setOpen(false);
     form.reset();
-    router.push(`/dashboard/gerenciamento/templates/${result.id}`);
+    router.push(`/dashboard/societario/templates/${result.id}`);
   });
 
   return (
