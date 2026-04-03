@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { accountancyService } from '../../server/services/accountancy.service';
 import type { CreateAccountancyInput } from '../../schemas/accountancy.schema';
 import { API_ENDPOINTS } from '@societiza/routes/endpoints';
+import { refreshVisibleAndMarkStale } from '@societiza/lib/query-refresh';
 
 const LIST_KEY = [API_ENDPOINTS.accountancy.getAll];
 
@@ -11,8 +12,8 @@ export const useCreateAccountancy = () => {
   return useMutation({
     mutationFn: (data: CreateAccountancyInput) =>
       accountancyService.create(data),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: LIST_KEY });
+    onSuccess: async () => {
+      await refreshVisibleAndMarkStale(queryClient, [LIST_KEY]);
       toast.success('Contabilidade criada com sucesso!');
     },
     onError: () => {
@@ -26,11 +27,11 @@ export const useUpdateAccountancy = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: CreateAccountancyInput }) =>
       accountancyService.update(id, data),
-    onSuccess: (_data, variables) => {
-      void queryClient.invalidateQueries({ queryKey: LIST_KEY });
-      void queryClient.invalidateQueries({
-        queryKey: [...LIST_KEY, variables.id],
-      });
+    onSuccess: async (_data, variables) => {
+      await refreshVisibleAndMarkStale(queryClient, [
+        LIST_KEY,
+        [...LIST_KEY, variables.id],
+      ]);
       toast.success('Contabilidade atualizada com sucesso!');
     },
     onError: () => {
@@ -43,8 +44,8 @@ export const useDeleteAccountancy = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => accountancyService.delete(id),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: LIST_KEY });
+    onSuccess: async () => {
+      await refreshVisibleAndMarkStale(queryClient, [LIST_KEY]);
       toast.success('Contabilidade removida com sucesso!');
     },
     onError: () => {

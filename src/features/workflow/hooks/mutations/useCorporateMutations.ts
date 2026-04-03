@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
 import {
   Process,
   ProcessDTO,
@@ -7,6 +8,7 @@ import {
   UpdateProcessDTO,
   ProcessById,
 } from '@workflow/index';
+import { refreshVisibleAndMarkStale } from '@societiza/lib/query-refresh';
 
 export const useCorporateMutations = () => {
   const queryClient = useQueryClient();
@@ -14,55 +16,46 @@ export const useCorporateMutations = () => {
   const createProcess = useMutation<Process, Error, ProcessDTO>({
     mutationFn: corporateService.create,
 
-    onSuccess: (newProcess, variables) => {
-      // Invalidate específico para a etapa onde o processo foi criado
-      queryClient.invalidateQueries({
-        queryKey: corporateQueries.processesByStages().queryKey,
-        refetchType: 'active', // Só refetch queries ativas
-      });
+    onSuccess: async (newProcess) => {
+      await refreshVisibleAndMarkStale(queryClient, [
+        corporateQueries.processesByStages().queryKey,
+        corporateQueries.listStages().queryKey,
+        corporateQueries.listProcessTypes().queryKey,
+      ]);
 
       // Pre-populate o cache individual do processo criado
       queryClient.setQueryData(
         corporateQueries.processById(newProcess.id).queryKey,
         { processo: newProcess },
       );
-
-      // Invalidate outras queries relacionadas se necessário
-      queryClient.invalidateQueries({
-        queryKey: corporateQueries.listStages().queryKey,
-        refetchType: 'none', // Só marca como stale, não refetch imediato
-      });
     },
   });
 
   const updateProcess = useMutation<ProcessById, Error, UpdateProcessDTO>({
     mutationFn: corporateService.update,
 
-    onSuccess: (_updatedProcess, variables) => {
-      queryClient.refetchQueries({
-        queryKey: corporateQueries.processById(variables.processo_id).queryKey,
-      });
+    onSuccess: async (_updatedProcess, variables) => {
+      const queryKeys: QueryKey[] = [
+        corporateQueries.processById(variables.processo_id)
+          .queryKey as QueryKey,
+        corporateQueries.processesByStages().queryKey as QueryKey,
+      ];
 
-      queryClient.refetchQueries({
-        queryKey: corporateQueries.processesByStages().queryKey,
-      });
+      if (variables.etapa_id)
+        queryKeys.push(corporateQueries.listStages().queryKey as QueryKey);
 
-      if (variables.etapa_id) {
-        queryClient.refetchQueries({
-          queryKey: corporateQueries.listStages().queryKey,
-        });
-      }
+      await refreshVisibleAndMarkStale(queryClient, queryKeys);
     },
   });
 
   const deleteProcess = useMutation<void, Error, string>({
     mutationFn: (processo_id: string) => corporateService.delete(processo_id),
 
-    onSuccess: (_response, processo_id) => {
-      // Simplesmente invalidar as queries
-      queryClient.invalidateQueries({
-        queryKey: corporateQueries.processesByStages().queryKey,
-      });
+    onSuccess: async (_response, processo_id) => {
+      await refreshVisibleAndMarkStale(queryClient, [
+        corporateQueries.processesByStages().queryKey,
+        corporateQueries.listStages().queryKey,
+      ]);
 
       // Remover do cache individual
       queryClient.removeQueries({
@@ -70,7 +63,7 @@ export const useCorporateMutations = () => {
       });
     },
 
-    onError: (error) => {},
+    onError: () => {},
   });
 
   return {
