@@ -7,9 +7,11 @@ export const workflowTemplateListItemSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   description: z.string(),
-  version: z.string().optional(),
-  status: templateStatusEnum.optional(),
-  createdAt: z.coerce.date().optional(),
+  version: z.string(),
+  status: templateStatusEnum,
+  createdAt: z.coerce.date(),
+  sourceTemplateId: z.string().uuid().nullable().optional(),
+  isDerivedDraft: z.coerce.boolean().optional(),
 });
 
 export const workflowTemplateDetailSchema = z.object({
@@ -20,6 +22,8 @@ export const workflowTemplateDetailSchema = z.object({
   status: templateStatusEnum,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date().nullable(),
+  sourceTemplateId: z.string().uuid().nullable().optional(),
+  isDerivedDraft: z.coerce.boolean().optional(),
   steps: z.array(workflowTemplateStepSchema),
 });
 

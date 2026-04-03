@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   CorporateDrawer,
   FiltersDialog,
@@ -10,47 +11,73 @@ import {
   useCorporateBoard,
 } from '@workflow/index';
 import {
-  useWorkflowTemplates,
   useWorkflowTemplateById,
+  useWorkflowTemplates,
 } from '@workflow-template/hooks/queries/use-workflow-template-queries';
+import { useCreateDraftFromTemplate } from '@workflow-template/hooks/mutations/use-template-mutations';
 import ProcessDialog from './ui/ProcessDialog';
 import { useAccountancies } from '@accountancy/hooks/queries/useAccountancyQueries';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@shadcn/index';
-import { Layers } from 'lucide-react';
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shadcn/index';
+import { FilePenLine, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 export function Board() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { filters, applyFilters } = useCorporateFilters();
   const { processTypes, stages, processes } = useCorporateBoard();
   const { data: accounties } = useAccountancies();
-
-  // Template-driven columns
   const { data: templates } = useWorkflowTemplates();
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
+  const createDraft = useCreateDraftFromTemplate();
 
-  // Auto-select first template when loaded
+  const templateIdFromUrl = searchParams.get('templateId') ?? '';
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(
+    templateIdFromUrl,
+  );
+
+  useEffect(() => {
+    if (templateIdFromUrl && templateIdFromUrl !== selectedTemplateId) {
+      setSelectedTemplateId(templateIdFromUrl);
+    }
+  }, [selectedTemplateId, templateIdFromUrl]);
+
+  const activeTemplates = useMemo(
+    () =>
+      (templates ?? []).filter(
+        (template) => template.status === 'Active' && !template.sourceTemplateId,
+      ),
+    [templates],
+  );
+
   const activeTemplateId = useMemo(() => {
-    if (selectedTemplateId) return selectedTemplateId;
-    if (templates && templates.length > 0) return templates[0].id;
-    return '';
-  }, [selectedTemplateId, templates]);
+    if (
+      selectedTemplateId &&
+      activeTemplates.some((template) => template.id === selectedTemplateId)
+    ) {
+      return selectedTemplateId;
+    }
+
+    return activeTemplates[0]?.id ?? '';
+  }, [activeTemplates, selectedTemplateId]);
 
   const { data: templateDetail, isLoading: templateLoading } =
     useWorkflowTemplateById(activeTemplateId);
 
-  // Map template steps to kanban columns (sorted by order)
+  const draftForActiveTemplate = useMemo(
+    () =>
+      (templates ?? []).find(
+        (template) =>
+          template.status === 'Draft' &&
+          template.sourceTemplateId === activeTemplateId,
+      ) ?? null,
+    [activeTemplateId, templates],
+  );
+
   const templateColumns = useMemo(() => {
     if (!templateDetail?.steps) return [];
     return [...templateDetail.steps].sort((a, b) => a.order - b.order);
   }, [templateDetail?.steps]);
 
-  // Map old processes into template columns (by matching stage name → step title)
   const columnsWithProcesses = useMemo(() => {
     if (templateColumns.length === 0) return [];
 
@@ -58,40 +85,34 @@ export function Board() {
     const filtered = applyFilters(allProcesses);
 
     return templateColumns.map((step) => {
-      // Match processes to columns: process.etapa.nome matches step.title
       const stepProcesses = filtered.filter(
-        (p) =>
-          p.etapa?.nome?.toLowerCase() === step.title.toLowerCase() ||
-          p.etapa?.id === step.id,
+        (process) =>
+          process.etapa?.nome?.toLowerCase() === step.title.toLowerCase() ||
+          process.etapa?.id === step.id,
       );
 
       return {
         id: step.id,
         nome: step.title,
         ordem: step.order,
-        description: step.description,
-        taskCount: step.tasks.length,
-        fieldCount: step.fields.length,
         processos: stepProcesses,
       };
     });
-  }, [templateColumns, processes, applyFilters]);
+  }, [applyFilters, processes, templateColumns]);
 
-  // Fallback: use old stages if no template is available
   const displayColumns = useMemo(() => {
     if (columnsWithProcesses.length > 0) return columnsWithProcesses;
 
-    // Fallback to old stage-based columns
     const allProcesses = processes.flatMap((etapa) => etapa.processos || []);
     const filtered = applyFilters(allProcesses);
 
     return processes.map((stage) => ({
       ...stage,
-      processos: (stage.processos || []).filter((processo) =>
-        filtered.some((f) => f.id === processo.id),
+      processos: (stage.processos || []).filter((process) =>
+        filtered.some((candidate) => candidate.id === process.id),
       ),
     }));
-  }, [columnsWithProcesses, processes, applyFilters]);
+  }, [applyFilters, columnsWithProcesses, processes]);
 
   const filteredProcesses = useMemo(() => {
     const allProcesses = processes.flatMap((etapa) => etapa.processos || []);
@@ -122,41 +143,75 @@ export function Board() {
     return stages;
   }, [stages]);
 
+  const handleEditWorkflow = async () => {
+    if (!activeTemplateId) return;
+
+    const params = new URLSearchParams({
+      mode: 'edit',
+      returnTo: `/dashboard/societario/workflow?templateId=${activeTemplateId}`,
+    });
+
+    if (draftForActiveTemplate) {
+      router.push(`/dashboard/societario/templates/${draftForActiveTemplate.id}?${params.toString()}`);
+      return;
+    }
+
+    const result = await createDraft.mutateAsync(activeTemplateId);
+    router.push(`/dashboard/societario/templates/${result.id}?${params.toString()}`);
+  };
+
   return (
     <>
-      <div className="h-full w-full flex flex-col overflow-hidden">
-        <div className="flex-shrink-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-          <div className="w-full max-w-full px-4 py-4 space-y-4 overflow-hidden">
-            <div className="flex items-center justify-between gap-4 w-full min-w-0">
-              <div className="flex-1 min-w-0 overflow-hidden">
-                <h2 className="text-2xl sm:text-3xl font-semibold text-foreground truncate">
+      <div className="flex h-full w-full flex-col overflow-hidden">
+        <div className="sticky top-0 z-40 w-full flex-shrink-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="w-full max-w-full space-y-4 overflow-hidden px-4 py-4">
+            <div className="flex w-full min-w-0 items-start justify-between gap-4">
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <h2 className="truncate text-2xl font-semibold text-foreground sm:text-3xl">
                   Societário
                 </h2>
-                {templateDetail && (
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 truncate">
-                    Template: {templateDetail.name}
+                {draftForActiveTemplate && (
+                  <p className="mt-1 truncate text-xs text-primary sm:text-sm">
+                    Existe um rascunho pendente pronto para continuar edição.
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                {/* Template Selector */}
-                {templates && templates.length > 1 && (
+
+              <div className="flex flex-shrink-0 items-center gap-2">
+                {activeTemplates.length > 1 && (
                   <Select
                     value={activeTemplateId}
-                    onValueChange={setSelectedTemplateId}
+                    onValueChange={(value) => {
+                      setSelectedTemplateId(value);
+                      router.replace(`/dashboard/societario/workflow?templateId=${value}`);
+                    }}
                   >
-                    <SelectTrigger className="w-48">
-                      <Layers className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder="Template" />
+                    <SelectTrigger className="w-56">
+                      <Layers className="mr-2 h-4 w-4" />
+                      <SelectValue placeholder="Workflow" />
                     </SelectTrigger>
                     <SelectContent>
-                      {templates.map((t) => (
-                        <SelectItem key={t.id} value={t.id}>
-                          {t.name}
+                      {activeTemplates.map((template) => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                )}
+
+                {templateDetail && (
+                  <Button
+                    variant={draftForActiveTemplate ? 'default' : 'outline'}
+                    size="icon"
+                    onClick={handleEditWorkflow}
+                    disabled={createDraft.isPending}
+                    loading={createDraft.isPending}
+                    aria-label={draftForActiveTemplate ? 'Continuar edição' : 'Editar workflow'}
+                    title={draftForActiveTemplate ? 'Continuar edição' : 'Editar workflow'}
+                  >
+                    <FilePenLine className="h-4 w-4" />
+                  </Button>
                 )}
 
                 <ProcessDialog
@@ -167,62 +222,54 @@ export function Board() {
               </div>
             </div>
 
-            {/* Linha 2: busca + filtro */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full min-w-0">
-              <div className="flex-1 max-w-full sm:max-w-md min-w-0">
+            <div className="flex w-full min-w-0 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <div className="min-w-0 flex-1 max-w-full sm:max-w-md">
                 <SearchBar placeholder="Buscar por nome, contabilidade..." />
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex flex-shrink-0 items-center gap-2">
                 <FiltersDialog accounties={accounties} />
-                <Link
-                  href="/dashboard/societario/templates"
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors underline-offset-4 hover:underline"
-                >
-                  Gerenciar templates
-                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* AREA DO KANBAN */}
-        <div className="flex-1 min-h-0 w-full relative">
+        <div className="relative min-h-0 flex-1 w-full">
           <div className="absolute inset-0 overflow-x-auto">
             {templateLoading ? (
-              <div className="flex gap-6 h-full w-max min-w-full p-4">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="flex-shrink-0 w-80 h-full">
-                    <div className="animate-pulse bg-muted rounded-lg h-full" />
+              <div className="flex h-full w-max min-w-full gap-6 p-4">
+                {[...Array(4)].map((_, index) => (
+                  <div key={index} className="h-full w-80 flex-shrink-0">
+                    <div className="h-full animate-pulse rounded-lg bg-muted" />
                   </div>
                 ))}
               </div>
             ) : displayColumns.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center space-y-2">
-                  <Layers className="h-12 w-12 text-muted-foreground/50 mx-auto" />
+              <div className="flex h-full items-center justify-center">
+                <div className="space-y-2 text-center">
+                  <Layers className="mx-auto h-12 w-12 text-muted-foreground/50" />
                   <p className="text-sm text-muted-foreground">
                     Nenhum template ativo.{' '}
                     <Link
-                      href="/dashboard/societario/templates"
+                      href="/dashboard/societario"
                       className="text-primary hover:underline"
                     >
-                      Crie um template
+                      Escolha ou crie um template
                     </Link>{' '}
                     para começar.
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="flex gap-6 h-full w-max min-w-full p-4">
-                {displayColumns.map((col) => (
-                  <div key={col.id} className="flex-shrink-0 w-80 h-full">
+              <div className="flex h-full w-max min-w-full gap-6 p-4">
+                {displayColumns.map((column) => (
+                  <div key={column.id} className="h-full w-80 flex-shrink-0">
                     <Column
                       stage={{
-                        id: col.id,
-                        nome: col.nome,
-                        ordem: col.ordem,
+                        id: column.id,
+                        nome: column.nome,
+                        ordem: column.ordem,
                       }}
-                      processes={col.processos || []}
+                      processes={column.processos || []}
                     />
                   </div>
                 ))}
@@ -231,13 +278,11 @@ export function Board() {
           </div>
         </div>
 
-        {/* FOOTER FIXO */}
         {hasActiveFilters && (
-          <div className="flex-shrink-0 w-full border-t bg-background/95 backdrop-blur overflow-hidden">
-            <div className="px-4 py-2 max-w-full">
-              <div className="text-center text-xs sm:text-sm text-muted-foreground truncate">
-                Mostrando{' '}
-                <span className="font-bold">{filteredProcesses.length}</span>{' '}
+          <div className="w-full flex-shrink-0 overflow-hidden border-t bg-background/95 backdrop-blur">
+            <div className="max-w-full px-4 py-2">
+              <div className="truncate text-center text-xs text-muted-foreground sm:text-sm">
+                Mostrando <span className="font-bold">{filteredProcesses.length}</span>{' '}
                 <span className="font-medium">processos</span>
               </div>
             </div>
@@ -245,7 +290,6 @@ export function Board() {
         )}
       </div>
 
-      {/* Drawer (fora do fluxo principal) */}
       <CorporateDrawer />
     </>
   );
