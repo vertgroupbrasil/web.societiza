@@ -65,7 +65,7 @@ export function makeAccountancyColumns(
         <DataTableColumnHeader column={column} title="CNPJ" />
       ),
       cell: ({ cell }) => (
-        <div className="font-mono text-sm">
+        <div className="text-sm tabular-nums">
           {cell.getValue<Accountancy['cnpj']>()}
         </div>
       ),
