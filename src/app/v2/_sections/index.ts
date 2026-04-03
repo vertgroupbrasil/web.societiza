@@ -1,0 +1,15 @@
+export { Header } from './header';
+export { HeroSection } from './hero';
+export { StatsBar } from './stats-bar';
+export { HowItWorks } from './how-it-works';
+export { FeaturesShowcase } from './features-showcase';
+export { ProblemSection } from './problem';
+export { TransformSection } from './transform';
+export { DifferentialsSection } from './differentials';
+export { HighlightsSection } from './highlights';
+export { TestimonialsSection } from './testimonials';
+export { PositioningSection } from './positioning';
+export { PricingSection } from './pricing';
+export { CTASection } from './cta';
+export { FaqSection } from './faq';
+export { Footer } from './footer';
