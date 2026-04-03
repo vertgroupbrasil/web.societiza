@@ -1,6 +1,6 @@
 ---
 name: societiza-operating-system
-description: Master operating skill for the Societiza project. Use for nearly any Societiza task involving frontend implementation, feature-based architecture, workflow or template domain work, UI and UX changes, copy, SEO, testing, documentation, code quality, and git workflow. This skill decides which local project skills to consult, enforces Societiza conventions, requires Jest and Playwright validation by default, requires detailed feature documentation, and blocks backend work unless the user explicitly asks for backend.
+description: Master operating skill for the Societiza project. Use for nearly any Societiza task involving frontend implementation, workflow or template domain work, UI and UX changes, copy, SEO, testing, documentation, code quality, and git workflow. This skill decides which local project skills to consult, always loads societiza-code-rules as the primary frontend code contract, requires Jest and Playwright validation by default, requires detailed feature documentation, and blocks backend work unless the user explicitly asks for backend.
 user-invocable: true
 argument-hint: "[task or area]"
 ---
@@ -18,7 +18,8 @@ to Societiza.
 
 1. Locate the affected feature, route, or layer before editing anything.
 2. Route the task to the correct local skills.
-3. Enforce Societiza frontend architecture and naming conventions.
+3. Enforce Societiza frontend orchestration while delegating code rules to
+   `societiza-code-rules`.
 4. Block backend work unless the user explicitly requests backend.
 5. Require validation with Jest and Playwright by default.
 6. Require detailed feature documentation for relevant changes.
@@ -29,22 +30,22 @@ to Societiza.
 Read these references before implementation:
 
 1. `references/project-context.md`
-2. `references/frontend-architecture.md`
-3. `references/naming-conventions.md`
-4. `references/skill-routing-matrix.md`
+2. `../societiza-code-rules/SKILL.md`
+3. `references/skill-routing-matrix.md`
 
 Then read additional references only as needed:
 
 - Workflow or template work: `references/workflow-domain.md`
 - Task touches backend boundary: `references/backend-boundary.md`
-- Validation plan or closeout: `references/testing-policy.md`
-- Docs requirement: `references/feature-documentation.md`
+- Validation plan or closeout: `../societiza-code-rules/references/testing-and-quality.md`
+- Docs requirement: `../societiza-code-rules/references/docs-and-readmes.md`
 - Git and PR handling: `references/git-and-pr-workflow.md`
 - Concrete execution flow: `references/task-playbooks.md`
 
 ## Operating Rules
 
 - Always locate the feature before making changes.
+- Always load `societiza-code-rules` before implementing frontend code.
 - Never improvise structure outside the feature-based architecture.
 - Never cross features with brittle relative imports.
 - Always prefer the project's aliases.
@@ -113,7 +114,8 @@ If multiple skills apply, use the minimum set that fully covers the task.
 
 ## Validation Rule
 
-Use `references/testing-policy.md` before closing work.
+Use `../societiza-code-rules/references/testing-and-quality.md` before closing
+work.
 
 Default expectation:
 
@@ -134,4 +136,3 @@ Always prefer:
 - PR bodies that explain the feature, risks, conflicts, and validation.
 
 Do not write low-information PR descriptions.
-

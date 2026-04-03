@@ -1,0 +1,4 @@
+version: 1
+display_name: Societiza Code Rules
+short_description: Primary frontend code rules for Societiza
+default_prompt: Use this skill as the source of truth for frontend code structure in Societiza. Enforce feature-based folders, barrel imports through index.ts, service-to-hooks-to-components layering, presentation-only components/ui, required query-options, mutation refetch plus optimistic UI, and required feature README plus docs/features updates.
