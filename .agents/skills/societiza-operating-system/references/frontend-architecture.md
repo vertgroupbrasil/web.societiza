@@ -35,4 +35,3 @@ Rules:
 - Prefer project aliases instead of long relative imports.
 - Keep data fetching in query hooks and server services, not scattered inside UI.
 - Keep schema parsing and type inference close to the feature.
-

@@ -39,4 +39,3 @@ Required closeout format:
 - what passed
 - what failed
 - what remains a legacy problem
-

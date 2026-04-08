@@ -28,4 +28,3 @@ The markdown must cover:
 
 The PR body should summarize the change, but it does not replace the file in
 `docs/features/`.
-

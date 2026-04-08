@@ -200,7 +200,11 @@ export function TemplateTaskSheet({
                 </SelectTrigger>
                 <SelectContent>
                   {TASK_TYPE_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value} className="text-xs">
+                    <SelectItem
+                      key={o.value}
+                      value={o.value}
+                      className="text-xs"
+                    >
                       {o.label}
                     </SelectItem>
                   ))}
@@ -334,8 +338,7 @@ export function TemplateTaskSheet({
                             value={newOptionValue}
                             onChange={(v) => setNewOptionValue(v)}
                             onBlur={() => {
-                              if (newOptionValue.trim())
-                                handleAddOption(field);
+                              if (newOptionValue.trim()) handleAddOption(field);
                               else setAddingOptionForFieldId(null);
                             }}
                             onKeyDown={(e) => {
@@ -350,9 +353,7 @@ export function TemplateTaskSheet({
                           />
                         ) : (
                           <button
-                            onClick={() =>
-                              setAddingOptionForFieldId(field.id)
-                            }
+                            onClick={() => setAddingOptionForFieldId(field.id)}
                             className="inline-flex items-center gap-0.5 text-xs px-2 py-1 rounded-full border border-dashed border-muted-foreground/40 text-muted-foreground hover:border-foreground/40 hover:text-foreground transition-colors"
                           >
                             <Plus className="h-2.5 w-2.5" />

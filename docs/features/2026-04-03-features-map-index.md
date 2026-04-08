@@ -24,6 +24,8 @@ Cada arquivo mapeia:
 - [Form](/Users/henilveira/Documents/societiza/web.societiza/docs/features/2026-04-03-form-feature-map.md)
 - [Workflow](/Users/henilveira/Documents/societiza/web.societiza/docs/features/2026-04-03-workflow-feature-map.md)
 - [Workflow Template](/Users/henilveira/Documents/societiza/web.societiza/docs/features/2026-04-03-workflow-template-feature-map.md)
+- [Skills x Features (Claude Code)](2026-04-05-skills-feature-cross-map.md)
+- [Padrao de Documentacao e Blueprint de Agent](2026-04-05-documentation-agent-blueprint.md)
 
 ## Leitura recomendada
 

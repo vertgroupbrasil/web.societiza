@@ -2,7 +2,7 @@
 name: societiza-code-rules
 description: Primary code-rules skill for the Societiza frontend. Use for any task that writes, refactors, reviews, or organizes frontend code in this project. Enforces feature-based architecture, barrel imports through index.ts, service-to-hooks-to-components layering, presentation-only components/ui, required query-options, mutation refetch plus optimistic UI, and required feature README plus docs/features documentation.
 user-invocable: true
-argument-hint: "[feature, file, or change]"
+argument-hint: '[feature, file, or change]'
 ---
 
 # Societiza Code Rules

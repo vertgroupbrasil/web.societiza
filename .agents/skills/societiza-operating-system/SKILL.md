@@ -2,7 +2,7 @@
 name: societiza-operating-system
 description: Master operating skill for the Societiza project. Use for nearly any Societiza task involving frontend implementation, workflow or template domain work, UI and UX changes, copy, SEO, testing, documentation, code quality, and git workflow. This skill decides which local project skills to consult, always loads societiza-code-rules as the primary frontend code contract, requires Jest and Playwright validation by default, requires detailed feature documentation, and blocks backend work unless the user explicitly asks for backend.
 user-invocable: true
-argument-hint: "[task or area]"
+argument-hint: '[task or area]'
 ---
 
 # Societiza Operating System
