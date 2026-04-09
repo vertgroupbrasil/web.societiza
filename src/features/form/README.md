@@ -1,91 +1,53 @@
-Feature Societário
-Esta feature implementa um sistema completo de gestão de processos societários em formato kanban, seguindo a arquitetura clean code baseada em features.
+# Feature Form
 
-Estrutura de Arquivos
-text
-features/societario/
-├── components/ # Componentes React
-│ ├── ui/ # Componentes de interface específicos
-│ │ ├── ProcessProgressBar.tsx
-│ │ ├── SearchBar.tsx
-│ │ ├── FiltersDialog.tsx
-│ │ └── TaskChecklist.tsx
-│ ├── KanbanBoard.tsx # Componente principal
-│ ├── KanbanColumn.tsx # Coluna do kanban
-│ ├── ProcessCard.tsx # Card do processo
-│ └── ProcessDrawer.tsx # Drawer de detalhes
-├── hooks/ # Hooks customizados
-│ ├── queries/ # Hooks de consulta
-│ │ ├── queryOptions.ts # Factory de query options
-│ │ └── useSocietarioQueries.ts
-│ ├── mutations/ # Hooks de mutação
-│ │ └── useSocietarioMutations.ts
-│ └── utils/ # Hooks utilitários
-│ ├── useSocietarioFilters.ts
-│ └── useTaskSequentialLogic.ts
-├── server/ # Camada de servidor
-│ ├── services/ # Chamadas para API
-│ │ └── societario.service.ts
-│ ├── types/ # Tipos TypeScript
-│ │ └── societario.types.ts
-│ └── validators/ # Validação de dados
-│ └── societario.validators.ts
-├── schemas/ # Schemas Zod
-│ └── societario.schema.ts
-├── constants/ # Constantes
-│ └── societario.constants.ts
-├── contexts/ # Contextos React
-│ └── societario.context.tsx
-└── index.ts # Ponto único de exportação
-Principais Funcionalidades
-Kanban Board: Visualização em colunas por etapa do processo
+## O que esta pasta representa
 
-Filtros Avançados: Sistema completo de filtragem com TanStack Table
+A pasta `form` concentra um fluxo frontend de preenchimento de dados ligado a
+abertura de empresa, com etapas como empresa, socios, revisao, persistencia
+local e consulta de CEP.
 
-Pesquisa Global: Busca em tempo real por nome de empresa
+Mas este ponto e importante:
 
-Tarefas Sequenciais: Lógica de marcação sequencial de tarefas
+esta pasta nao deve ser interpretada sozinha como a prova de que o produto ja
+possui uma feature oficial, consolidada e estabilizada de formulario nativo de
+abertura de empresa no MVP.
 
-Drawer Responsivo: Interface adaptativa para detalhes do processo
+Do ponto de vista da regra de negocio atual do produto, a forma oficial e
+consolidada de capturar informacoes configuraveis ainda esta fortemente ligada
+aos campos de etapas e tarefas do `workflow-template`.
 
-Progress Tracking: Barras de progresso coloridas por urgência
+## Papel atual no produto
 
-Stage Navigation: Avanço e retorno entre etapas
+Hoje esta feature deve ser lida como uma implementacao frontend existente, com
+valor de exploracao e de fluxo, mas ainda nao como a definicao final da feature
+de formulario de abertura que a Societiza pode vir a ter como produto central
+no futuro.
 
-Como Usar
-tsx
-import {
-KanbanBoard,
-SocietarioProvider
-} from '@societiza/features/societario';
+Isso significa que qualquer trabalho nessa pasta precisa distinguir claramente:
 
-function SocietarioPage() {
-return (
-<SocietarioProvider>
-<KanbanBoard />
-</SocietarioProvider>
-);
-}
-Tecnologias Utilizadas
-React 18+ com TypeScript
+- o que ja existe no codigo;
+- o que e experimento ou legado;
+- o que e direcao futura de produto;
+- e o que faz parte do MVP consolidado.
 
-TanStack Table v8 para filtragem
+## Estrutura geral
 
-TanStack Query v5 para cache e mutações
+- `components/`: renderizacao do fluxo e telas de formulario
+- `hooks/queries/`: leituras e query options
+- `hooks/mutations/`: mutacoes da feature
+- `hooks/forms/`: logica ligada as etapas do formulario
+- `hooks/utils/`: persistencia local, navegacao, autosave e CEP
+- `contexts/`: orquestracao global do estado do fluxo
+- `services/`: chamadas de API e integracao com ViaCEP
+- `lib/schemas/`: schemas e contratos locais
+- `lib/types/`: tipos inferidos e auxiliares
+- `constants/`: constantes da feature
 
-Shadcn UI para componentes
+## Alertas arquiteturais
 
-Zod para validação
-
-Tailwind CSS para estilização
-
-Arquitetura
-Esta implementação segue os princípios:
-
-Feature-based: Tudo relacionado ao societário fica nesta pasta
-
-Separation of Concerns: Server-side (services, types, validators) separado do client-side (components, hooks, contexts)
-
-Clean Code: Responsabilidades bem definidas e código testável
-
-TypeScript End-to-End: Tipagem completa da API aos componentes
+- A feature ainda carrega sinais de acoplamento legado em `API_ENDPOINTS.corporate`.
+- Parte da semantica dela pode sugerir uma feature de produto mais madura do
+  que a regra de negocio atual realmente sustenta.
+- Qualquer evolucao aqui deve ser alinhada com o papel futuro do formulario
+  dentro do workflow, e nao tratada como modulo isolado e independente por
+  default.
