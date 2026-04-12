@@ -1,0 +1,48 @@
+Crie componentes visuais animados para uma landing page SaaS B2B, com estética premium, editorial, refinada e responsiva, usando uma linguagem visual de software operacional moderno.
+
+IMPORTANTE:
+- Não usar textos legíveis dentro dos componentes.
+- Não usar números reais, labels reais, logos, nomes de empresas ou qualquer copy interna.
+- Tudo deve ser representado por skeletons, pills, barras, linhas, dots, avatares genéricos, cards, ícones geométricos simples e blocos abstratos.
+- Não copiar literalmente uma interface real. O objetivo é comunicar a ideia da feature, não simular a tela exata do produto.
+- Todos os componentes precisam parecer parte da mesma família visual.
+- Todos os componentes devem funcionar bem em desktop e mobile.
+- Não gerar imagens raster; construir os visuais como componentes animados em React + Tailwind + Framer Motion, usando apenas divs, bordas, gradientes suaves e SVGs simples se necessário.
+
+Paleta obrigatória:
+- background principal: #F7F5F3
+- superfícies: #FFFFFF e tons off-white muito leves
+- texto/traço principal: #37322F
+- texto secundário/linhas suaves: #605A57
+- bordas suaves: rgba(55, 50, 47, 0.12)
+- cor primária da marca para estados ativos e destaques: #FF5500
+- fundo de destaque/accent suave: #FFEFE7
+
+Direção visual:
+- muito espaço em branco
+- bordas finas
+- sombras suaves e quentes
+- nada com cara de dashboard financeiro genérico
+- nada futurista neon
+- nada glassmorphism exagerado
+- nada dark mode
+- aparência de software sério, elegante e confiável
+
+Motion system:
+- loop contínuo e elegante, sem cortes bruscos
+- duração total por loop: entre 6s e 10s
+- microinterações com easing suave, tipo easeOut / easeInOut
+- stagger entre elementos: 80ms a 140ms
+- usar opacity, translateY, scale, soft blur e progress fill
+- animações devem respirar: animar, pausar 400ms a 900ms, seguir
+- nada frenético
+- sem bounce infantil
+- sem overshoot exagerado
+- se houver transição de estado, ela deve parecer inevitável e limpa
+
+Responsividade:
+- desktop: composições mais ricas, mais camadas
+- tablet: reduzir densidade em 20%
+- mobile: reduzir densidade em 35%, simplificar elementos menores e preservar a ideia central
+- nunca deixar elementos estourarem o container
+- tudo deve caber visualmente no espaço da seção
