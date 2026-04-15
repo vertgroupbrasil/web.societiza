@@ -1,19 +1,17 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Header } from "@societiza/components/header"
 
 import CTASection from './cta-section';
 import DocumentationSection from "./documentation-section"
-import FAQSection from "./faq-section"
 import FooterSection from "./footer-section"
 import { LandingBentoGridSection } from "./landing-bento-grid-section"
+import { landingHeroCards } from "./landing-hero-cards"
 import { LandingFeatureSelector } from "./landing-feature-selector"
 import { LandingFrame } from "./landing-frame"
 import { LandingHeroSection } from "./landing-hero-section"
-import { LandingNavigation } from "./landing-navigation"
-import { LandingSocialProofSection } from "./landing-social-proof-section"
-import PricingSection from "./pricing-section"
-import TestimonialsSection from "./testimonials-section"
+
 
 export function LandingPage() {
   const [activeCard, setActiveCard] = useState(0)
@@ -53,25 +51,24 @@ export function LandingPage() {
   }
 
   return (
-    <LandingFrame>
-      <LandingNavigation />
+    <>
+      <Header />
 
-      <div className="pt-16 sm:pt-20 md:pt-24 lg:pt-[216px] pb-8 sm:pb-12 md:pb-16 flex flex-col justify-start items-center px-2 sm:px-4 md:px-8 lg:px-0 w-full sm:pl-0 sm:pr-0 pl-0 pr-0">
-        <LandingHeroSection activeCard={activeCard} />
-        <LandingFeatureSelector
-          activeCard={activeCard}
-          progress={progress}
-          onCardClick={handleCardClick}
-        />
-        {/* <LandingSocialProofSection /> */}
-        <LandingBentoGridSection />
-        <DocumentationSection />
-        {/* <TestimonialsSection /> */}
-        {/* <PricingSection /> */}
-        {/* <FAQSection /> */}
-        <CTASection />
-        {/* <FooterSection /> */}
-      </div>
-    </LandingFrame>
+      <LandingFrame>
+        <div className="pb-8 pt-10 sm:pb-12 sm:pt-14 md:pb-16 md:pt-16 lg:pt-[160px] flex w-full flex-col items-center justify-start px-0 sm:px-4 md:px-8 lg:px-0">
+          <LandingHeroSection activeCard={activeCard} cards={landingHeroCards} />
+          <LandingFeatureSelector
+            activeCard={activeCard}
+            cards={landingHeroCards}
+            progress={progress}
+            onCardClick={handleCardClick}
+          />
+          <LandingBentoGridSection />
+          <DocumentationSection />
+          <CTASection />
+          <FooterSection />
+        </div>
+      </LandingFrame>
+    </>
   )
 }

@@ -1,13 +1,15 @@
-import EffortlessIntegration from "./effortless-integration-updated"
+'use client'
+
+import { useState } from "react"
+import { motion } from "motion/react"
 import { LandingBadge } from "./landing-badge"
-import NumbersThatSpeak from "./numbers-that-speak"
-import SmartSimpleBrilliant from "./smart-simple-brilliant"
-import YourWorkInSync from "./your-work-in-sync"
+import { landingBentoCards } from "./landing-bento-cards"
 
 export function LandingBentoGridSection() {
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   return (
-    <div className="w-full border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
-      <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] py-8 sm:py-12 md:py-16 border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center gap-6">
+    <div id="funcionalidades" className="w-full border-b border-border flex flex-col justify-center items-center scroll-mt-28">
+      <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] py-8 sm:py-12 md:py-16 border-b border-border flex justify-center items-center gap-6">
         <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 shadow-[0px_2px_4px_rgba(50,45,43,0.06)] overflow-hidden rounded-lg flex flex-col justify-start items-center gap-3 sm:gap-4 shadow-none">
           <LandingBadge
             icon={
@@ -18,18 +20,18 @@ export function LandingBentoGridSection() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <rect x="1" y="1" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
-                <rect x="7" y="1" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
-                <rect x="1" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
-                <rect x="7" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
+                <rect x="1" y="1" width="4" height="4" stroke="#151011" strokeWidth="1" fill="none" />
+                <rect x="7" y="1" width="4" height="4" stroke="#151011" strokeWidth="1" fill="none" />
+                <rect x="1" y="7" width="4" height="4" stroke="#151011" strokeWidth="1" fill="none" />
+                <rect x="7" y="7" width="4" height="4" stroke="#151011" strokeWidth="1" fill="none" />
               </svg>
             }
-            text="Bento grid"
+            text="Para o seu escritório"
           />
-          <div className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
+          <div className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-foreground text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
             Menos burocracia. Mais clareza para todo mundo.
           </div>
-          <div className="self-stretch text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
+          <div className="self-stretch text-center text-muted-foreground text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
             Societiza organiza a abertura de empresas do jeito que o contador precisa: processo centralizado, cliente acompanhando, rotina menos manual e equipe trabalhando com o mesmo contexto.
           </div>
         </div>
@@ -41,101 +43,84 @@ export function LandingBentoGridSection() {
             {Array.from({ length: 200 }).map((_, index) => (
               <div
                 key={index}
-                className="self-stretch h-3 sm:h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                className="self-stretch h-3 sm:h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-border/70 outline-offset-[-0.25px]"
               />
             ))}
           </div>
         </div>
 
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
-          <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)] p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6">
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                O seu societário, sem caos
-              </h3>
-              <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                Pare de espalhar a abertura da empresa entre planilhas, anotações, portais públicos e conversas soltas.
-              </p>
-            </div>
-            <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex items-center justify-center overflow-hidden">
-              <SmartSimpleBrilliant
-                width="100%"
-                height="100%"
-                theme="light"
-                className="scale-50 sm:scale-65 md:scale-75 lg:scale-90"
-              />
-            </div>
-          </div>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-x border-border">
+          {landingBentoCards.map((card, index) => {
+            const isTopRow = index < 2
+            const isLeftColumn = index % 2 === 0
+            const isHovered = hoveredCard === index
 
-          <div className="border-b border-[rgba(55,50,47,0.12)] p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6">
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
-                Transparência para o cliente
-              </h3>
-              <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                Reduza cobrança no WhatsApp e transforme o acompanhamento do processo em uma experiência clara para o cliente.
-              </p>
-            </div>
-            <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden text-right items-center justify-center">
-              <YourWorkInSync
-                width="400"
-                height="250"
-                theme="light"
-                className="scale-60 sm:scale-75 md:scale-90"
-              />
-            </div>
-          </div>
-
-          <div className="border-r-0 md:border-r border-[rgba(55,50,47,0.12)] p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6 bg-transparent">
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                Menos acompanhamento manual
-              </h3>
-              <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                O contador não deveria perder tempo verificando o mesmo status na prefeitura várias vezes por dia.
-
-
-              </p>
-            </div>
-            <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden justify-center items-center relative bg-transparent">
-              <div className="w-full h-full flex items-center justify-center bg-transparent">
-                <EffortlessIntegration
-                  width={400}
-                  height={250}
-                  className="max-w-full max-h-full"
-                />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F7F5F3] to-transparent pointer-events-none" />
-            </div>
-          </div>
-
-          <div className="p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6">
-            <div className="flex flex-col gap-2">
-              <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                Trabalhe em equipe, sem ruído
-              </h3>
-              <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                Trabalhe colaborativamente com sua equipe para centralizar seus processos
-              </p>
-            </div>
-            <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden items-center justify-center relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <NumbersThatSpeak
-                  width="100%"
-                  height="100%"
-                  theme="light"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F7F5F3] to-transparent pointer-events-none" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-20 hidden">
-                <div className="flex flex-col items-center gap-2 p-4">
-                  <div className="w-3/4 h-full bg-green-500 rounded-full" />
+            return (
+              <div
+                key={card.title}
+                className={`relative overflow-hidden flex flex-col justify-start items-start min-h-[420px] sm:min-h-[480px] ${
+                  isTopRow ? "border-b" : ""
+                } ${isLeftColumn ? "border-r-0 md:border-r" : ""} border-border`}
+              >
+                {/* Texto */}
+                <div className="relative z-10 flex flex-col gap-2 p-6 sm:p-8 md:p-10 lg:p-12 pb-0">
+                  <h3 className="text-foreground text-lg sm:text-xl font-semibold leading-tight font-sans">
+                    {card.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm md:text-base font-normal leading-relaxed font-sans">
+                    {card.description}
+                  </p>
                 </div>
-                <div className="text-sm text-green-600">Growth Rate</div>
+
+                {/*
+                  Stack de cards — hover só no próprio card visual, não na célula inteira.
+                  A âncora é sempre bottom:0, então subir o `top` expande para cima
+                  sem deixar espaço vazio embaixo.
+                */}
+                <motion.div
+                  className="absolute inset-x-6 sm:inset-x-8 md:inset-x-10 lg:inset-x-12 bottom-0"
+                  animate={{ top: isHovered ? '38%' : '42%' }}
+                  transition={{ duration: 0.45, ease: [0.34, 1.1, 0.64, 1] }}
+                  onMouseEnter={() => setHoveredCard(index)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/* Card folder — bounce sutil com delay */}
+                  <motion.div
+                    style={{
+                      position: 'absolute',
+                      left: 14,
+                      right: 14,
+                      bottom: 0,
+                      borderRadius: '12px 12px 0 0',
+                      backgroundColor: '#f7ece8',
+                      borderTop: '1px solid rgba(236,217,210,1)',
+                      borderLeft: '1px solid rgba(236,217,210,1)',
+                      borderRight: '1px solid rgba(236,217,210,1)',
+                    }}
+                    animate={{ top: isHovered ? -17 : -12 }}
+                    transition={
+                      isHovered
+                        ? { type: 'spring', stiffness: 260, damping: 20, delay: 0.07 }
+                        : { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
+                    }
+                  />
+
+                  {/* Card principal */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '12px 12px 0 0',
+                    overflow: 'hidden',
+                    borderTop: '1px solid rgba(236,217,210,1)',
+                    borderLeft: '1px solid rgba(236,217,210,1)',
+                    borderRight: '1px solid rgba(236,217,210,1)',
+                  }}>
+                    <card.Visual />
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
 
         <div className="w-4 sm:w-6 md:w-8 lg:w-12 self-stretch relative overflow-hidden">
@@ -143,7 +128,7 @@ export function LandingBentoGridSection() {
             {Array.from({ length: 200 }).map((_, index) => (
               <div
                 key={index}
-                className="self-stretch h-3 sm:h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                className="self-stretch h-3 sm:h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-border/70 outline-offset-[-0.25px]"
               />
             ))}
           </div>
