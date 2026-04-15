@@ -26,7 +26,7 @@ export function MobileNav() {
         )}
       </Button>
       {open && (
-        <Portal className="top-14" id="mobile-menu">
+        <Portal className="top-16" id="mobile-menu">
           <PortalBackdrop />
           <div
             className={cn(
@@ -52,7 +52,7 @@ export function MobileNav() {
                 <a href="/login">Entrar</a>
               </Button>
               <Button asChild className="w-full">
-                <a href="/login">Começar grátis</a>
+                <a href="#interesse">Quero conhecer</a>
               </Button>
             </div>
           </div>
