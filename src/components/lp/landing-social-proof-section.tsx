@@ -28,7 +28,7 @@ export function LandingSocialProofSection() {
                 <rect x="9.5" y="5" width="1" height="1" fill="#37322F" />
               </svg>
             }
-            text="Social Proof"
+            text="Quem já usa"
           />
           <div className="w-full max-w-[472.55px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
             Confidence backed by results
