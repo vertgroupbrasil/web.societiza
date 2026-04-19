@@ -123,6 +123,24 @@ export const API_ENDPOINTS = {
     update: (id: string) => withBase(`/accountancy/${id}`),
     delete: (id: string) => withBase(`/accountancy/${id}`),
   },
+  // TODO: remover mock e apontar para endpoints reais quando backend entregar
+  offices: {
+    getAll: withBase('/offices'),
+    create: withBase('/offices'),
+    getById: (id: string) => withBase(`/offices/${id}`),
+    update: (id: string) => withBase(`/offices/${id}`),
+    delete: (id: string) => withBase(`/offices/${id}`),
+    setActive: withBase('/offices/active'),
+    members: (officeId: string) => withBase(`/offices/${officeId}/members`),
+    removeMember: (officeId: string, memberId: string) =>
+      withBase(`/offices/${officeId}/members/${memberId}`),
+    inviteByEmail: (officeId: string) =>
+      withBase(`/offices/${officeId}/members/invite-email`),
+    inviteLink: (officeId: string) =>
+      withBase(`/offices/${officeId}/members/invite-link`),
+    transferOwnership: (officeId: string) =>
+      withBase(`/offices/${officeId}/ownership`),
+  },
   corporate: {
     form: {
       createOpeningForm: workflowTemplateEndpoints.createWorkflowTemplate,

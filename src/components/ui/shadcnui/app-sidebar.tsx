@@ -28,6 +28,11 @@ import { usePathname } from 'next/navigation';
 import { ThemeSwitcher } from '../kiboui/theme-switcher';
 import React from 'react';
 import Logout from '@societiza/features/auth/components/ui/logout-button';
+import { OfficeSwitcher } from '@societiza/features/accountancy-offices/components/ui/OfficeSwitcher';
+import { OfficeSwitcherSkeleton } from '@societiza/features/accountancy-offices/components/ui/OfficeSwitcherSkeleton';
+import { useOffices } from '@societiza/features/accountancy-offices/hooks/queries/useOfficeQueries';
+import { useSetActiveOffice } from '@societiza/features/accountancy-offices/hooks/mutations/useOfficeMutations';
+import { MOCK_ACTIVE_OFFICE_ID } from '@societiza/features/accountancy-offices/_mock';
 
 type NavItem = {
   title: string;
@@ -79,6 +84,26 @@ const data: { sections: Section[] } = {
       ],
     },
     {
+      title: 'Escritório',
+      items: [
+        {
+          title: 'Configurações',
+          icon: SettingsGearIcon,
+          url: '/dashboard/escritorio/configuracoes',
+        },
+        {
+          title: 'Membros',
+          icon: CctvIcon,
+          url: '/dashboard/escritorio/membros',
+        },
+        {
+          title: 'Plano',
+          icon: TrendingUpIcon,
+          url: '/dashboard/escritorio/plano',
+        },
+      ],
+    },
+    {
       title: 'Suporte',
       items: [
         {
@@ -101,6 +126,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>(
     {},
   );
+  const [activeOfficeId, setActiveOfficeId] = React.useState(MOCK_ACTIVE_OFFICE_ID);
+  const { data: offices, isLoading: isOfficesLoading } = useOffices();
+  const setActiveOffice = useSetActiveOffice();
+
+  const handleSwitchOffice = (officeId: string) => {
+    setActiveOfficeId(officeId);
+    setActiveOffice.mutate(officeId);
+  };
 
   // Function to check if a menu item is active
   const isItemActive = (itemUrl: string) => {
@@ -120,10 +153,24 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar variant="floating" {...props}>
-      <SidebarHeader className="p-6 !pb-2">
+      <SidebarHeader className="p-6 !pb-2 space-y-3">
         <Link href="/" className="flex">
           <LogoOrange />
         </Link>
+
+        {/* Office Switcher */}
+        <div className="mt-2">
+          {isOfficesLoading || !offices ? (
+            <OfficeSwitcherSkeleton />
+          ) : (
+            <OfficeSwitcher
+              offices={offices}
+              activeOfficeId={activeOfficeId}
+              onSwitch={handleSwitchOffice}
+              isSwitching={setActiveOffice.isPending}
+            />
+          )}
+        </div>
       </SidebarHeader>
       <SidebarContent>
         {data.sections.map((section) => (
