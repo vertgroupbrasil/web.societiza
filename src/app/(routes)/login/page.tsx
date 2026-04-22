@@ -1,6 +1,5 @@
 import { LoginForm } from '@societiza/features/auth/components/forms/login-form';
-import LogoOrange from '@societiza/components/logo-orange';
-import { LoginFeaturePanel } from './_components/login-feature-panel';
+import IconOrange from '@societiza/components/icon-orange';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
@@ -11,23 +10,50 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen w-screen flex">
-      {/* ── Lado esquerdo — formulário ──────────────────────────────────── */}
-      <div className="flex flex-col justify-between w-full lg:w-[480px] xl:w-[520px] shrink-0 px-8 py-10 lg:px-12">
-        {/* Logo */}
-        <div>
-          <LogoOrange />
-        </div>
+    <div className="relative min-h-screen w-screen flex justify-center items-center overflow-hidden">
+      {/* ── Fundo gradiente ─────────────────────────────────────────────── */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            'linear-gradient(to bottom, var(--background) 0%, var(--background) 50%, rgba(255,255,255,0) 100%), radial-gradient(ellipse at 50% 120%, var(--primary) 0%, var(--background) 80%)',
+          opacity: 0.7,
+        }}
+      >
+        <div
+          style={{
+            WebkitMaskImage:
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 70%)',
+            backgroundImage:
+              'repeating-conic-gradient(from 0deg at 50% 100%, var(--primary) 0deg, var(--primary) 2deg, transparent 2deg, transparent 10deg)',
+            bottom: '-20%',
+            height: '100%',
+            left: '50%',
+            maskImage:
+              'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)',
+            opacity: 0.2,
+            pointerEvents: 'none',
+            position: 'absolute',
+            transform: 'translateX(-50%)',
+            width: '200%',
+          }}
+        />
+      </div>
 
-        {/* Form area — centralizada verticalmente */}
-        <div className="w-full max-w-sm mx-auto space-y-8">
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold tracking-tight">
-              Bem-vindo de volta
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Entre com sua conta para continuar no Societiza.
-            </p>
+      {/* ── Conteúdo ────────────────────────────────────────────────────── */}
+      <div className="relative z-10 flex flex-col items-center p-8 w-full">
+        <div className="w-full max-w-md space-y-6">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <IconOrange />
+            <div className="text-center">
+              <h1 className="text-2xl font-bold">
+                Iniciar sessão no Societiza
+              </h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Esqueça as milhares de planilhas e se concentre em uma
+                plataforma só.
+              </p>
+            </div>
           </div>
 
           <LoginForm />
@@ -42,16 +68,6 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-
-        {/* Footer */}
-        <p className="text-xs text-muted-foreground text-center">
-          © {new Date().getFullYear()} Societiza. Todos os direitos reservados.
-        </p>
-      </div>
-
-      {/* ── Lado direito — feature showcase ────────────────────────────── */}
-      <div className="hidden lg:flex flex-1 relative overflow-hidden">
-        <LoginFeaturePanel />
       </div>
     </div>
   );
