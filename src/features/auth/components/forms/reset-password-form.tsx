@@ -9,58 +9,34 @@ import {
 } from '@societiza/components/ui/shadcnui/form';
 import { Button } from '@societiza/components/ui/shadcnui/button';
 import { Input } from '@societiza/components/ui/shadcnui/input';
-import { Mail } from 'lucide-react';
 import Link from 'next/link';
-import { useLoginForm } from '../../hooks/forms/useAuthForm';
+import { useResetPasswordForm } from '../../hooks/forms/useAuthForm';
 
-export function LoginForm() {
-  const { form, onSubmit, isSubmitting } = useLoginForm();
+type Props = {
+  token: string;
+};
+
+export function ResetPasswordForm({ token }: Props) {
+  const { form, onSubmit, isSubmitting } = useResetPasswordForm(token);
 
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-4">
-        {/* Email */}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>E-mail</FormLabel>
-              <FormControl>
-                <Input
-                  error={fieldState.error?.message ?? undefined}
-                  icon={Mail}
-                  placeholder="seu@email.com"
-                  autoComplete="email"
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        {/* Campo oculto com o token */}
+        <input type="hidden" {...form.register('token')} />
 
-        {/* Senha */}
         <FormField
           control={form.control}
-          name="password"
+          name="newPassword"
           render={({ field, fieldState }) => (
             <FormItem>
-              <div className="flex items-center justify-between">
-                <FormLabel>Senha</FormLabel>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
-                  tabIndex={-1}
-                >
-                  Esqueci minha senha
-                </Link>
-              </div>
+              <FormLabel>Nova senha</FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   error={fieldState.error?.message ?? undefined}
-                  placeholder="********"
-                  autoComplete="current-password"
+                  placeholder="Mínimo 8 caracteres"
+                  autoComplete="new-password"
                   {...field}
                 />
               </FormControl>
@@ -68,17 +44,43 @@ export function LoginForm() {
           )}
         />
 
-        {/* Botão */}
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Confirmar nova senha</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  error={fieldState.error?.message ?? undefined}
+                  placeholder="Repita a senha"
+                  autoComplete="new-password"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
         <Button
           loading={isSubmitting}
           variant="default"
-          effect="shineHover"
           type="submit"
           disabled={isSubmitting}
           className="w-full"
         >
-          {isSubmitting ? 'Entrando...' : 'Entrar'}
+          {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
         </Button>
+
+        <div className="text-center">
+          <Link
+            href="/login"
+            className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
+          >
+            Voltar ao login
+          </Link>
+        </div>
       </form>
     </Form>
   );

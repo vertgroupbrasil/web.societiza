@@ -1,32 +1,107 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import {
-  login as Auth,
-  logout as UnAuth,
-  refresh as RefreshToken,
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
 } from '@societiza/features/auth/server/services/auth.service';
-import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 
-const api = API_ENDPOINTS;
+// ── useLogin ──────────────────────────────────────────────────────────────────
 
-export function useAuthMutations() {
+export function useLogin() {
+  const router = useRouter();
   const qc = useQueryClient();
 
-  const login = useMutation({
-    mutationFn: Auth,
-    onSuccess: () => qc.invalidateQueries({ queryKey: [api.auth.login] }),
+  return useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      // Invalida todo o cache — usuário recém-autenticado pode ter dados diferentes
+      qc.clear();
+      router.push('/dashboard');
+    },
   });
+}
 
-  const logout = useMutation({
-    mutationFn: UnAuth,
-    onSuccess: () => qc.invalidateQueries({ queryKey: [api.auth.logout] }),
+// ── useLogout ─────────────────────────────────────────────────────────────────
+
+export function useLogout() {
+  const router = useRouter();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      qc.clear();
+      router.push('/login');
+      toast.success('Sessão encerrada', {
+        description: 'Você saiu da sua conta com sucesso.',
+      });
+    },
+    onError: () => {
+      // Mesmo em erro, redireciona — o token local já foi limpo no service
+      qc.clear();
+      router.push('/login');
+      toast.error('Erro ao encerrar sessão', {
+        description: 'Sua sessão foi encerrada localmente.',
+      });
+    },
   });
+}
 
-  const refresh = useMutation({
-    mutationFn: RefreshToken,
-    onSuccess: () => qc.invalidateQueries({ queryKey: [api.auth.refresh] }),
+// ── useForgotPassword ─────────────────────────────────────────────────────────
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: () => {
+      toast.success('E-mail enviado', {
+        description:
+          'Se esse endereço estiver cadastrado, você receberá um link em breve.',
+      });
+    },
+    onError: () => {
+      toast.error('Erro ao enviar e-mail', {
+        description: 'Tente novamente em alguns instantes.',
+      });
+    },
   });
+}
 
-  return { login, logout, refresh };
+// ── useResetPassword ──────────────────────────────────────────────────────────
+
+export function useResetPassword() {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: resetPassword,
+    onSuccess: () => {
+      toast.success('Senha redefinida com sucesso', {
+        description: 'Entre com sua nova senha para continuar.',
+      });
+      router.push('/login');
+    },
+    onError: () => {
+      toast.error('Link inválido ou expirado', {
+        description:
+          'Solicite um novo link de redefinição de senha.',
+      });
+    },
+  });
+}
+
+// ── useAuthMutations (compat) ─────────────────────────────────────────────────
+
+/** @deprecated Use os hooks individuais: useLogin, useLogout, useForgotPassword, useResetPassword */
+export function useAuthMutations() {
+  const loginMutation = useLogin();
+  const logoutMutation = useLogout();
+
+  return {
+    login: loginMutation,
+    logout: logoutMutation,
+  };
 }

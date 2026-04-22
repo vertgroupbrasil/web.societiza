@@ -105,9 +105,11 @@ const workflowTemplateEndpoints = {
 export const API_ENDPOINTS = {
   workflowTemplate: workflowTemplateEndpoints,
   auth: {
-    login: withBase('/accounts/token/'),
-    logout: withBase('/accounts/token/logout/'),
-    refresh: withBase('/accounts/token/refresh/'),
+    login: withBase('/identity/auth/login'),
+    logout: withBase('/identity/auth/logout'),
+    refresh: withBase('/identity/auth/refresh'),
+    forgotPassword: withBase('/identity/auth/forgot-password'),
+    resetPassword: withBase('/identity/auth/reset-password'),
   },
   accounts: {
     getUser: withBase('/accounts/get-user/'),
