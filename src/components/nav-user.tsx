@@ -1,8 +1,8 @@
 'use client';
 
 import {
-  BadgeCheck,
   Bell,
+  Building2,
   ChevronsUpDown,
   LogOut,
   Settings,
@@ -28,7 +28,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@societiza/components/ui/sidebar';
+} from '@societiza/components/ui/shadcnui/sidebar';
 import { useLogout } from '@societiza/features/auth/hooks/mutations/useAuthMutations';
 import Link from 'next/link';
 
@@ -111,21 +111,21 @@ export function NavUser({ user }: NavUserProps) {
             {/* Ações de conta */}
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/perfil">
+                <Link href="/dashboard/configuracoes/perfil">
                   <UserIcon className="size-4" />
                   Meu perfil
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/escritorio/configuracoes">
-                  <BadgeCheck className="size-4" />
-                  Configurações
+                <Link href="/dashboard/configuracoes/preferencias">
+                  <Settings className="size-4" />
+                  Preferências
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/configuracoes">
-                  <Settings className="size-4" />
-                  Preferências
+                <Link href="/dashboard/configuracoes/escritorio">
+                  <Building2 className="size-4" />
+                  Escritório
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

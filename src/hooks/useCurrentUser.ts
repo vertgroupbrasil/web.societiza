@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { getAccessToken } from '@societiza/lib/axios';
 
 type JwtClaims = {
@@ -39,33 +39,43 @@ function initialsFromEmail(email: string): string {
     .join('');
 }
 
-/** Lê o access token em memória e extrai as claims sem chamar o backend. */
+function buildUserFromToken(token: string): CurrentUser | null {
+  const claims = decodeJwtPayload(token);
+  if (!claims) return null;
+
+  const nameFromEmail = claims.email
+    .split('@')[0]
+    .split(/[._-]/)
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(' ');
+
+  const user: CurrentUser = {
+    id: claims.sub,
+    email: claims.email,
+    name: nameFromEmail,
+    role: claims.role,
+    initials: initialsFromEmail(claims.email),
+  };
+
+  if (claims.accountancy_id) {
+    user.accountancyId = claims.accountancy_id;
+  }
+
+  return user;
+}
+
+/**
+ * Lê o access token em memória e extrai as claims sem chamar o backend.
+ * Usa useState+useEffect para garantir consistência SSR/client (sem hydration mismatch).
+ */
 export function useCurrentUser(): CurrentUser | null {
-  return useMemo((): CurrentUser | null => {
+  const [user, setUser] = useState<CurrentUser | null>(null);
+
+  useEffect(() => {
     const token = getAccessToken();
-    if (!token) return null;
-
-    const claims = decodeJwtPayload(token);
-    if (!claims) return null;
-
-    const nameFromEmail = claims.email
-      .split('@')[0]
-      .split(/[._-]/)
-      .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-      .join(' ');
-
-    const user: CurrentUser = {
-      id: claims.sub,
-      email: claims.email,
-      name: nameFromEmail,
-      role: claims.role,
-      initials: initialsFromEmail(claims.email),
-    };
-
-    if (claims.accountancy_id) {
-      user.accountancyId = claims.accountancy_id;
-    }
-
-    return user;
+    if (!token) return;
+    setUser(buildUserFromToken(token));
   }, []);
+
+  return user;
 }

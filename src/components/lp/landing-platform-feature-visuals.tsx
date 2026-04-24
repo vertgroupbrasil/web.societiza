@@ -24,10 +24,11 @@ const C = {
   chrome: '#F5F4F2',
 }
 
-// Smooth easing without bounce - more fluid
-const smooth = { duration: 0.9, ease: [0.32, 0.72, 0, 1] }
-const smoothFast = { duration: 0.3, ease: [0.32, 0.72, 0, 1] }
-const smoothSlow = { duration: 0.7, ease: [0.32, 0.72, 0, 1] }
+// Typed as const tuples so Framer Motion accepts them as cubic-bezier values
+// without widening to number[].
+const EASE = [0.32, 0.72, 0, 1] as const
+const smooth     = { duration: 0.9, ease: EASE } as const
+const smoothFast = { duration: 0.3, ease: EASE } as const
 
 export type LandingPlatformFeatureVisualProps = { isActive: boolean }
 
@@ -655,33 +656,41 @@ export function InsightsFeatureVisual({ isActive }: LandingPlatformFeatureVisual
       setPhase(cur)
       
       // Cursor animation sequence - precise positions
-      if (cur === 1) {
-        setCursorPos([150, 300])
-        setHoveredBar(1)
-      } else if (cur === 2) {
-        setCursorPos([230, 270])
-        setHoveredBar(2)
-      } else if (cur === 3) {
-        setCursorPos([530, 200])
-        setClicking(true)
-        setTimeout(() => {
-          setClicking(false)
-          setSelectedFilter('registro')
-        }, 200)
-      } else if (cur === 4) {
-        setCursorPos([500, 260])
-        setHoveredBar(null)
-        setHoveredDonut(0)
-      } else if (cur === 5) {
-        setCursorPos([355, 155])
-        setHoveredDonut(1)
-      } else if (cur === 6) {
-        setHoveredDonut(null)
-        setSelectedFilter(null)
-      } else {
-        setHoveredBar(null)
-        setHoveredDonut(null)
-        setCursorPos([210, 170])
+      switch (cur) {
+        case 1:
+          setCursorPos([150, 300])
+          setHoveredBar(1)
+          break
+        case 2:
+          setCursorPos([230, 270])
+          setHoveredBar(2)
+          break
+        case 3:
+          setCursorPos([530, 200])
+          setClicking(true)
+          setTimeout(() => {
+            setClicking(false)
+            setSelectedFilter('registro')
+          }, 200)
+          break
+        case 4:
+          setCursorPos([500, 260])
+          setHoveredBar(null)
+          setHoveredDonut(0)
+          break
+        case 5:
+          setCursorPos([355, 155])
+          setHoveredDonut(1)
+          break
+        case 6:
+          setHoveredDonut(null)
+          setSelectedFilter(null)
+          break
+        default:
+          setHoveredBar(null)
+          setHoveredDonut(null)
+          setCursorPos([210, 170])
+          break
       }
       
       t = setTimeout(() => { cur = (cur + 1) % INS_D.length; run() }, INS_D[cur]) 

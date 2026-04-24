@@ -1,6 +1,15 @@
 'use client';
 
-import { Button, Separator } from '@shadcn/index';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+} from '@shadcn/index';
+import { cn } from '@societiza/lib/utils';
 import { Check, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { PlanBadge } from './ui/PlanBadge';
@@ -47,18 +56,21 @@ export function OfficePlanScreen({ officeId }: OfficePlanScreenProps) {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-6 w-40 bg-muted rounded" />
-        <div className="h-24 w-full bg-muted rounded" />
+      <div className="flex flex-col gap-6">
+        <Skeleton className="h-16 w-full rounded-lg" />
+        <Skeleton className="h-40 w-full rounded-lg" />
+        <Skeleton className="h-72 w-full rounded-lg" />
       </div>
     );
   }
 
   if (error || !office) {
     return (
-      <div className="text-center py-12 text-muted-foreground text-sm">
-        Não foi possível carregar os dados do plano.
-      </div>
+      <Card>
+        <CardContent className="py-12 text-center text-sm text-muted-foreground">
+          Não foi possível carregar os dados do plano.
+        </CardContent>
+      </Card>
     );
   }
 
@@ -70,119 +82,126 @@ export function OfficePlanScreen({ officeId }: OfficePlanScreenProps) {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-xl font-semibold">Plano e uso</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Plano e uso</h1>
+        <p className="text-sm text-muted-foreground">
           Gerencie o plano do seu escritório e acompanhe o uso.
         </p>
       </div>
 
-      {/* Card do plano atual */}
-      <div className="rounded-lg border p-5 space-y-4 bg-muted/20">
-        <div className="flex items-center justify-between">
-          <div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Plano atual</CardTitle>
+          <CardDescription>
+            {office.isOwner
+              ? 'Você gerencia o plano deste escritório.'
+              : 'O owner gerencia o plano deste escritório.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Plano atual</span>
               <PlanBadge plan={office.plan} />
+              <span className="text-sm text-muted-foreground">
+                {PLAN_LABELS[office.plan]}
+              </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {office.isOwner
-                ? 'Você é o owner deste escritório'
-                : 'O owner gerencia o plano'}
-            </p>
           </div>
-        </div>
 
-        <div className="space-y-3">
-          <PlanUsageBar
-            label="Processos criados"
-            current={office.processCount}
-            max={limits.maxProcesses}
-          />
-          <PlanUsageBar
-            label="Membros"
-            current={office.memberCount}
-            max={limits.maxMembers}
-          />
-        </div>
-      </div>
+          <div className="flex flex-col gap-3">
+            <PlanUsageBar
+              label="Processos criados"
+              current={office.processCount}
+              max={limits.maxProcesses}
+            />
+            <PlanUsageBar
+              label="Membros"
+              current={office.memberCount}
+              max={limits.maxMembers}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
-      <Separator />
+      <Card>
+        <CardHeader>
+          <CardTitle>Comparar planos</CardTitle>
+          <CardDescription>
+            Veja quais limites e recursos cada plano libera para o escritório.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {PLANS_ORDER.map((plan) => {
+              const isCurrentPlan = plan === office.plan;
+              const isUpgrade =
+                PLANS_ORDER.indexOf(plan) > PLANS_ORDER.indexOf(office.plan);
+              const features = PLAN_FEATURES[plan];
 
-      {/* Comparativo de planos */}
-      <div>
-        <h2 className="text-base font-medium mb-4">Comparar planos</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {PLANS_ORDER.map((plan) => {
-            const isCurrentPlan = plan === office.plan;
-            const isUpgrade =
-              PLANS_ORDER.indexOf(plan) > PLANS_ORDER.indexOf(office.plan);
-            const features = PLAN_FEATURES[plan];
+              return (
+                <div
+                  key={plan}
+                  className={cn(
+                    'flex flex-col gap-4 rounded-lg border p-4',
+                    isCurrentPlan &&
+                      'border-primary bg-primary/5 ring-1 ring-primary',
+                  )}
+                >
+                  <div className="flex items-center justify-between">
+                    <PlanBadge plan={plan} />
+                    {isCurrentPlan && (
+                      <span className="text-xs font-medium text-primary">
+                        Atual
+                      </span>
+                    )}
+                  </div>
 
-            return (
-              <div
-                key={plan}
-                className={`rounded-lg border p-4 space-y-4 ${
-                  isCurrentPlan
-                    ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                    : 'bg-card'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <PlanBadge plan={plan} />
+                  <ul className="flex flex-col gap-1.5">
+                    {features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                        <span className="text-xs leading-tight text-muted-foreground">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {office.isOwner && isUpgrade && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-1.5"
+                      onClick={() => handleUpgrade(plan)}
+                      aria-label={`Fazer upgrade para ${PLAN_LABELS[plan]}`}
+                    >
+                      <Zap className="h-3.5 w-3.5" />
+                      Fazer upgrade
+                    </Button>
+                  )}
+
                   {isCurrentPlan && (
-                    <span className="text-xs text-primary font-medium">
-                      Atual
-                    </span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full cursor-default text-muted-foreground"
+                      disabled
+                    >
+                      Plano atual
+                    </Button>
                   )}
                 </div>
+              );
+            })}
+          </div>
 
-                <ul className="space-y-1.5">
-                  {features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2">
-                      <Check className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
-                      <span className="text-xs text-muted-foreground leading-tight">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                {office.isOwner && isUpgrade && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full gap-1.5"
-                    onClick={() => handleUpgrade(plan)}
-                    aria-label={`Fazer upgrade para ${PLAN_LABELS[plan]}`}
-                  >
-                    <Zap className="h-3.5 w-3.5" />
-                    Fazer upgrade
-                  </Button>
-                )}
-
-                {isCurrentPlan && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full cursor-default text-muted-foreground"
-                    disabled
-                  >
-                    Plano atual
-                  </Button>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        <p className="text-xs text-muted-foreground mt-4 text-center">
-          * Preços a anunciar. Membros da lista de espera têm condições
-          especiais.
-        </p>
-      </div>
+          <p className="text-center text-xs text-muted-foreground">
+            * Preços a anunciar. Membros da lista de espera têm condições
+            especiais.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

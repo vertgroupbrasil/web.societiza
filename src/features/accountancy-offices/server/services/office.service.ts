@@ -58,7 +58,20 @@ export const officeService = {
   },
 
   update: async (id: string, data: UpdateOfficeInput): Promise<void> => {
-    if (USE_MOCK) return;
+    if (USE_MOCK) {
+      const office = MOCK_OFFICES.find((o) => o.id === id);
+      if (!office) return;
+      Object.assign(office, {
+        ...data,
+        tradeName: data.tradeName || null,
+        email: data.email || null,
+        description: data.description || null,
+        profilePhotoUrl: data.profilePhotoUrl || null,
+        bannerUrl: data.bannerUrl || null,
+        updatedAt: new Date(),
+      });
+      return;
+    }
     await fetcher.put(api.update(id), data);
   },
 

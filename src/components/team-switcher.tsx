@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { ChevronsUpDown, Plus } from 'lucide-react';
+import { ChevronsUpDown, UserPlus } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -17,12 +17,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@societiza/components/ui/sidebar';
+} from '@societiza/components/ui/shadcnui/sidebar';
 import { Skeleton } from '@societiza/components/ui/shadcnui/skeleton';
 import { useOffices } from '@societiza/features/accountancy-offices/hooks/queries/useOfficeQueries';
 import { useSetActiveOffice } from '@societiza/features/accountancy-offices/hooks/mutations/useOfficeMutations';
 import { MOCK_ACTIVE_OFFICE_ID } from '@societiza/features/accountancy-offices/_mock';
 import { PLAN_COLORS } from '@societiza/features/accountancy-offices/constants/plans.constants';
+import { InvitePeopleDialog } from '@societiza/features/accountancy-offices/components/InvitePeopleDialog';
 import type { Office } from '@societiza/features/accountancy-offices/schemas/office.schema';
 
 function officeInitials(office: Office): string {
@@ -64,9 +65,12 @@ export function TeamSwitcher() {
   const { isMobile } = useSidebar();
   const { data: offices, isLoading } = useOffices();
   const setActiveOffice = useSetActiveOffice();
-  const [activeOfficeId, setActiveOfficeId] = React.useState(MOCK_ACTIVE_OFFICE_ID);
+  const [activeOfficeId, setActiveOfficeId] =
+    React.useState(MOCK_ACTIVE_OFFICE_ID);
+  const [inviteOpen, setInviteOpen] = React.useState(false);
 
-  const activeOffice = offices?.find((o) => o.id === activeOfficeId) ?? offices?.[0];
+  const activeOffice =
+    offices?.find((o) => o.id === activeOfficeId) ?? offices?.[0];
 
   const handleSwitch = (officeId: string) => {
     setActiveOfficeId(officeId);
@@ -90,85 +94,99 @@ export function TeamSwitcher() {
   }
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+    <>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                {/* Avatar do escritório ativo */}
+                <div
+                  className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shrink-0"
+                  style={{
+                    background: PLAN_COLORS[activeOffice.plan].bg,
+                    border: `1px solid ${PLAN_COLORS[activeOffice.plan].border}`,
+                  }}
+                >
+                  <OfficeLogo office={activeOffice} />
+                </div>
+
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
+                    {activeOffice.tradeName ?? activeOffice.legalName}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {activeOffice.plan}
+                  </span>
+                </div>
+                <ChevronsUpDown className="ml-auto size-4" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+              align="start"
+              side={isMobile ? 'bottom' : 'right'}
+              sideOffset={4}
             >
-              {/* Avatar do escritório ativo */}
-              <div
-                className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shrink-0"
-                style={{
-                  background: PLAN_COLORS[activeOffice.plan].bg,
-                  border: `1px solid ${PLAN_COLORS[activeOffice.plan].border}`,
+              <DropdownMenuLabel className="text-xs text-muted-foreground">
+                Escritórios
+              </DropdownMenuLabel>
+
+              {offices.map((office) => {
+                const isActive = office.id === activeOfficeId;
+                return (
+                  <DropdownMenuItem
+                    key={office.id}
+                    onClick={() => handleSwitch(office.id)}
+                    className="gap-2 p-2"
+                  >
+                    <div
+                      className="flex size-6 items-center justify-center rounded-md overflow-hidden shrink-0"
+                      style={{
+                        background: PLAN_COLORS[office.plan].bg,
+                        border: `1px solid ${PLAN_COLORS[office.plan].border}`,
+                      }}
+                    >
+                      <OfficeLogo office={office} />
+                    </div>
+                    <span className="flex-1 truncate">
+                      {office.tradeName ?? office.legalName}
+                    </span>
+                    {isActive && (
+                      <span className="size-1.5 rounded-full bg-primary shrink-0" />
+                    )}
+                  </DropdownMenuItem>
+                );
+              })}
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                className="gap-2 p-2 text-muted-foreground"
+                onSelect={(event) => {
+                  event.preventDefault();
+                  setInviteOpen(true);
                 }}
               >
-                <OfficeLogo office={activeOffice} />
-              </div>
-
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeOffice.tradeName ?? activeOffice.legalName}
-                </span>
-                <span className="truncate text-xs text-muted-foreground">
-                  {activeOffice.plan}
-                </span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            align="start"
-            side={isMobile ? 'bottom' : 'right'}
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Escritórios
-            </DropdownMenuLabel>
-
-            {offices.map((office) => {
-              const isActive = office.id === activeOfficeId;
-              return (
-                <DropdownMenuItem
-                  key={office.id}
-                  onClick={() => handleSwitch(office.id)}
-                  className="gap-2 p-2"
-                >
-                  <div
-                    className="flex size-6 items-center justify-center rounded-md overflow-hidden shrink-0"
-                    style={{
-                      background: PLAN_COLORS[office.plan].bg,
-                      border: `1px solid ${PLAN_COLORS[office.plan].border}`,
-                    }}
-                  >
-                    <OfficeLogo office={office} />
-                  </div>
-                  <span className="flex-1 truncate">
-                    {office.tradeName ?? office.legalName}
-                  </span>
-                  {isActive && (
-                    <span className="size-1.5 rounded-full bg-primary shrink-0" />
-                  )}
-                </DropdownMenuItem>
-              );
-            })}
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="gap-2 p-2 text-muted-foreground">
-              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                <Plus className="size-3.5" />
-              </div>
-              Adicionar escritório
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                  <UserPlus />
+                </div>
+                Convidar pessoas
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+      <InvitePeopleDialog
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
+        officeId={activeOffice.id}
+        officeName={activeOffice.tradeName ?? activeOffice.legalName}
+      />
+    </>
   );
 }

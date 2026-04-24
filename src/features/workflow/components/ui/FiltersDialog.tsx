@@ -207,7 +207,7 @@ export function FiltersDialog({ accounties }: FiltersDialogProps) {
                   <SelectValue placeholder="Selecione a contabilidade" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(accounties ?? []).map((a) => (
+                  {(Array.isArray(accounties) ? accounties : []).map((a) => (
                     <SelectItem key={a.id} value={a.tradeName ?? a.legalName}>
                       {a.tradeName ?? a.legalName}
                     </SelectItem>

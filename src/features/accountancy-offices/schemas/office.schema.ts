@@ -26,6 +26,7 @@ export const officeSchema = z.object({
   postalCode: z.string(),
   phone: z.string(),
   email: z.string().email().nullable(),
+  description: z.string().nullable(),
   profilePhotoUrl: z.string().url().nullable(),
   bannerUrl: z.string().url().nullable(),
   plan: officePlanSchema,
@@ -78,6 +79,9 @@ export const updateOfficeDTO = z.object({
     .max(100)
     .optional()
     .or(z.literal('')),
+  description: z.string().max(280, 'Descrição deve ter no máximo 280 caracteres').optional(),
+  profilePhotoUrl: z.string().url('URL inválida').optional().or(z.literal('')),
+  bannerUrl: z.string().url('URL inválida').optional().or(z.literal('')),
 });
 
 export const createOfficeDTO = updateOfficeDTO;

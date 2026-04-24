@@ -45,15 +45,15 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: 'Escritório',
     items: [
-      { title: 'Configurações', url: '/dashboard/escritorio/configuracoes', icon: Settings },
-      { title: 'Membros', url: '/dashboard/escritorio/membros', icon: Users },
-      { title: 'Plano', url: '/dashboard/escritorio/plano', icon: CreditCard },
+      { title: 'Configurações', url: '/dashboard/configuracoes/escritorio', icon: Settings },
+      { title: 'Membros', url: '/dashboard/configuracoes/membros', icon: Users },
+      { title: 'Plano', url: '/dashboard/configuracoes/plano', icon: CreditCard },
     ],
   },
   {
     title: 'Suporte',
     items: [
-      { title: 'Preferências', url: '/dashboard/configuracoes', icon: SlidersHorizontal },
+      { title: 'Preferências', url: '/dashboard/configuracoes/preferencias', icon: SlidersHorizontal },
       { title: 'Ajuda', url: '/dashboard/ajuda', icon: HelpCircle },
     ],
   },

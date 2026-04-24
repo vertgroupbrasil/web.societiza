@@ -55,8 +55,11 @@ export const MOCK_OFFICES: Office[] = [
     postalCode: '01310-100',
     phone: '(11) 3344-5566',
     email: 'contato@contabil-lima.com.br',
+    description:
+      'Contabilidade consultiva para empresas em crescimento, com foco em organização fiscal, processos recorrentes e decisões mais claras.',
     profilePhotoUrl: null,
-    bannerUrl: null,
+    bannerUrl:
+      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1600&auto=format&fit=crop',
     plan: 'Escrivaninha',
     status: 'Active',
     processCount: 12,
@@ -76,8 +79,11 @@ export const MOCK_OFFICES: Office[] = [
     postalCode: '01311-000',
     phone: '(11) 9 8765-4321',
     email: null,
+    description:
+      'Escritório auxiliar para rotinas contábeis, organização de documentos e acompanhamento de processos internos.',
     profilePhotoUrl: null,
-    bannerUrl: null,
+    bannerUrl:
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop',
     plan: 'Free',
     status: 'Frozen',
     processCount: 5,

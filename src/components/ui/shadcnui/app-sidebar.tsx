@@ -19,20 +19,14 @@ import { CctvIcon } from '../icons/cctv';
 import { IdCardIcon } from '../icons/id-card';
 import { ScanTextIcon } from '../icons/scan-text';
 import { ClipboardCheckIcon } from '../icons/clipboard-check';
-import { CircleHelpIcon } from '../icons/circle-help';
-import { SettingsGearIcon } from '../icons/settings-gear';
 import { FilePenLineIcon } from '../icons/file-pen-line';
 import LogoOrange from '@societiza/components/logo-orange';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeSwitcher } from '../kiboui/theme-switcher';
 import React from 'react';
-import Logout from '@societiza/features/auth/components/ui/logout-button';
-import { OfficeSwitcher } from '@societiza/features/accountancy-offices/components/ui/OfficeSwitcher';
-import { OfficeSwitcherSkeleton } from '@societiza/features/accountancy-offices/components/ui/OfficeSwitcherSkeleton';
-import { useOffices } from '@societiza/features/accountancy-offices/hooks/queries/useOfficeQueries';
-import { useSetActiveOffice } from '@societiza/features/accountancy-offices/hooks/mutations/useOfficeMutations';
-import { MOCK_ACTIVE_OFFICE_ID } from '@societiza/features/accountancy-offices/_mock';
+import { TeamSwitcher } from '@societiza/components/team-switcher';
+import { NavUser } from '@societiza/components/nav-user';
+import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
 
 type NavItem = {
   title: string;
@@ -45,7 +39,6 @@ type Section = {
   items: NavItem[];
 };
 
-// Estrutura de dados atualizada com seções
 const data: { sections: Section[] } = {
   sections: [
     {
@@ -83,95 +76,34 @@ const data: { sections: Section[] } = {
         },
       ],
     },
-    {
-      title: 'Escritório',
-      items: [
-        {
-          title: 'Configurações',
-          icon: SettingsGearIcon,
-          url: '/dashboard/escritorio/configuracoes',
-        },
-        {
-          title: 'Membros',
-          icon: CctvIcon,
-          url: '/dashboard/escritorio/membros',
-        },
-        {
-          title: 'Plano',
-          icon: TrendingUpIcon,
-          url: '/dashboard/escritorio/plano',
-        },
-      ],
-    },
-    {
-      title: 'Suporte',
-      items: [
-        {
-          title: 'Configurações',
-          icon: SettingsGearIcon,
-          url: '/dashboard/configuracoes/',
-        },
-        {
-          title: 'Ajuda',
-          icon: CircleHelpIcon,
-          url: '/dashboard/ajuda/',
-        },
-      ],
-    },
   ],
 };
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>(
-    {},
-  );
-  const [activeOfficeId, setActiveOfficeId] = React.useState(MOCK_ACTIVE_OFFICE_ID);
-  const { data: offices, isLoading: isOfficesLoading } = useOffices();
-  const setActiveOffice = useSetActiveOffice();
+  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>({});
+  const currentUser = useCurrentUser();
 
-  const handleSwitchOffice = (officeId: string) => {
-    setActiveOfficeId(officeId);
-    setActiveOffice.mutate(officeId);
+  const user = currentUser ?? {
+    name: 'Usuário',
+    email: '',
+    initials: 'U',
   };
 
-  // Function to check if a menu item is active
   const isItemActive = (itemUrl: string) => {
-    // Exact match for root dashboard
-    if (itemUrl === '/dashboard/' && pathname === '/dashboard') {
-      return true;
-    }
-    // For other routes, check if pathname starts with the item URL
-    if (
-      itemUrl !== '/dashboard/' &&
-      pathname.startsWith(itemUrl.replace(/\/$/, ''))
-    ) {
-      return true;
-    }
+    if (itemUrl === '/dashboard/' && pathname === '/dashboard') return true;
+    if (itemUrl !== '/dashboard/' && pathname.startsWith(itemUrl.replace(/\/$/, ''))) return true;
     return false;
   };
 
   return (
     <Sidebar variant="floating" {...props}>
-      <SidebarHeader className="p-6 !pb-2 space-y-3">
+      <SidebarHeader className="p-6 !pb-2">
         <Link href="/" className="flex">
           <LogoOrange />
         </Link>
-
-        {/* Office Switcher */}
-        <div className="mt-2">
-          {isOfficesLoading || !offices ? (
-            <OfficeSwitcherSkeleton />
-          ) : (
-            <OfficeSwitcher
-              offices={offices}
-              activeOfficeId={activeOfficeId}
-              onSwitch={handleSwitchOffice}
-              isSwitching={setActiveOffice.isPending}
-            />
-          )}
-        </div>
       </SidebarHeader>
+
       <SidebarContent>
         {data.sections.map((section) => (
           <SidebarGroup key={section.title}>
@@ -186,23 +118,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 return (
                   <SidebarMenuItem
                     key={item.title}
-                    // handlers no container inteiro
-                    onMouseEnter={() =>
-                      iconRefs.current[item.title]?.startAnimation?.()
-                    }
-                    onMouseLeave={() =>
-                      iconRefs.current[item.title]?.stopAnimation?.()
-                    }
+                    onMouseEnter={() => iconRefs.current[item.title]?.startAnimation?.()}
+                    onMouseLeave={() => iconRefs.current[item.title]?.stopAnimation?.()}
                   >
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link
-                        href={item.url}
-                        className="flex items-center gap-2 font-medium"
-                      >
+                      <Link href={item.url} className="flex items-center gap-2 font-medium">
                         <ItemIcon
                           size={20}
                           className="inline-flex items-center justify-center"
-                          // registra a instância na iconRefs
                           ref={(el: TrendingUpIconHandle | null) => {
                             iconRefs.current[item.title] = el;
                           }}
@@ -217,13 +140,10 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
       <SidebarFooter>
-        <div className="p-2 flex items-center justify-center">
-          <ThemeSwitcher />
-        </div>
-        <div className="w-full">
-          <Logout />
-        </div>
+        <TeamSwitcher />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

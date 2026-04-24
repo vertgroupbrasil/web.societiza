@@ -17,7 +17,7 @@ export default function LoginPage() {
         style={{
           background:
             'linear-gradient(to bottom, var(--background) 0%, var(--background) 50%, rgba(255,255,255,0) 100%), radial-gradient(ellipse at 50% 120%, var(--primary) 0%, var(--background) 80%)',
-          opacity: 0.7,
+          opacity: 0.4,
         }}
       >
         <div
@@ -31,7 +31,7 @@ export default function LoginPage() {
             left: '50%',
             maskImage:
               'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)',
-            opacity: 0.2,
+            opacity: 0.7,
             pointerEvents: 'none',
             position: 'absolute',
             transform: 'translateX(-50%)',
@@ -47,7 +47,7 @@ export default function LoginPage() {
             <IconOrange />
             <div className="text-center">
               <h1 className="text-2xl font-bold">
-                Iniciar sessão no Societiza
+                Bem vindo de volta!
               </h1>
               <p className="text-muted-foreground text-sm mt-1">
                 Esqueça as milhares de planilhas e se concentre em uma
