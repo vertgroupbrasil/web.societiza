@@ -1,4 +1,0 @@
-version: 1
-display_name: Societiza Operating System
-short_description: Project-wide orchestration skill for Societiza
-default_prompt: Use this skill as the default operating layer for Societiza tasks. It should route to the correct local skills, enforce feature-based architecture, require Jest and Playwright validation by default, require detailed feature documentation, and block backend unless the user explicitly asked for backend.

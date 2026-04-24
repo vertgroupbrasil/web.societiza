@@ -10,6 +10,7 @@ import {
 import { Button } from '@societiza/components/ui/shadcnui/button';
 import { Input } from '@societiza/components/ui/shadcnui/input';
 import { Mail } from 'lucide-react';
+import Link from 'next/link';
 import { useLoginForm } from '../../hooks/forms/useAuthForm';
 
 export function LoginForm() {
@@ -24,12 +25,13 @@ export function LoginForm() {
           name="email"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>E-mail</FormLabel>
               <FormControl>
                 <Input
                   error={fieldState.error?.message ?? undefined}
                   icon={Mail}
                   placeholder="seu@email.com"
+                  autoComplete="email"
                   {...field}
                 />
               </FormControl>
@@ -43,12 +45,22 @@ export function LoginForm() {
           name="password"
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Senha</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel>Senha</FormLabel>
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
+                  tabIndex={-1}
+                >
+                  Esqueci minha senha
+                </Link>
+              </div>
               <FormControl>
                 <Input
                   type="password"
                   error={fieldState.error?.message ?? undefined}
                   placeholder="********"
+                  autoComplete="current-password"
                   {...field}
                 />
               </FormControl>

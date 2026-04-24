@@ -19,15 +19,14 @@ import { CctvIcon } from '../icons/cctv';
 import { IdCardIcon } from '../icons/id-card';
 import { ScanTextIcon } from '../icons/scan-text';
 import { ClipboardCheckIcon } from '../icons/clipboard-check';
-import { CircleHelpIcon } from '../icons/circle-help';
-import { SettingsGearIcon } from '../icons/settings-gear';
 import { FilePenLineIcon } from '../icons/file-pen-line';
 import LogoOrange from '@societiza/components/logo-orange';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeSwitcher } from '../kiboui/theme-switcher';
 import React from 'react';
-import Logout from '@societiza/features/auth/components/ui/logout-button';
+import { TeamSwitcher } from '@societiza/components/team-switcher';
+import { NavUser } from '@societiza/components/nav-user';
+import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
 
 type NavItem = {
   title: string;
@@ -40,7 +39,6 @@ type Section = {
   items: NavItem[];
 };
 
-// Estrutura de dados atualizada com seções
 const data: { sections: Section[] } = {
   sections: [
     {
@@ -78,43 +76,23 @@ const data: { sections: Section[] } = {
         },
       ],
     },
-    {
-      title: 'Suporte',
-      items: [
-        {
-          title: 'Configurações',
-          icon: SettingsGearIcon,
-          url: '/dashboard/configuracoes/',
-        },
-        {
-          title: 'Ajuda',
-          icon: CircleHelpIcon,
-          url: '/dashboard/ajuda/',
-        },
-      ],
-    },
   ],
 };
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>(
-    {},
-  );
+  const iconRefs = React.useRef<Record<string, TrendingUpIconHandle | null>>({});
+  const currentUser = useCurrentUser();
 
-  // Function to check if a menu item is active
+  const user = currentUser ?? {
+    name: 'Usuário',
+    email: '',
+    initials: 'U',
+  };
+
   const isItemActive = (itemUrl: string) => {
-    // Exact match for root dashboard
-    if (itemUrl === '/dashboard/' && pathname === '/dashboard') {
-      return true;
-    }
-    // For other routes, check if pathname starts with the item URL
-    if (
-      itemUrl !== '/dashboard/' &&
-      pathname.startsWith(itemUrl.replace(/\/$/, ''))
-    ) {
-      return true;
-    }
+    if (itemUrl === '/dashboard/' && pathname === '/dashboard') return true;
+    if (itemUrl !== '/dashboard/' && pathname.startsWith(itemUrl.replace(/\/$/, ''))) return true;
     return false;
   };
 
@@ -125,6 +103,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           <LogoOrange />
         </Link>
       </SidebarHeader>
+
       <SidebarContent>
         {data.sections.map((section) => (
           <SidebarGroup key={section.title}>
@@ -139,23 +118,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 return (
                   <SidebarMenuItem
                     key={item.title}
-                    // handlers no container inteiro
-                    onMouseEnter={() =>
-                      iconRefs.current[item.title]?.startAnimation?.()
-                    }
-                    onMouseLeave={() =>
-                      iconRefs.current[item.title]?.stopAnimation?.()
-                    }
+                    onMouseEnter={() => iconRefs.current[item.title]?.startAnimation?.()}
+                    onMouseLeave={() => iconRefs.current[item.title]?.stopAnimation?.()}
                   >
                     <SidebarMenuButton asChild isActive={isActive}>
-                      <Link
-                        href={item.url}
-                        className="flex items-center gap-2 font-medium"
-                      >
+                      <Link href={item.url} className="flex items-center gap-2 font-medium">
                         <ItemIcon
                           size={20}
                           className="inline-flex items-center justify-center"
-                          // registra a instância na iconRefs
                           ref={(el: TrendingUpIconHandle | null) => {
                             iconRefs.current[item.title] = el;
                           }}
@@ -170,13 +140,10 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
       <SidebarFooter>
-        <div className="p-2 flex items-center justify-center">
-          <ThemeSwitcher />
-        </div>
-        <div className="w-full">
-          <Logout />
-        </div>
+        <TeamSwitcher />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

@@ -3,7 +3,6 @@ import type { ComponentType } from "react"
 import {
   AutomationHeroVisual,
   NotificationsHeroVisual,
-  WorkflowHeroVisual,
 } from "./landing-hero-visuals"
 import { VisualCentralizedFlow } from "./visual-centralized-flow"
 

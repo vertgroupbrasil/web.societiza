@@ -360,7 +360,7 @@ export function VisualCentralizedFlow() {
   const isMoving = phase === 4
   const isReorganizing = phase >= 5 && phase < 8
   const showContext = phase >= 6 && phase < 8
-  const isIdle = phase === 7
+  // phase === 7 is the idle/hold phase — no derived state needed
 
   // Column configurations
   const column1Cards: Array<{ variant: "default" | "small" | "medium" }> = [

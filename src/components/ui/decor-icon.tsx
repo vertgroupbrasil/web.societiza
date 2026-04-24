@@ -9,9 +9,9 @@ export function DecorIcon({
   className,
   position = 'top-left',
 }: DecorIconProps) {
-  const positionClasses = {
-    'top-left': '-top-1.5 -left-1.5',
-    'top-right': '-top-1.5 -right-1.5',
+  const positions = {
+    'top-left': '-left-1.5 -top-1.5',
+    'top-right': '-right-1.5 -top-1.5',
     'bottom-left': '-bottom-1.5 -left-1.5',
     'bottom-right': '-bottom-1.5 -right-1.5',
   };
@@ -21,11 +21,7 @@ export function DecorIcon({
       viewBox="0 0 14 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn(
-        'absolute text-border',
-        positionClasses[position],
-        className,
-      )}
+      className={cn('absolute text-border', positions[position], className)}
     >
       <path d="M7 0V14M0 7H14" stroke="currentColor" strokeWidth="1.25" />
     </svg>

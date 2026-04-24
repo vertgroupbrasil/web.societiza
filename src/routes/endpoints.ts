@@ -105,9 +105,11 @@ const workflowTemplateEndpoints = {
 export const API_ENDPOINTS = {
   workflowTemplate: workflowTemplateEndpoints,
   auth: {
-    login: withBase('/accounts/token/'),
-    logout: withBase('/accounts/token/logout/'),
-    refresh: withBase('/accounts/token/refresh/'),
+    login: withBase('/identity/auth/login'),
+    logout: withBase('/identity/auth/logout'),
+    refresh: withBase('/identity/auth/refresh'),
+    forgotPassword: withBase('/identity/auth/forgot-password'),
+    resetPassword: withBase('/identity/auth/reset-password'),
   },
   accounts: {
     getUser: withBase('/accounts/get-user/'),
@@ -122,6 +124,24 @@ export const API_ENDPOINTS = {
     getById: (id: string) => withBase(`/accountancy/${id}`),
     update: (id: string) => withBase(`/accountancy/${id}`),
     delete: (id: string) => withBase(`/accountancy/${id}`),
+  },
+  // TODO: remover mock e apontar para endpoints reais quando backend entregar
+  offices: {
+    getAll: withBase('/offices'),
+    create: withBase('/offices'),
+    getById: (id: string) => withBase(`/offices/${id}`),
+    update: (id: string) => withBase(`/offices/${id}`),
+    delete: (id: string) => withBase(`/offices/${id}`),
+    setActive: withBase('/offices/active'),
+    members: (officeId: string) => withBase(`/offices/${officeId}/members`),
+    removeMember: (officeId: string, memberId: string) =>
+      withBase(`/offices/${officeId}/members/${memberId}`),
+    inviteByEmail: (officeId: string) =>
+      withBase(`/offices/${officeId}/members/invite-email`),
+    inviteLink: (officeId: string) =>
+      withBase(`/offices/${officeId}/members/invite-link`),
+    transferOwnership: (officeId: string) =>
+      withBase(`/offices/${officeId}/ownership`),
   },
   corporate: {
     form: {
