@@ -9,7 +9,6 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from '@societiza/components/ui/shadcnui/sidebar';
-import { Separator } from '@societiza/components/ui/shadcnui/separator';
 import { DashboardBreadcrumbs } from './dashboard-breadcrumbs';
 
 export default function Sidebar({
@@ -30,9 +29,8 @@ export default function Sidebar({
     >
       {isSettingsArea ? <SettingsSidebar /> : <AppSidebar />}
       <SidebarInset>
-        <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="h-4" />
+        <header className="flex h-12 shrink-0 items-center gap-2 px-3">
+          <SidebarTrigger />
           <div className="min-w-0 flex-1">
             <DashboardBreadcrumbs />
           </div>
