@@ -20,6 +20,10 @@ class LoginFormPage {
     return this.page.locator('button[type="submit"]');
   }
 
+  get passwordVisibilityButton() {
+    return this.page.getByRole('button', { name: /mostrar senha|ocultar senha/i });
+  }
+
   get emailLabel() {
     return this.page.locator('label', { hasText: 'Email' });
   }
@@ -137,6 +141,16 @@ test.describe('Login-Form - E2E Complete test', () => {
       const testPassword = 'mypassword';
       await loginPage.fillPassword(testPassword);
       await expect(loginPage.passwordInput).toHaveValue(testPassword);
+    });
+
+    test('should toggle password visibility', async () => {
+      await expect(loginPage.passwordInput).toHaveAttribute('type', 'password');
+
+      await loginPage.passwordVisibilityButton.click();
+      await expect(loginPage.passwordInput).toHaveAttribute('type', 'text');
+
+      await loginPage.passwordVisibilityButton.click();
+      await expect(loginPage.passwordInput).toHaveAttribute('type', 'password');
     });
 
     test('should clear inputs', async () => {

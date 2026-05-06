@@ -1,6 +1,17 @@
+import { createRequire } from 'node:module';
 import type { NextConfig } from 'next';
 
+const moduleRequire = createRequire(import.meta.url);
+
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   experimental: {
     turbo: {
       resolveAlias: {
@@ -11,8 +22,8 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'motion/react': require.resolve('framer-motion'),
-      motion: require.resolve('framer-motion'),
+      'motion/react': moduleRequire.resolve('framer-motion'),
+      motion: moduleRequire.resolve('framer-motion'),
     };
     return config;
   },

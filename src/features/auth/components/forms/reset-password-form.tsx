@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Form,
   FormControl,
@@ -9,6 +10,7 @@ import {
 } from '@societiza/components/ui/shadcnui/form';
 import { Button } from '@societiza/components/ui/shadcnui/button';
 import { Input } from '@societiza/components/ui/shadcnui/input';
+import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useResetPasswordForm } from '../../hooks/forms/useAuthForm';
 
@@ -18,6 +20,8 @@ type Props = {
 
 export function ResetPasswordForm({ token }: Props) {
   const { form, onSubmit, isSubmitting } = useResetPasswordForm(token);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <Form {...form}>
@@ -33,10 +37,27 @@ export function ResetPasswordForm({ token }: Props) {
               <FormLabel>Nova senha</FormLabel>
               <FormControl>
                 <Input
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   error={fieldState.error?.message ?? undefined}
                   placeholder="Mínimo 8 caracteres"
                   autoComplete="new-password"
+                  endAdornment={
+                    <button
+                      type="button"
+                      aria-label={
+                        showNewPassword ? 'Ocultar senha' : 'Mostrar senha'
+                      }
+                      aria-pressed={showNewPassword}
+                      onClick={() => setShowNewPassword((current) => !current)}
+                      className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  }
                   {...field}
                 />
               </FormControl>
@@ -52,10 +73,29 @@ export function ResetPasswordForm({ token }: Props) {
               <FormLabel>Confirmar nova senha</FormLabel>
               <FormControl>
                 <Input
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   error={fieldState.error?.message ?? undefined}
                   placeholder="Repita a senha"
                   autoComplete="new-password"
+                  endAdornment={
+                    <button
+                      type="button"
+                      aria-label={
+                        showConfirmPassword ? 'Ocultar senha' : 'Mostrar senha'
+                      }
+                      aria-pressed={showConfirmPassword}
+                      onClick={() =>
+                        setShowConfirmPassword((current) => !current)
+                      }
+                      className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  }
                   {...field}
                 />
               </FormControl>

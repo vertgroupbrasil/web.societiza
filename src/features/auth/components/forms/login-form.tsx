@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Form,
   FormControl,
@@ -9,12 +10,13 @@ import {
 } from '@societiza/components/ui/shadcnui/form';
 import { Button } from '@societiza/components/ui/shadcnui/button';
 import { Input } from '@societiza/components/ui/shadcnui/input';
-import { Mail } from 'lucide-react';
+import { Eye, EyeOff, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useLoginForm } from '../../hooks/forms/useAuthForm';
 
 export function LoginForm() {
   const { form, onSubmit, isSubmitting } = useLoginForm();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Form {...form}>
@@ -57,10 +59,27 @@ export function LoginForm() {
               </div>
               <FormControl>
                 <Input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   error={fieldState.error?.message ?? undefined}
                   placeholder="********"
                   autoComplete="current-password"
+                  endAdornment={
+                    <button
+                      type="button"
+                      aria-label={
+                        showPassword ? 'Ocultar senha' : 'Mostrar senha'
+                      }
+                      aria-pressed={showPassword}
+                      onClick={() => setShowPassword((current) => !current)}
+                      className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  }
                   {...field}
                 />
               </FormControl>
