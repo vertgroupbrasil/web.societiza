@@ -14,9 +14,10 @@ type Props = {
 
 export default async function ResetPasswordPage({ searchParams }: Props) {
   const { token } = await searchParams;
+  const normalizedToken = token?.replaceAll(' ', '+');
 
   // Token ausente → redireciona para forgot password
-  if (!token) {
+  if (!normalizedToken) {
     redirect('/forgot-password');
   }
 
@@ -33,7 +34,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
               </p>
             </div>
           </div>
-          <ResetPasswordForm token={token} />
+          <ResetPasswordForm token={normalizedToken} />
         </div>
       </div>
     </div>
