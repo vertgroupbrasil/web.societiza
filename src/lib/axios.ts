@@ -59,6 +59,7 @@ export function clearAccessToken(): void {
 const fetcher = axios.create({
   baseURL: API_URL!,
   withCredentials: true, // envia o cookie refresh_token automaticamente
+  timeout: 20000,
 });
 
 // Adiciona o Authorization: Bearer em cada requisição

@@ -8,20 +8,19 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
 } from '@shadcn/index';
-import { ChevronsUpDown, Plus, Check } from 'lucide-react';
+import { ChevronsUpDown, Check } from 'lucide-react';
 import { cn } from '@societiza/lib/utils';
 import { PlanBadge } from './PlanBadge';
+import { PLAN_LABELS } from '../../constants/plans.constants';
 import type { Office } from '../../schemas/office.schema';
 
 interface OfficeSwitcherProps {
   offices: Office[];
   activeOfficeId: string;
   onSwitch: (officeId: string) => void;
-  onCreateOffice?: () => void;
   isSwitching?: boolean;
 }
 
@@ -39,7 +38,6 @@ export function OfficeSwitcher({
   offices,
   activeOfficeId,
   onSwitch,
-  onCreateOffice,
   isSwitching = false,
 }: OfficeSwitcherProps) {
   const activeOffice = offices.find((o) => o.id === activeOfficeId);
@@ -72,7 +70,7 @@ export function OfficeSwitcher({
                 {displayName}
               </span>
               <span className="text-xs text-muted-foreground leading-none mt-0.5">
-                {activeOffice.plan === 'Free' ? 'Plano Grátis' : `Plano ${activeOffice.plan}`}
+                Plano {PLAN_LABELS[activeOffice.plan]}
               </span>
             </div>
           </div>
@@ -129,20 +127,6 @@ export function OfficeSwitcher({
           );
         })}
 
-        {onCreateOffice && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="flex items-center gap-2 cursor-pointer text-muted-foreground"
-              onClick={onCreateOffice}
-            >
-              <div className="h-6 w-6 rounded-md border-2 border-dashed border-muted-foreground/30 flex items-center justify-center shrink-0">
-                <Plus className="h-3 w-3" />
-              </div>
-              <span className="text-sm">Novo escritório</span>
-            </DropdownMenuItem>
-          </>
-        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

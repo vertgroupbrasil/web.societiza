@@ -15,6 +15,7 @@ export const useUpdateOffice = (officeId: string) => {
     mutationFn: (data: UpdateOfficeInput) =>
       officeService.update(officeId, data),
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: officeQueryKeys.mine() });
       void queryClient.invalidateQueries({ queryKey: officeQueryKeys.lists() });
       void queryClient.invalidateQueries({
         queryKey: officeQueryKeys.detail(officeId),

@@ -6,6 +6,7 @@ export * from './button';
 export * from './calendar';
 export * from './card';
 export * from './checkbox';
+export * from './chart';
 export * from './avatar';
 export * from './command';
 export * from './dialog';

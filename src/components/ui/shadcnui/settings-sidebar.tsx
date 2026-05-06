@@ -28,6 +28,8 @@ import {
   SidebarSeparator,
 } from '@societiza/components/ui/shadcnui/sidebar';
 import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
+import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
+import { getUserFullName } from '@societiza/features/identity-users/schemas/identity-user.schema';
 
 type SettingsNavItem = {
   title: string;
@@ -86,11 +88,18 @@ function isSettingsItemActive(pathname: string, url: string) {
 export function SettingsSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const currentUser = useCurrentUser();
-  const user = currentUser ?? {
-    name: 'Usuário',
-    email: '',
-    initials: 'U',
-  };
+  const { data: profile } = useMyProfile(!!currentUser);
+  const user = profile
+    ? {
+        name: getUserFullName(profile),
+        email: profile.email,
+        initials: `${profile.firstName[0] ?? ''}${profile.lastName[0] ?? ''}`,
+      }
+    : (currentUser ?? {
+        name: 'Usuário',
+        email: '',
+        initials: 'U',
+      });
 
   return (
     <Sidebar variant="floating" {...props}>

@@ -32,6 +32,11 @@ type NavItem = {
   title: string;
   url: string;
   icon: any;
+  /**
+   * Quando definido, o item só é exibido para perfis listados.
+   * Sem `roles` → visível para todos os perfis autenticados.
+   */
+  roles?: ('SystemAdmin' | 'AccountancyAdmin' | 'AccountancyEmployee')[];
 };
 
 type Section = {
@@ -50,9 +55,11 @@ const data: { sections: Section[] } = {
           url: '/dashboard/',
         },
         {
-          title: 'Gerenciamento',
+          // Painel administrativo único: exclusivo do SystemAdmin.
+          title: 'Admin',
           icon: CctvIcon,
-          url: '/dashboard/gerenciamento/',
+          url: '/dashboard/admin/',
+          roles: ['SystemAdmin'],
         },
         {
           title: 'Societário',
@@ -96,6 +103,19 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     return false;
   };
 
+  // Aplica filtro de role nos itens de cada seção. Itens sem `roles`
+  // permanecem visíveis para todos. Seções vazias são removidas.
+  const visibleSections = data.sections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter(
+        (item) =>
+          !item.roles ||
+          (currentUser?.role && item.roles.includes(currentUser.role)),
+      ),
+    }))
+    .filter((section) => section.items.length > 0);
+
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader className="p-6 !pb-2">
@@ -105,7 +125,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        {data.sections.map((section) => (
+        {visibleSections.map((section) => (
           <SidebarGroup key={section.title}>
             <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
             <SidebarMenu className="gap-2">

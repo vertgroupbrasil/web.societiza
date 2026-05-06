@@ -1,8 +1,8 @@
 import { DataTableColumnHeader } from '@societiza/components/data-table/data-table-column-header';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, Trash2Icon } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import React from 'react';
-import type { Accountancy } from '../schemas/accountancy.schema';
+import type { AccountancyDetail } from '../schemas/accountancy.schema';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,69 +11,58 @@ import {
 } from '@societiza/components/ui/shadcnui/dropdown-menu';
 import { Button } from '@societiza/components/ui/shadcnui/button';
 import { AccountancyFormDialog } from './accountancy-form-dialog';
+import { CreateAccountancyAdminInvitationDialog } from '@societiza/features/identity-invitations/components/CreateAccountancyAdminInvitationDialog';
+import {
+  displayCEP,
+  displayCNPJ,
+  displayPhone,
+  formatDateTimeBR,
+} from '../lib/accountancy.formatters';
 
-export function makeAccountancyColumns(
-  openDeleteModal: (
-    id: string,
-    identifier: string,
-    text: string,
-    isOpen: boolean,
-  ) => void,
-): ColumnDef<Accountancy>[] {
+export function makeAccountancyColumns(): ColumnDef<AccountancyDetail>[] {
   return [
     {
       id: 'legalName',
       accessorKey: 'legalName',
-      header: ({ column }: { column: Column<Accountancy, unknown> }) => (
+      header: ({ column }: { column: Column<AccountancyDetail, unknown> }) => (
         <DataTableColumnHeader column={column} title="Razão Social" />
       ),
       cell: ({ cell }) => (
         <div className="font-medium">
-          {cell.getValue<Accountancy['legalName']>()}
+          {cell.getValue<AccountancyDetail['legalName']>()}
         </div>
       ),
-      meta: {
-        label: 'Razão Social',
-        placeholder: 'Buscar razão social...',
-        variant: 'text',
-      },
-      enableColumnFilter: true,
+      meta: { label: 'Razão Social' },
+      enableSorting: false,
     },
     {
       id: 'tradeName',
       accessorKey: 'tradeName',
-      header: ({ column }: { column: Column<Accountancy, unknown> }) => (
-        <DataTableColumnHeader column={column} title="Nome Fantasia" />
-      ),
+      header: 'Nome Fantasia',
       cell: ({ cell }) => {
-        const value = cell.getValue<Accountancy['tradeName']>();
+        const value = cell.getValue<AccountancyDetail['tradeName']>();
         return (
           <div>{value ?? <span className="text-muted-foreground">—</span>}</div>
         );
       },
-      meta: {
-        label: 'Nome Fantasia',
-        placeholder: 'Buscar nome fantasia...',
-        variant: 'text',
-      },
-      enableColumnFilter: true,
+      meta: { label: 'Nome Fantasia' },
+      enableSorting: false,
     },
     {
       id: 'cnpj',
       accessorKey: 'cnpj',
-      header: ({ column }: { column: Column<Accountancy, unknown> }) => (
-        <DataTableColumnHeader column={column} title="CNPJ" />
-      ),
+      header: 'CNPJ',
       cell: ({ cell }) => (
         <div className="font-mono text-sm">
-          {cell.getValue<Accountancy['cnpj']>()}
+          {displayCNPJ(cell.getValue<string>())}
         </div>
       ),
       meta: { label: 'CNPJ' },
+      enableSorting: false,
     },
     {
       id: 'location',
-      header: 'Localização',
+      header: 'Cidade/UF',
       cell: ({ row }) => (
         <div>
           {row.original.city}
@@ -82,9 +71,47 @@ export function makeAccountancyColumns(
         </div>
       ),
       meta: { label: 'Cidade/UF' },
+      enableSorting: false,
+    },
+    {
+      id: 'phone',
+      accessorKey: 'phone',
+      header: 'Telefone',
+      cell: ({ cell }) => (
+        <div className="font-mono text-sm">
+          {displayPhone(cell.getValue<string>())}
+        </div>
+      ),
+      meta: { label: 'Telefone' },
+      enableSorting: false,
+    },
+    {
+      id: 'postalCode',
+      accessorKey: 'postalCode',
+      header: 'CEP',
+      cell: ({ cell }) => (
+        <div className="font-mono text-sm">
+          {displayCEP(cell.getValue<string>())}
+        </div>
+      ),
+      meta: { label: 'CEP' },
+      enableSorting: false,
+    },
+    {
+      id: 'createdAt',
+      accessorKey: 'createdAt',
+      header: 'Criado em',
+      cell: ({ cell }) => (
+        <div className="text-sm text-muted-foreground">
+          {formatDateTimeBR(cell.getValue<Date>())}
+        </div>
+      ),
+      meta: { label: 'Criado em' },
+      enableSorting: false,
     },
     {
       id: 'actions',
+      header: '',
       cell: ({ row }) => {
         const accountancy = row.original;
         return (
@@ -104,20 +131,15 @@ export function makeAccountancyColumns(
                   </DropdownMenuItem>
                 }
               />
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => {
-                  openDeleteModal(
-                    accountancy.id,
-                    accountancy.legalName,
-                    'contabilidade',
-                    true,
-                  );
-                }}
-              >
-                <Trash2Icon />
-                Deletar
-              </DropdownMenuItem>
+              <CreateAccountancyAdminInvitationDialog
+                accountancyId={accountancy.id}
+                accountancyName={accountancy.tradeName ?? accountancy.legalName}
+                trigger={
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    Gerar link de administrador
+                  </DropdownMenuItem>
+                }
+              />
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -23,6 +23,7 @@ export interface InputProps
   error?: string | undefined;
   icon?: React.ElementType;
   info?: string;
+  endAdornment?: React.ReactNode;
 
   mask?: MaskType;
   maskOptions?: any; // Para opções customizadas do IMask
@@ -105,6 +106,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       error,
       icon: Icon,
       info,
+      endAdornment,
 
       placeholder,
       mask,
@@ -156,7 +158,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         // Set initial value if provided
         if (value !== undefined) {
           maskRef.current.value = value;
-        } else if (defaultValue !== undefined) {
+        }
+
+        if (value === undefined && defaultValue !== undefined) {
           maskRef.current.value = defaultValue;
         }
 
@@ -166,14 +170,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           }
         };
       }
-    }, [mask, maskOptions, onChange, value]);
+    }, [defaultValue, mask, maskOptions, onChange, value]);
 
     // Update mask value when value prop changes
     React.useEffect(() => {
-      if (maskRef.current && value !== undefined) {
-        if (maskRef.current.value !== value) {
-          maskRef.current.value = value;
-        }
+      if (
+        maskRef.current &&
+        value !== undefined &&
+        maskRef.current.value !== value
+      ) {
+        maskRef.current.value = value;
       }
     }, [value]);
 
@@ -214,7 +220,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
               'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
               // Icon spacing
-              Icon ? 'pl-10 pr-3' : 'px-3',
+              Icon ? 'pl-10' : 'pl-3',
+              info || endAdornment ? 'pr-10' : 'pr-3',
               // Error states
               error && [
                 'border-destructive',
@@ -232,6 +239,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             defaultValue={defaultValue}
             {...props}
           />
+          {endAdornment && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              {endAdornment}
+            </div>
+          )}
           {info && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
               <Tooltip>

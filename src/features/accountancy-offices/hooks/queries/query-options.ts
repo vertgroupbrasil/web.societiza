@@ -3,6 +3,7 @@ import { officeService } from '../../server/services/office.service';
 
 export const officeQueryKeys = {
   all: ['offices'] as const,
+  mine: () => [...officeQueryKeys.all, 'mine'] as const,
   lists: () => [...officeQueryKeys.all, 'list'] as const,
   detail: (id: string) => [...officeQueryKeys.all, 'detail', id] as const,
   members: (officeId: string) =>
@@ -12,11 +13,20 @@ export const officeQueryKeys = {
 };
 
 export const officeQueryOptions = {
+  mine: () =>
+    queryOptions({
+      queryKey: officeQueryKeys.mine(),
+      queryFn: () => officeService.getMine(),
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+    }),
+
   list: () =>
     queryOptions({
       queryKey: officeQueryKeys.lists(),
       queryFn: () => officeService.getAll(),
       staleTime: 1000 * 60 * 5, // 5 minutos
+      retry: 1,
     }),
 
   detail: (id: string) =>

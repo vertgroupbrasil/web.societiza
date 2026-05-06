@@ -1,37 +1,44 @@
 import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 import fetcher from '@societiza/lib/axios';
-import type {
-  Accountancy,
-  CreateAccountancyInput,
+import {
+  accountancyDetailSchema,
+  pagedAccountanciesSchema,
+  type AccountancyDetail,
+  type AccountancyPayload,
+  type PagedAccountancies,
 } from '../../schemas/accountancy.schema';
 
 const api = API_ENDPOINTS.accountancy;
 
-export type CreateEntityResponse = { id: string };
+export type CreateAccountancyResponse = { id: string };
 
 export const accountancyService = {
-  getAll: async (): Promise<Accountancy[]> => {
-    const response = await fetcher.get(api.getAll);
-    return response.data as Accountancy[];
+  list: async (
+    pageNumber = 1,
+    pageSize = 10,
+  ): Promise<PagedAccountancies> => {
+    const response = await fetcher.get(api.list(pageNumber, pageSize));
+    return pagedAccountanciesSchema.parse(response.data);
   },
 
-  getById: async (id: string): Promise<Accountancy> => {
+  getById: async (id: string): Promise<AccountancyDetail> => {
     const response = await fetcher.get(api.getById(id));
-    return response.data as Accountancy;
+    return accountancyDetailSchema.parse(response.data);
+  },
+
+  getMe: async (): Promise<AccountancyDetail> => {
+    const response = await fetcher.get(api.getMe);
+    return accountancyDetailSchema.parse(response.data);
   },
 
   create: async (
-    data: CreateAccountancyInput,
-  ): Promise<CreateEntityResponse> => {
-    const response = await fetcher.post(api.create, data);
-    return response.data as CreateEntityResponse;
+    payload: AccountancyPayload,
+  ): Promise<CreateAccountancyResponse> => {
+    const response = await fetcher.post(api.create, payload);
+    return response.data as CreateAccountancyResponse;
   },
 
-  update: async (id: string, data: CreateAccountancyInput): Promise<void> => {
-    await fetcher.put(api.update(id), data);
-  },
-
-  delete: async (id: string): Promise<void> => {
-    await fetcher.delete(api.delete(id));
+  update: async (id: string, payload: AccountancyPayload): Promise<void> => {
+    await fetcher.put(api.update(id), payload);
   },
 };

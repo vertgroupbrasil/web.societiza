@@ -28,7 +28,9 @@ import Link from 'next/link';
 export function Board() {
   const { filters, applyFilters } = useCorporateFilters();
   const { processTypes, stages, processes } = useCorporateBoard();
-  const { data: accounties } = useAccountancies();
+  // useAccountancies retorna envelope paginado; o consumidor legado espera array.
+  const { data: accountanciesPage } = useAccountancies();
+  const accounties = accountanciesPage?.items;
 
   // Template-driven columns
   const { data: templates } = useWorkflowTemplates();
@@ -126,7 +128,7 @@ export function Board() {
     <>
       <div className="h-full w-full flex flex-col overflow-hidden">
         <div className="flex-shrink-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-          <div className="w-full max-w-full px-4 py-4 space-y-4 overflow-hidden">
+          <div className="w-full max-w-full px-4 space-y-4 overflow-hidden">
             <div className="flex items-center justify-between gap-4 w-full min-w-0">
               <div className="flex-1 min-w-0 overflow-hidden">
                 <h2 className="text-2xl sm:text-3xl font-semibold text-foreground truncate">
