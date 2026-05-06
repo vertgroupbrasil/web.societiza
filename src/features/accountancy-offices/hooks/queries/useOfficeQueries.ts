@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { officeQueryOptions } from './query-options';
 
+export const useMyOffice = () => useQuery(officeQueryOptions.mine());
+
 export const useOffices = () => useQuery(officeQueryOptions.list());
 
 export const useOfficeById = (id: string) =>

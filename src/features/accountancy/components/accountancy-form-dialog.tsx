@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -18,26 +18,41 @@ import {
   FormItem,
   FormLabel,
   Separator,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@shadcn/index';
 import { Plus, Pencil } from 'lucide-react';
 import {
-  createAccountancyDTO,
-  type Accountancy,
-  type CreateAccountancyInput,
+  accountancyFormSchema,
+  formToPayload,
+  type AccountancyDetail,
+  type AccountancyFormInput,
+  type AccountancyFormOutput,
 } from '../schemas/accountancy.schema';
 import {
   useCreateAccountancy,
   useUpdateAccountancy,
 } from '../hooks/mutations/useAccountancyMutations';
+import { BRAZILIAN_UFS } from '../constants/ufs.constants';
+import {
+  displayCEP,
+  displayCNPJ,
+  displayPhone,
+} from '../lib/accountancy.formatters';
 
 interface AccountancyFormDialogProps {
-  accountancy?: Accountancy;
+  accountancy?: AccountancyDetail;
   trigger?: React.ReactNode;
+  onSuccess?: (id: string) => void;
 }
 
 export function AccountancyFormDialog({
   accountancy,
   trigger,
+  onSuccess,
 }: AccountancyFormDialogProps) {
   const [open, setOpen] = useState(false);
   const isEditing = !!accountancy;
@@ -45,27 +60,89 @@ export function AccountancyFormDialog({
   const createAccountancy = useCreateAccountancy();
   const updateAccountancy = useUpdateAccountancy();
 
-  const form = useForm<CreateAccountancyInput>({
-    resolver: zodResolver(createAccountancyDTO),
+  const form = useForm<AccountancyFormInput, unknown, AccountancyFormOutput>({
+    resolver: zodResolver(accountancyFormSchema),
     defaultValues: {
-      cnpj: accountancy?.cnpj ?? '',
+      cnpj: accountancy ? displayCNPJ(accountancy.cnpj) : '',
       legalName: accountancy?.legalName ?? '',
       tradeName: accountancy?.tradeName ?? '',
       address: accountancy?.address ?? '',
       city: accountancy?.city ?? '',
       state: accountancy?.state ?? '',
-      postalCode: accountancy?.postalCode ?? '',
-      phone: accountancy?.phone ?? '',
+      postalCode: accountancy ? displayCEP(accountancy.postalCode) : '',
+      phone: accountancy ? displayPhone(accountancy.phone) : '',
       email: accountancy?.email ?? '',
     },
   });
 
+  useEffect(() => {
+    if (open) {
+      form.reset({
+        cnpj: accountancy ? displayCNPJ(accountancy.cnpj) : '',
+        legalName: accountancy?.legalName ?? '',
+        tradeName: accountancy?.tradeName ?? '',
+        address: accountancy?.address ?? '',
+        city: accountancy?.city ?? '',
+        state: accountancy?.state ?? '',
+        postalCode: accountancy ? displayCEP(accountancy.postalCode) : '',
+        phone: accountancy ? displayPhone(accountancy.phone) : '',
+        email: accountancy?.email ?? '',
+      });
+    }
+  }, [open, accountancy, form]);
+
   const handleSubmit = form.handleSubmit(async (data) => {
-    await (isEditing && accountancy
-      ? updateAccountancy.mutateAsync({ id: accountancy.id, data })
-      : createAccountancy.mutateAsync(data));
-    setOpen(false);
-    form.reset();
+    // `data` aqui é o output do schema (transforms aplicados — dígitos puros, UF upper).
+    const payload = formToPayload(data);
+
+    try {
+      if (isEditing && accountancy) {
+        await updateAccountancy.mutateAsync({ id: accountancy.id, payload });
+      } else {
+        const { id } = await createAccountancy.mutateAsync(payload);
+        onSuccess?.(id);
+      }
+      setOpen(false);
+    } catch (error) {
+      const status =
+        (error as { response?: { status?: number; data?: unknown } })?.response
+          ?.status;
+      const data =
+        (error as { response?: { data?: { type?: string; errors?: { code: string; message: string }[] } } })
+          ?.response?.data;
+
+      if (status === 409 && data?.type === 'CNPJAlreadyExists') {
+        form.setError('cnpj', {
+          message: 'CNPJ já cadastrado',
+        });
+        return;
+      }
+
+      if (status === 400 && Array.isArray(data?.errors)) {
+        for (const err of data.errors) {
+          const code = err.code ?? '';
+          if (code.startsWith('CNPJ')) {
+            form.setError('cnpj', { message: 'CNPJ inválido' });
+          } else if (code.startsWith('Legal name')) {
+            form.setError('legalName', { message: err.message });
+          } else if (code.startsWith('Trade name')) {
+            form.setError('tradeName', { message: err.message });
+          } else if (code.startsWith('Address')) {
+            form.setError('address', { message: err.message });
+          } else if (code.startsWith('City')) {
+            form.setError('city', { message: err.message });
+          } else if (code.startsWith('State')) {
+            form.setError('state', { message: err.message });
+          } else if (code.startsWith('Postal code')) {
+            form.setError('postalCode', { message: err.message });
+          } else if (code.startsWith('Phone')) {
+            form.setError('phone', { message: err.message });
+          } else if (code.startsWith('Email')) {
+            form.setError('email', { message: err.message });
+          }
+        }
+      }
+    }
   });
 
   const isPending = createAccountancy.isPending || updateAccountancy.isPending;
@@ -102,7 +179,6 @@ export function AccountancyFormDialog({
 
         <Form {...form}>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Row: CNPJ */}
             <FormField
               control={form.control}
               name="cnpj"
@@ -111,16 +187,19 @@ export function AccountancyFormDialog({
                   <FormLabel>CNPJ *</FormLabel>
                   <FormControl>
                     <Input
+                      mask="cnpj"
                       placeholder="12.345.678/0001-95"
                       error={fieldState.error?.message}
-                      {...field}
+                      value={field.value}
+                      onChange={(masked) => field.onChange(masked)}
+                      onBlur={field.onBlur}
+                      name={field.name}
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
 
-            {/* Row: legalName + tradeName */}
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -149,6 +228,7 @@ export function AccountancyFormDialog({
                         placeholder="Contab Exemplo"
                         error={fieldState.error?.message}
                         {...field}
+                        value={field.value ?? ''}
                       />
                     </FormControl>
                   </FormItem>
@@ -156,7 +236,6 @@ export function AccountancyFormDialog({
               />
             </div>
 
-            {/* Row: address */}
             <FormField
               control={form.control}
               name="address"
@@ -174,7 +253,6 @@ export function AccountancyFormDialog({
               )}
             />
 
-            {/* Row: city + state + postalCode */}
             <div className="grid grid-cols-3 gap-4">
               <div className="col-span-2">
                 <FormField
@@ -200,23 +278,36 @@ export function AccountancyFormDialog({
                 render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>UF *</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="SP"
-                        maxLength={2}
-                        error={fieldState.error?.message}
-                        {...field}
-                        onChange={(value) =>
-                          field.onChange(value.toUpperCase())
-                        }
-                      />
-                    </FormControl>
+                    <Select
+                      value={field.value ?? ''}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          aria-invalid={!!fieldState.error}
+                          className="w-full"
+                        >
+                          <SelectValue placeholder="UF" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {BRAZILIAN_UFS.map((uf) => (
+                          <SelectItem key={uf.value} value={uf.value}>
+                            {uf.value} — {uf.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {fieldState.error?.message && (
+                      <p className="text-xs text-destructive mt-1">
+                        {fieldState.error.message}
+                      </p>
+                    )}
                   </FormItem>
                 )}
               />
             </div>
 
-            {/* Row: postalCode + phone */}
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -226,9 +317,13 @@ export function AccountancyFormDialog({
                     <FormLabel>CEP *</FormLabel>
                     <FormControl>
                       <Input
+                        mask="cep"
                         placeholder="01310-100"
                         error={fieldState.error?.message}
-                        {...field}
+                        value={field.value}
+                        onChange={(masked) => field.onChange(masked)}
+                        onBlur={field.onBlur}
+                        name={field.name}
                       />
                     </FormControl>
                   </FormItem>
@@ -242,9 +337,13 @@ export function AccountancyFormDialog({
                     <FormLabel>Telefone *</FormLabel>
                     <FormControl>
                       <Input
+                        mask="cellphone"
                         placeholder="(11) 99999-8888"
                         error={fieldState.error?.message}
-                        {...field}
+                        value={field.value}
+                        onChange={(masked) => field.onChange(masked)}
+                        onBlur={field.onBlur}
+                        name={field.name}
                       />
                     </FormControl>
                   </FormItem>
@@ -252,7 +351,6 @@ export function AccountancyFormDialog({
               />
             </div>
 
-            {/* Row: email */}
             <FormField
               control={form.control}
               name="email"
@@ -265,6 +363,7 @@ export function AccountancyFormDialog({
                       placeholder="contato@exemplo.com"
                       error={fieldState.error?.message}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                 </FormItem>

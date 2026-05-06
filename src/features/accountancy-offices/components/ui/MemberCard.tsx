@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage, Button, Badge } from '@shadcn/index';
 import { Trash2 } from 'lucide-react';
 import type { Member } from '../../schemas/office.schema';
+import { memberRoleLabel } from '@societiza/features/identity-users/lib/identity-user.utils';
 
 interface MemberCardProps {
   member: Member;
@@ -47,7 +48,7 @@ export function MemberCard({
             </span>
             {member.role === 'Owner' && (
               <Badge variant="secondary" className="text-xs py-0 px-1.5">
-                Owner
+                {memberRoleLabel(member.role)}
               </Badge>
             )}
           </div>

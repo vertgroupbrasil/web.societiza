@@ -16,6 +16,7 @@ import {
   Input,
   Textarea,
 } from '@shadcn/index';
+import { FileText, Landmark, Save } from 'lucide-react';
 import type { UseFormReturn } from 'react-hook-form';
 import type { UpdateOfficeInput } from '../../schemas/office.schema';
 
@@ -23,12 +24,19 @@ interface OfficeIdentityFormProps {
   form: UseFormReturn<UpdateOfficeInput>;
   onSubmit: (data: UpdateOfficeInput) => void;
   isPending?: boolean;
+  /**
+   * Quando true, todos os inputs ficam desabilitados e o botão de submit é
+   * ocultado. Usado para AccountancyAdmin/Employee — spec accountancy-org
+   * proíbe edição self-service dos dados cadastrais da contabilidade.
+   */
+  readOnly?: boolean;
 }
 
 export function OfficeIdentityForm({
   form,
   onSubmit,
   isPending = false,
+  readOnly = false,
 }: OfficeIdentityFormProps) {
   return (
     <Form {...form}>
@@ -38,7 +46,10 @@ export function OfficeIdentityForm({
       >
         <Card>
           <CardHeader>
-            <CardTitle>Identidade pública</CardTitle>
+            <div className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-muted-foreground" />
+              <CardTitle>Identidade pública</CardTitle>
+            </div>
             <CardDescription>
               Nome, descrição e presença visual do perfil do escritório.
             </CardDescription>
@@ -90,6 +101,8 @@ export function OfficeIdentityForm({
                     <Textarea
                       placeholder="Conte em poucas linhas como este escritório atua e o que ele entrega para os clientes."
                       aria-invalid={!!fieldState.error}
+                      className="min-h-32"
+                      disabled={readOnly}
                       {...field}
                       value={field.value ?? ''}
                     />
@@ -140,7 +153,10 @@ export function OfficeIdentityForm({
 
         <Card>
           <CardHeader>
-            <CardTitle>Dados legais e contato</CardTitle>
+            <div className="flex items-center gap-2">
+              <Landmark className="h-5 w-5 text-muted-foreground" />
+              <CardTitle>Dados legais e contato</CardTitle>
+            </div>
             <CardDescription>
               Informações fiscais, endereço e canais de contato da entidade.
             </CardDescription>
@@ -156,6 +172,7 @@ export function OfficeIdentityForm({
                     <Input
                       placeholder="12.345.678/0001-99"
                       error={fieldState.error?.message}
+                      disabled={readOnly}
                       {...field}
                     />
                   </FormControl>
@@ -173,6 +190,7 @@ export function OfficeIdentityForm({
                     <Input
                       placeholder="Rua das Flores, 456, Sala 302"
                       error={fieldState.error?.message}
+                      disabled={readOnly}
                       {...field}
                     />
                   </FormControl>
@@ -263,6 +281,7 @@ export function OfficeIdentityForm({
                       type="email"
                       placeholder="contato@escritorio.com.br"
                       error={fieldState.error?.message}
+                      disabled={readOnly}
                       {...field}
                       value={field.value ?? ''}
                     />
@@ -273,11 +292,19 @@ export function OfficeIdentityForm({
           </CardContent>
         </Card>
 
-        <div className="flex justify-end">
-          <Button type="submit" loading={isPending} disabled={isPending}>
-            Salvar alterações
-          </Button>
-        </div>
+        {!readOnly && (
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              loading={isPending}
+              disabled={isPending}
+              icon={Save}
+              iconPlacement="left"
+            >
+              Salvar alterações
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

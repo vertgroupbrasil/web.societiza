@@ -21,8 +21,8 @@ export function PlanUsageBar({
   const indicatorClass = isAtLimit
     ? '[&>div]:bg-red-500'
     : isNearLimit
-      ? '[&>div]:bg-amber-500'
-      : '[&>div]:bg-emerald-500';
+      ? '[&>div]:bg-[#ff7a33]'
+      : '[&>div]:bg-primary';
 
   return (
     <div className={cn('flex flex-col gap-1', className)}>

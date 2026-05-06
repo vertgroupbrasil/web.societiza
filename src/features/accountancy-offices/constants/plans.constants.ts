@@ -55,18 +55,18 @@ export const PLAN_COLORS: Record<
   { bg: string; text: string; border: string }
 > = {
   Free: {
-    bg: 'bg-slate-100',
-    text: 'text-slate-600',
-    border: 'border-slate-200',
+    bg: '#f6ede3',
+    text: '#7d6657',
+    border: '#e8d7c6',
   },
   Escrivaninha: {
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
+    bg: '#fff1df',
+    text: '#c85b13',
+    border: '#f0c59c',
   },
   Executivo: {
-    bg: 'bg-amber-50',
-    text: 'text-amber-700',
-    border: 'border-amber-200',
+    bg: '#ffe6cf',
+    text: '#aa4e12',
+    border: '#e9bc93',
   },
 };

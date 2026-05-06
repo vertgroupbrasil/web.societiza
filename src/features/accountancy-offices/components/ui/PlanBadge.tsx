@@ -16,10 +16,12 @@ export function PlanBadge({ plan, className, size = 'md' }: PlanBadgeProps) {
   return (
     <Badge
       variant="outline"
+      style={{
+        backgroundColor: colors.bg,
+        color: colors.text,
+        borderColor: colors.border,
+      }}
       className={cn(
-        colors.bg,
-        colors.text,
-        colors.border,
         'font-medium border',
         size === 'sm' ? 'text-xs px-1.5 py-0' : 'text-xs px-2 py-0.5',
         className,
