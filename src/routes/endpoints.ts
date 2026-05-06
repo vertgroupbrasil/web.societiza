@@ -111,6 +111,50 @@ export const API_ENDPOINTS = {
     forgotPassword: withBase('/identity/auth/forgot-password'),
     resetPassword: withBase('/identity/auth/reset-password'),
   },
+  identityUsers: {
+    myProfile: withBase('/identity/users'),
+    updateProfile: withBase('/identity/users'),
+    systemAdmins: (onlyActive = true, pageNumber = 1, pageSize = 10) =>
+      withBase(
+        `/identity/system-admins?OnlyActive=${onlyActive}&PageNumber=${pageNumber}&PageSize=${pageSize}`,
+      ),
+    accountancyMembers: (
+      accountancyId: string,
+      onlyActive = true,
+      pageNumber = 1,
+      pageSize = 10,
+    ) =>
+      withBase(
+        `/identity/accountancies/${accountancyId}/members?OnlyActive=${onlyActive}&PageNumber=${pageNumber}&PageSize=${pageSize}`,
+      ),
+    promoteAccountancyMember: (accountancyId: string, userId: string) =>
+      withBase(
+        `/identity/accountancies/${accountancyId}/members/${userId}/promote`,
+      ),
+    deleteUser: (userId: string, accountancyId?: string) =>
+      withBase(
+        `/identity/users/${userId}${
+          accountancyId ? `?accountancyId=${accountancyId}` : ''
+        }`,
+      ),
+  },
+  identityInvitations: {
+    create: withBase('/identity/invitation-link'),
+    list: (
+      onlyActive = true,
+      accountancyId: string | undefined,
+      pageNumber = 1,
+      pageSize = 10,
+    ) =>
+      withBase(
+        `/identity/invitation-link?OnlyActive=${onlyActive}${
+          accountancyId ? `&AccountancyId=${accountancyId}` : ''
+        }&PageNumber=${pageNumber}&PageSize=${pageSize}`,
+      ),
+    detail: (invitationLinkId: string) =>
+      withBase(`/identity/invitation-link/${invitationLinkId}`),
+    register: withBase('/identity/invitation-link/register'),
+  },
   accounts: {
     getUser: withBase('/accounts/get-user/'),
     createUserAdmin: withBase('/accounts/create-user/'),
@@ -120,10 +164,11 @@ export const API_ENDPOINTS = {
   },
   accountancy: {
     create: withBase('/accountancy'),
-    getAll: withBase('/accountancy'),
+    list: (pageNumber: number, pageSize: number) =>
+      withBase(`/accountancy?pageNumber=${pageNumber}&pageSize=${pageSize}`),
     getById: (id: string) => withBase(`/accountancy/${id}`),
+    getMe: withBase('/accountancy/me'),
     update: (id: string) => withBase(`/accountancy/${id}`),
-    delete: (id: string) => withBase(`/accountancy/${id}`),
   },
   // TODO: remover mock e apontar para endpoints reais quando backend entregar
   offices: {

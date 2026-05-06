@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { ChevronsUpDown, UserPlus } from 'lucide-react';
+import { Building2, ChevronsUpDown, UserPlus } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -21,10 +21,14 @@ import {
 import { Skeleton } from '@societiza/components/ui/shadcnui/skeleton';
 import { useOffices } from '@societiza/features/accountancy-offices/hooks/queries/useOfficeQueries';
 import { useSetActiveOffice } from '@societiza/features/accountancy-offices/hooks/mutations/useOfficeMutations';
-import { MOCK_ACTIVE_OFFICE_ID } from '@societiza/features/accountancy-offices/_mock';
-import { PLAN_COLORS } from '@societiza/features/accountancy-offices/constants/plans.constants';
+import {
+  PLAN_COLORS,
+  PLAN_LABELS,
+} from '@societiza/features/accountancy-offices/constants/plans.constants';
 import { InvitePeopleDialog } from '@societiza/features/accountancy-offices/components/InvitePeopleDialog';
 import type { Office } from '@societiza/features/accountancy-offices/schemas/office.schema';
+import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
+import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
 
 function officeInitials(office: Office): string {
   const name = office.tradeName ?? office.legalName;
@@ -63,21 +67,38 @@ function OfficeLogo({ office }: { office: Office }) {
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar();
-  const { data: offices, isLoading } = useOffices();
+  const currentUser = useCurrentUser();
+  const { data: profile } = useMyProfile(!!currentUser);
+  const { data: offices, isLoading, isError } = useOffices();
   const setActiveOffice = useSetActiveOffice();
-  const [activeOfficeId, setActiveOfficeId] =
-    React.useState(MOCK_ACTIVE_OFFICE_ID);
+  const [activeOfficeId, setActiveOfficeId] = React.useState<string>();
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [inviteOpen, setInviteOpen] = React.useState(false);
 
   const activeOffice =
     offices?.find((o) => o.id === activeOfficeId) ?? offices?.[0];
+
+  React.useEffect(() => {
+    if (!activeOfficeId && offices?.[0]) {
+      setActiveOfficeId(offices[0].id);
+    }
+  }, [activeOfficeId, offices]);
 
   const handleSwitch = (officeId: string) => {
     setActiveOfficeId(officeId);
     setActiveOffice.mutate(officeId);
   };
 
-  if (isLoading || !offices || !activeOffice) {
+  const canInviteForActiveOffice =
+    profile?.role === 'AccountancyAdmin' &&
+    profile.accountancyId === activeOffice?.id;
+
+  const handleOpenInvite = () => {
+    setDropdownOpen(false);
+    window.setTimeout(() => setInviteOpen(true), 0);
+  };
+
+  if (isLoading) {
     return (
       <SidebarMenu>
         <SidebarMenuItem>
@@ -93,11 +114,33 @@ export function TeamSwitcher() {
     );
   }
 
+  if (isError || !offices || !activeOffice) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton size="lg" disabled>
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg border bg-muted">
+              <Building2 className="size-4 text-muted-foreground" />
+            </div>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">
+                Escritório indisponível
+              </span>
+              <span className="truncate text-xs text-muted-foreground">
+                Dados não carregados
+              </span>
+            </div>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
   return (
     <>
       <SidebarMenu>
         <SidebarMenuItem>
-          <DropdownMenu>
+          <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
@@ -119,7 +162,7 @@ export function TeamSwitcher() {
                     {activeOffice.tradeName ?? activeOffice.legalName}
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
-                    {activeOffice.plan}
+                    Plano {PLAN_LABELS[activeOffice.plan]}
                   </span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4" />
@@ -163,20 +206,24 @@ export function TeamSwitcher() {
                 );
               })}
 
-              <DropdownMenuSeparator />
+              {canInviteForActiveOffice ? (
+                <>
+                  <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                className="gap-2 p-2 text-muted-foreground"
-                onSelect={(event) => {
-                  event.preventDefault();
-                  setInviteOpen(true);
-                }}
-              >
-                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                  <UserPlus />
-                </div>
-                Convidar pessoas
-              </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="gap-2 p-2 text-muted-foreground"
+                    onSelect={(event) => {
+                      event.preventDefault();
+                      handleOpenInvite();
+                    }}
+                  >
+                    <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                      <UserPlus />
+                    </div>
+                    Convidar pessoas
+                  </DropdownMenuItem>
+                </>
+              ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarMenuItem>
