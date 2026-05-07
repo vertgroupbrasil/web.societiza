@@ -243,8 +243,8 @@ export function TemplateProcessSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full gap-0 p-0 sm:max-w-3xl">
-        <SheetHeader className="border-b px-6 py-5">
+      <SheetContent side="right" className="flex w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
+        <SheetHeader className="flex-shrink-0 border-b px-6 py-5">
           <div className="space-y-4">
             <div className="space-y-1">
               <SheetTitle className="text-left text-xl">
@@ -276,7 +276,7 @@ export function TemplateProcessSheet({
           </div>
         </SheetHeader>
 
-        <ScrollArea className="flex-1">
+        <ScrollArea className="min-h-0 flex-1">
           <div className="space-y-8 px-6 py-6">
             <section className="space-y-4">
               <div className="flex items-center justify-between gap-3">
@@ -481,7 +481,7 @@ export function TemplateProcessSheet({
           </div>
         </ScrollArea>
 
-        <SheetFooter className="border-t px-6 py-4">
+        <SheetFooter className="flex-shrink-0 border-t px-6 py-4">
           <div className="flex w-full items-center justify-between gap-3">
             <p className="text-sm text-muted-foreground">
               A ordem das colunas, tarefas e campos será usada pelo workflow.
