@@ -17,11 +17,12 @@ import {
   SelectValue,
   Skeleton,
 } from '@shadcn/index';
-import { AlertCircle, Filter, Search } from 'lucide-react';
+import { AlertCircle, Filter, Layers, Search } from 'lucide-react';
 import { accountancyQueryKeys } from '@societiza/features/accountancy/hooks/queries/useAccountancyQueries';
 import { accountancyService } from '@societiza/features/accountancy/server/services/accountancy.service';
 import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
 import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
+import { useWorkflowTemplates } from '@societiza/features/workflow-template/hooks/queries/use-workflow-template-queries';
 import { WORKFLOW_PROCESS_TYPE_OPTIONS } from '../constants';
 import { useWorkflowProcessBoardBySteps } from '../hooks/queries';
 import type { WorkflowProcessType } from '../server/types';
@@ -39,6 +40,7 @@ export function WorkflowProcessBoard() {
   const role = profile?.role ?? currentUser?.role;
   const isSystemAdmin = role === 'SystemAdmin';
   const [selectedAccountancyId, setSelectedAccountancyId] = useState('');
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('all');
   const [processTypeFilter, setProcessTypeFilter] =
     useState<ProcessTypeFilter>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -65,7 +67,13 @@ export function WorkflowProcessBoard() {
     ? selectedAccountancyId
     : (profile?.accountancyId ?? currentUser?.accountancyId);
 
-  const board = useWorkflowProcessBoardBySteps(accountancyId);
+  const templateIdParam = selectedTemplateId !== 'all' ? selectedTemplateId : undefined;
+  const board = useWorkflowProcessBoardBySteps(accountancyId, templateIdParam);
+
+  const { data: templatesPage } = useWorkflowTemplates();
+  const activeTemplates = (templatesPage?.items ?? []).filter(
+    (t) => t.status === 'Active',
+  );
 
   // Build columns from server-grouped data, applying client-side filters.
   // All step groups are always rendered (even when processes is empty after filtering).
@@ -99,7 +107,10 @@ export function WorkflowProcessBoard() {
     [columns],
   );
 
-  const activeFilterCount = processTypeFilter !== 'all' ? 1 : 0;
+  const activeFilterCount = [
+    processTypeFilter !== 'all',
+    selectedTemplateId !== 'all',
+  ].filter(Boolean).length;
 
   const openProcess = (processId: string) => {
     setSelectedProcessId(processId);
@@ -164,6 +175,27 @@ export function WorkflowProcessBoard() {
                 />
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
+                {activeTemplates.length > 0 && (
+                  <Select
+                    value={selectedTemplateId}
+                    onValueChange={setSelectedTemplateId}
+                  >
+                    <SelectTrigger className="w-auto gap-2 border-dashed border-border/70">
+                      <Layers className="h-4 w-4" />
+                      {selectedTemplateId === 'all'
+                        ? 'Todos os templates'
+                        : (activeTemplates.find((t) => t.id === selectedTemplateId)?.name ?? 'Template')}
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos os templates</SelectItem>
+                      {activeTemplates.map((t) => (
+                        <SelectItem key={t.id} value={t.id}>
+                          {t.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
                 <Select
                   value={processTypeFilter}
                   onValueChange={(v) =>

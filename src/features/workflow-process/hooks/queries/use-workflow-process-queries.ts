@@ -14,9 +14,10 @@ export const useWorkflowProcessBoard = (
 
 export const useWorkflowProcessBoardBySteps = (
   accountancyId: string | undefined,
+  templateId?: string,
 ) => {
   return useQuery({
-    ...workflowProcessQueries.boardBySteps(accountancyId ?? ''),
+    ...workflowProcessQueries.boardBySteps(accountancyId ?? '', templateId),
     enabled: Boolean(accountancyId),
   });
 };

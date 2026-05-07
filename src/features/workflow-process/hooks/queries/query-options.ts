@@ -15,13 +15,13 @@ export const workflowProcessQueries = {
       enabled: Boolean(accountancyId),
     }),
   boardsBySteps: () => [...workflowProcessQueries.all(), 'board-by-steps'] as const,
-  boardBySteps: (accountancyId: string) =>
+  boardBySteps: (accountancyId: string, templateId?: string) =>
     queryOptions({
       queryKey: [
         ...workflowProcessQueries.boardsBySteps(),
-        { accountancyId },
+        { accountancyId, templateId },
       ] as const,
-      queryFn: () => workflowProcessService.listBoardBySteps(accountancyId),
+      queryFn: () => workflowProcessService.listBoardBySteps(accountancyId, templateId),
       enabled: Boolean(accountancyId),
     }),
   details: () => [...workflowProcessQueries.all(), 'detail'] as const,

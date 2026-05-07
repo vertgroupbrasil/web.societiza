@@ -24,11 +24,12 @@ const api = API_ENDPOINTS.workflowProcess;
 export const workflowProcessService = {
   listBoardBySteps: async (
     accountancyId: string,
+    templateId?: string,
     pageNumber = 1,
     pageSize = 100,
   ): Promise<WorkflowProcessBoardBySteps> => {
     const response = await fetcher.get(
-      api.boardBySteps(accountancyId, pageNumber, pageSize),
+      api.boardBySteps(accountancyId, templateId, pageNumber, pageSize),
     );
     return workflowProcessBoardByStepsSchema.parse(response.data);
   },
