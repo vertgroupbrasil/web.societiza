@@ -231,7 +231,7 @@ export function WorkflowProcessDrawer({
         {detail?.targetClient ?? 'Processo societário'}
       </DialogTitle>
 
-      <DrawerContent className="sm:max-w-lg w-full h-full flex flex-col">
+      <DrawerContent className="sm:max-w-lg w-full h-full flex flex-col overflow-hidden">
         {isLoading ? (
           <div className="p-6 space-y-4 flex-1">
             <Skeleton className="h-12 w-full" />
@@ -251,7 +251,7 @@ export function WorkflowProcessDrawer({
         ) : detail ? (
           <>
             {/* Scrollable content */}
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 min-h-0">
               <div className="p-4 space-y-4">
                 {/* Header */}
                 <div className="flex items-center space-x-3">
