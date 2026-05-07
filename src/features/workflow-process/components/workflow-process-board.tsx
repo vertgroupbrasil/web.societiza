@@ -270,7 +270,7 @@ export function WorkflowProcessBoard() {
               <div className="flex gap-6 h-full w-max min-w-full p-4">
                 {columns.map((col) => (
                   <WorkflowProcessColumn
-                    key={col.order}
+                    key={`${col.order}-${col.title}`}
                     column={col}
                     onOpenProcess={openProcess}
                   />
