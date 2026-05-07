@@ -1,13 +1,11 @@
 'use client';
 
-import { Board, CorporateProvider } from '@workflow/index';
+import { WorkflowProcessBoard } from '@societiza/features/workflow-process/components';
 
 export default function CorporateWorkflowPage() {
   return (
     <div className="h-full w-full">
-      <CorporateProvider>
-        <Board />
-      </CorporateProvider>
+      <WorkflowProcessBoard />
     </div>
   );
 }
