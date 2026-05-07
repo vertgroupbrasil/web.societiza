@@ -140,5 +140,3 @@ export type UpdateTemplateParams = {
   templateId: string;
   data: UpdateTemplateDTO;
 };
-
-export type PublishTemplateResponse = CreateEntityResponse;

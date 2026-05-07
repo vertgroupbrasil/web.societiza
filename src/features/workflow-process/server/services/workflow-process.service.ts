@@ -55,6 +55,10 @@ export const workflowProcessService = {
     return createWorkflowProcessResponseSchema.parse(response.data);
   },
 
+  delete: async (processId: string): Promise<void> => {
+    await fetcher.delete(api.delete(processId));
+  },
+
   completeTask: async ({
     processId,
     stepInstanceId,

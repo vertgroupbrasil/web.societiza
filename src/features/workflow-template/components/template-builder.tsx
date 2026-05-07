@@ -3,13 +3,14 @@
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@shadcn/index';
-import { ArrowLeft, Layers } from 'lucide-react';
+import { ArrowLeft, Layers, Trash2 } from 'lucide-react';
 import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
 import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
 import { useWorkflowTemplateById } from '../hooks/queries/use-workflow-template-queries';
 import {
   useActivateTemplate,
   useArchiveTemplate,
+  useDeleteTemplate,
 } from '../hooks/mutations/use-template-mutations';
 import { canManageTemplates } from '../lib/template-permissions';
 import { TemplateKanban } from './template-kanban';
@@ -30,6 +31,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
 
   const activateTemplate = useActivateTemplate();
   const archiveTemplate = useArchiveTemplate();
+  const deleteTemplate = useDeleteTemplate();
 
   const returnTo = searchParams.get('returnTo');
   const backHref = returnTo || '/dashboard/societario';
@@ -113,6 +115,24 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
                   loading={archiveTemplate.isPending}
                 >
                   Arquivar
+                </Button>
+              )}
+              {isAdmin && (template.status === 'Draft' || template.status === 'Archived') && (
+                <Button
+                  variant="outline"
+                  className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  onClick={() => {
+                    if (confirm('Tem certeza que deseja deletar este template? Esta ação não pode ser desfeita.')) {
+                      deleteTemplate.mutate(template.id, {
+                        onSuccess: () => router.push(backHref),
+                      });
+                    }
+                  }}
+                  disabled={deleteTemplate.isPending}
+                  loading={deleteTemplate.isPending}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Deletar
                 </Button>
               )}
             </div>
