@@ -11,6 +11,7 @@ import {
   ProcessTypes,
   Stages,
   useCorporateMutations,
+  workflowProcessTypeEnum,
 } from '@workflow/index';
 import type { Accountancy } from '@accountancy/schemas/accountancy.schema';
 
@@ -18,12 +19,13 @@ interface UseProcessFormProps {
   accounties: Accountancy[];
   processTypes?: ProcessTypes;
   stages?: Stages;
+  templateId?: string | undefined;
   onSuccess?: (() => void) | undefined;
 }
 
 // ✅ CORREÇÃO: Remover valor padrão pois accounties é obrigatório
 export function useProcessForm(props: UseProcessFormProps) {
-  const { processTypes = [], stages = [], onSuccess } = props;
+  const { processTypes = [], stages = [], templateId, onSuccess } = props;
 
   const processTypesArray = Array.isArray(processTypes)
     ? processTypes
@@ -77,8 +79,9 @@ export function useProcessForm(props: UseProcessFormProps) {
   }, [processTypesArray, activeTab, setValue]);
 
   useEffect(() => {
-    if (activeTab && activeTab !== processTypeId) {
-      setValue('tipo_processo_id', activeTab, { shouldValidate: true });
+    const parsed = workflowProcessTypeEnum.safeParse(activeTab);
+    if (parsed.success && activeTab !== processTypeId) {
+      setValue('tipo_processo_id', parsed.data, { shouldValidate: true });
     }
   }, [activeTab, processTypeId, setValue]);
 
@@ -106,10 +109,12 @@ export function useProcessForm(props: UseProcessFormProps) {
         throw new Error('Tipo de processo deve ser selecionado');
       }
 
+      const processType = workflowProcessTypeEnum.parse(activeTab);
       const processData = {
         ...data,
-        tipo_processo_id: activeTab,
-        etapa_id: computeEtapaId(),
+        tipo_processo_id: processType,
+        template_id: templateId,
+        etapa_id: computeEtapaId() || undefined,
       };
 
       await Promise.race([

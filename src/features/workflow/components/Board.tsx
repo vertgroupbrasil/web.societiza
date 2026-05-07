@@ -169,6 +169,7 @@ export function Board() {
                   {...(accounties && { accounties })}
                   processTypes={processTypesFormatted}
                   stages={stagesFormatted}
+                  templateId={activeTemplateId || undefined}
                 />
               </div>
             </div>

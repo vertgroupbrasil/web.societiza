@@ -31,6 +31,7 @@ interface NewProcessFormProps {
   accounties: Accountancy[];
   processTypes: ProcessTypes;
   stages: Stages;
+  templateId?: string | undefined;
   onSuccess?: () => void;
 }
 
@@ -38,6 +39,7 @@ export function NewProcessForm({
   accounties,
   processTypes,
   stages,
+  templateId,
   onSuccess,
 }: NewProcessFormProps) {
   const { form, onSubmit, isSubmitting, activeTab, setActiveTab } =
@@ -45,6 +47,7 @@ export function NewProcessForm({
       accounties,
       processTypes,
       stages,
+      templateId,
       onSuccess,
     });
 

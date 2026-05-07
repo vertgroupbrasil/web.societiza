@@ -18,6 +18,7 @@ interface ProcessDialogProps {
   accounties?: Accountancy[];
   processTypes: ProcessTypes;
   stages: Stages;
+  templateId?: string | undefined;
   trigger?: React.ReactNode;
 }
 
@@ -25,6 +26,7 @@ export default function ProcessDialog({
   accounties,
   processTypes,
   stages,
+  templateId,
   trigger,
 }: ProcessDialogProps) {
   const [open, setOpen] = useState(false);
@@ -54,12 +56,12 @@ export default function ProcessDialog({
         <Separator />
 
         <div className="py-4">
-          {/* ✅ CORREÇÃO: Só renderizar se accounties existir */}
           {accounties ? (
             <NewProcessForm
-              accounties={accounties} // ✅ Agora não é undefined
+              accounties={accounties}
               processTypes={processTypes}
               stages={stages}
+              templateId={templateId}
               onSuccess={handleSuccess}
             />
           ) : (
