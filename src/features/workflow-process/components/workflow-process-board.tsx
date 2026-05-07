@@ -90,7 +90,7 @@ export function WorkflowProcessBoard() {
           );
         }
 
-        return { title: group.stepTitle, items: processes };
+        return { title: group.stepTitle, order: group.stepOrder, items: processes };
       });
   }, [board.data?.items, processTypeFilter, searchTerm]);
 
@@ -238,7 +238,7 @@ export function WorkflowProcessBoard() {
               <div className="flex gap-6 h-full w-max min-w-full p-4">
                 {columns.map((col) => (
                   <WorkflowProcessColumn
-                    key={col.title}
+                    key={col.order}
                     column={col}
                     onOpenProcess={openProcess}
                   />
