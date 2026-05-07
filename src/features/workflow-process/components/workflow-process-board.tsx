@@ -74,7 +74,7 @@ export function WorkflowProcessBoard() {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
     return [...groups]
-      .sort((a, b) => a.stepPosition - b.stepPosition)
+      .sort((a, b) => a.stepOrder - b.stepOrder)
       .map((group) => {
         let processes = group.processes;
 

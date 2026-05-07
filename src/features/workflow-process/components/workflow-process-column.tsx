@@ -80,7 +80,7 @@ export function WorkflowProcessColumn({
                       const delay = Math.min(index * 30, 150);
                       return (
                         <div
-                          key={item.id}
+                          key={item.processId}
                           className="transform transition-all duration-200 ease-in-out"
                           style={{
                             transitionDelay: isCollapsed ? '0ms' : `${delay}ms`,

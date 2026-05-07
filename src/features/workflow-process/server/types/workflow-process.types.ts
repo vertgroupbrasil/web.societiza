@@ -9,6 +9,7 @@ import {
   workflowProcessFieldTypeSchema,
   workflowProcessStatusSchema,
   workflowProcessStepFieldSchema,
+  workflowProcessStepGroupItemSchema,
   workflowProcessStepGroupSchema,
   workflowProcessStepInstanceSchema,
   workflowProcessStepStatusSchema,
@@ -34,6 +35,9 @@ export type WorkflowProcessFieldType = z.infer<
 
 export type WorkflowProcessBoardItem = z.infer<
   typeof workflowProcessBoardItemSchema
+>;
+export type WorkflowProcessStepGroupItem = z.infer<
+  typeof workflowProcessStepGroupItemSchema
 >;
 export type WorkflowProcessStepGroup = z.infer<
   typeof workflowProcessStepGroupSchema

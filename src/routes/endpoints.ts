@@ -128,7 +128,7 @@ export const API_ENDPOINTS = {
       ),
     boardBySteps: (accountancyId: string, pageNumber = 1, pageSize = 100) =>
       withBase(
-        `${WORKFLOW_PROCESS_BASE}/board?AccountancyId=${encodeURIComponent(accountancyId)}&PageNumber=${pageNumber}&PageSize=${pageSize}`,
+        `${WORKFLOW_PROCESS_BASE}/by-step?AccountancyId=${encodeURIComponent(accountancyId)}&PageNumber=${pageNumber}&PageSize=${pageSize}`,
       ),
     detail: (processId: string) =>
       withBase(

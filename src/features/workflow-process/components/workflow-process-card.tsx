@@ -4,37 +4,42 @@ import { Card, CardContent, CardHeader, Progress } from '@shadcn/index';
 import { CalendarDays } from 'lucide-react';
 import { Status, StatusIndicator, StatusLabel } from '@kibo/index';
 import { WORKFLOW_PROCESS_TYPE_LABELS } from '../constants';
-import { getProgressPercentage } from '../lib';
-import type { WorkflowProcessBoardItem } from '../server/types';
+import type { WorkflowProcessStepGroupItem } from '../server/types';
 
 type WorkflowProcessCardProps = {
-  item: WorkflowProcessBoardItem;
+  item: WorkflowProcessStepGroupItem;
   onOpen: (processId: string) => void;
 };
 
-function getUrgency(
-  item: WorkflowProcessBoardItem,
-): 'normal' | 'warning' | 'urgent' | 'critical' {
-  if (item.status === 'Completed') return 'normal';
-  const pct = getProgressPercentage(item.completedSteps, item.totalSteps);
-  if (pct >= 75) return 'warning';
-  if (pct >= 40) return 'urgent';
+type Urgency = 'normal' | 'warning' | 'urgent' | 'critical';
+
+function getUrgency(item: WorkflowProcessStepGroupItem): Urgency {
+  if (item.processStatus === 'Completed') return 'normal';
+  if (item.stepStatus === 'Completed') return 'warning';
+  if (item.stepStatus === 'InProgress') return 'urgent';
   return 'critical';
 }
 
-const URGENCY_LABELS: Record<string, string> = {
-  normal: 'Normal',
+function getStepProgress(item: WorkflowProcessStepGroupItem): number {
+  if (item.processStatus === 'Completed') return 100;
+  if (item.stepStatus === 'Completed') return 75;
+  if (item.stepStatus === 'InProgress') return 40;
+  return 10;
+}
+
+const URGENCY_LABELS: Record<Urgency, string> = {
+  normal: 'Concluído',
   warning: 'Atenção',
-  urgent: 'Urgente',
-  critical: 'Crítico',
+  urgent: 'Em andamento',
+  critical: 'Não iniciado',
 };
 
 export function WorkflowProcessCard({
   item,
   onOpen,
 }: WorkflowProcessCardProps) {
-  const progress = getProgressPercentage(item.completedSteps, item.totalSteps);
   const urgency = getUrgency(item);
+  const progress = getStepProgress(item);
   const daysElapsed = Math.ceil(
     (Date.now() - new Date(item.createdAt).getTime()) / (1000 * 60 * 60 * 24),
   );
@@ -42,7 +47,7 @@ export function WorkflowProcessCard({
   return (
     <Card
       className="w-full overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 group bg-card/80 border-none backdrop-blur-sm outline-dashed outline-3 outline-foreground/10"
-      onClick={() => onOpen(item.id)}
+      onClick={() => onOpen(item.processId)}
       tabIndex={0}
       role="button"
     >
@@ -80,14 +85,11 @@ export function WorkflowProcessCard({
             <div className="flex items-center text-muted-foreground min-w-0 flex-1">
               <CalendarDays className="mr-1 h-3 w-3 flex-shrink-0" />
               <span className="truncate">
-                {item.status === 'Completed'
+                {item.processStatus === 'Completed'
                   ? 'Concluído'
                   : `${daysElapsed} dia${daysElapsed !== 1 ? 's' : ''} corridos`}
               </span>
             </div>
-            <span className="text-xs text-muted-foreground flex-shrink-0">
-              {item.completedSteps}/{item.totalSteps} etapas
-            </span>
           </div>
         </div>
       </CardContent>

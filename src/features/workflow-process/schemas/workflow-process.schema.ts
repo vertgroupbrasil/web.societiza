@@ -98,10 +98,22 @@ export const workflowProcessBoardSchema = z.array(
   workflowProcessBoardItemSchema,
 );
 
+export const workflowProcessStepGroupItemSchema = z.object({
+  processId: z.string().uuid(),
+  stepInstanceId: z.string().uuid(),
+  processType: workflowProcessTypeSchema,
+  targetClient: z.string(),
+  processStatus: workflowProcessStatusSchema,
+  stepStatus: workflowProcessStepStatusSchema,
+  createdAt: z.coerce.date(),
+  completedAt: z.coerce.date().nullable(),
+});
+
 export const workflowProcessStepGroupSchema = z.object({
   stepTitle: z.string(),
-  stepPosition: z.number().int(),
-  processes: z.array(workflowProcessBoardItemSchema),
+  stepOrder: z.number().int(),
+  processCount: z.number().int(),
+  processes: z.array(workflowProcessStepGroupItemSchema),
 });
 
 export const workflowProcessBoardByStepsSchema = z.object({
