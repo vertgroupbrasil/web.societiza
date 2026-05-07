@@ -4,11 +4,14 @@ import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@shadcn/index';
 import { ArrowLeft, Layers } from 'lucide-react';
+import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
+import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
 import { useWorkflowTemplateById } from '../hooks/queries/use-workflow-template-queries';
 import {
   useActivateTemplate,
   useArchiveTemplate,
 } from '../hooks/mutations/use-template-mutations';
+import { canManageTemplates } from '../lib/template-permissions';
 import { TemplateKanban } from './template-kanban';
 
 interface TemplateBuilderProps {
@@ -18,6 +21,11 @@ interface TemplateBuilderProps {
 export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const currentUser = useCurrentUser();
+  const { data: profile } = useMyProfile(Boolean(currentUser));
+  const role = profile?.role ?? currentUser?.role;
+  const isAdmin = canManageTemplates(role);
+
   const { data: template, isLoading } = useWorkflowTemplateById(templateId);
 
   const activateTemplate = useActivateTemplate();
@@ -88,7 +96,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              {template.status === 'Draft' && (
+              {isAdmin && template.status === 'Draft' && (
                 <Button
                   onClick={() => activateTemplate.mutate(template.id)}
                   disabled={activateTemplate.isPending}
@@ -97,7 +105,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
                   Ativar workflow
                 </Button>
               )}
-              {template.status === 'Active' && (
+              {isAdmin && template.status === 'Active' && (
                 <Button
                   variant="outline"
                   onClick={() => archiveTemplate.mutate(template.id)}
@@ -131,7 +139,7 @@ export function TemplateBuilder({ templateId }: TemplateBuilderProps) {
         <TemplateKanban
           template={template}
           templateId={templateId}
-          readOnly={template.status === 'Archived'}
+          readOnly={!isAdmin || template.status === 'Archived'}
         />
       </div>
     </div>

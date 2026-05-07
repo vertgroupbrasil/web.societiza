@@ -13,8 +13,11 @@ import {
   CardHeader,
 } from '@shadcn/index';
 import { ArrowRight, FilePenLine, Layers } from 'lucide-react';
+import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
+import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
 import { useWorkflowTemplates } from '../hooks/queries/use-workflow-template-queries';
 import { CreateTemplateDialog } from './ui/create-template-dialog';
+import { canManageTemplates } from '../lib/template-permissions';
 import type { WorkflowTemplateListItem } from '../server/types/template.types';
 
 function TemplateSelectionCard({
@@ -90,6 +93,11 @@ function DraftCard({ template }: { template: WorkflowTemplateListItem }) {
 }
 
 export function SocietarioHome() {
+  const currentUser = useCurrentUser();
+  const { data: profile } = useMyProfile(Boolean(currentUser));
+  const role = profile?.role ?? currentUser?.role;
+  const isAdmin = canManageTemplates(role);
+
   const { data: page, isLoading } = useWorkflowTemplates();
   const templates = page?.items;
 
@@ -119,13 +127,13 @@ export function SocietarioHome() {
                 Escolha seu workflow
               </h1>
               <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Selecione um template ativo para operar o workflow ou crie um do
-                zero para começar uma estrutura nova.
+                Selecione um template ativo para operar o workflow
+                {isAdmin ? ' ou crie um do zero para começar uma estrutura nova.' : '.'}
               </p>
             </div>
 
-          <CreateTemplateDialog />
-        </div>
+            {isAdmin && <CreateTemplateDialog />}
+          </div>
       </div>
       </div>
 
@@ -154,11 +162,15 @@ export function SocietarioHome() {
                   Nenhum workflow ativo ainda
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Crie um template do zero e publique quando quiser começar a usar.
+                  {isAdmin
+                    ? 'Crie um template do zero e publique quando quiser começar a usar.'
+                    : 'Aguarde um administrador criar e ativar um workflow.'}
                 </p>
-                <div className="mt-6 flex justify-center">
-                  <CreateTemplateDialog />
-                </div>
+                {isAdmin && (
+                  <div className="mt-6 flex justify-center">
+                    <CreateTemplateDialog />
+                  </div>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
@@ -169,7 +181,7 @@ export function SocietarioHome() {
             )}
           </section>
 
-          {draftTemplates.length > 0 && (
+          {isAdmin && draftTemplates.length > 0 && (
             <section className="space-y-4">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold text-foreground">
