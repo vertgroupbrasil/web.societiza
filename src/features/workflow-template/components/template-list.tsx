@@ -54,8 +54,7 @@ function TemplateCard({ template }: { template: WorkflowTemplateListItem }) {
 }
 
 export function TemplateList() {
-  const { data: page, isLoading } = useWorkflowTemplates();
-  const templates = page?.items;
+  const { data: templates, isLoading } = useWorkflowTemplates();
 
   return (
     <div className="h-full w-full flex flex-col">

@@ -10,15 +10,15 @@ export const useWorkflowTemplateById = (id: string) => {
 };
 
 export const useActiveWorkflowTemplate = () => {
-  const { data: page, ...rest } = useWorkflowTemplates();
+  const { data: templates, ...rest } = useWorkflowTemplates();
 
-  const activeTemplate = page?.items?.find(
+  const activeTemplate = templates?.find(
     (template) => template.status === 'Active' && !template.sourceTemplateId,
   );
 
   return {
     activeTemplate,
-    templates: page?.items,
+    templates,
     ...rest,
   };
 };
