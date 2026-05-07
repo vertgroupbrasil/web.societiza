@@ -23,8 +23,7 @@ import { accountancyService } from '@societiza/features/accountancy/server/servi
 import { useCurrentUser } from '@societiza/hooks/useCurrentUser';
 import { useMyProfile } from '@societiza/features/identity-users/hooks/queries/useIdentityUserQueries';
 import { WORKFLOW_PROCESS_TYPE_OPTIONS } from '../constants';
-import { groupBoardItemsByCurrentStep } from '../lib';
-import { useWorkflowProcessBoard } from '../hooks/queries';
+import { useWorkflowProcessBoardBySteps } from '../hooks/queries';
 import type { WorkflowProcessType } from '../server/types';
 import { CreateWorkflowProcessDialog } from './create-workflow-process-dialog';
 import { WorkflowProcessColumn } from './workflow-process-column';
@@ -66,23 +65,38 @@ export function WorkflowProcessBoard() {
     ? selectedAccountancyId
     : (profile?.accountancyId ?? currentUser?.accountancyId);
 
-  const board = useWorkflowProcessBoard(
-    accountancyId,
-    processTypeFilter === 'all' ? undefined : processTypeFilter,
-  );
+  const board = useWorkflowProcessBoardBySteps(accountancyId);
 
-  const filteredItems = useMemo(() => {
+  // Build columns from server-grouped data, applying client-side filters.
+  // All step groups are always rendered (even when processes is empty after filtering).
+  const columns = useMemo(() => {
+    const groups = board.data?.items ?? [];
     const normalizedSearch = searchTerm.trim().toLowerCase();
-    const items = board.data ?? [];
-    if (!normalizedSearch) return items;
-    return items.filter((item) =>
-      item.targetClient.toLowerCase().includes(normalizedSearch),
-    );
-  }, [board.data, searchTerm]);
 
-  const columns = useMemo(
-    () => groupBoardItemsByCurrentStep(filteredItems),
-    [filteredItems],
+    return [...groups]
+      .sort((a, b) => a.stepPosition - b.stepPosition)
+      .map((group) => {
+        let processes = group.processes;
+
+        if (processTypeFilter !== 'all') {
+          processes = processes.filter(
+            (p) => p.processType === processTypeFilter,
+          );
+        }
+
+        if (normalizedSearch) {
+          processes = processes.filter((p) =>
+            p.targetClient.toLowerCase().includes(normalizedSearch),
+          );
+        }
+
+        return { title: group.stepTitle, items: processes };
+      });
+  }, [board.data?.items, processTypeFilter, searchTerm]);
+
+  const totalProcesses = useMemo(
+    () => columns.reduce((acc, col) => acc + col.items.length, 0),
+    [columns],
   );
 
   const activeFilterCount = processTypeFilter !== 'all' ? 1 : 0;
@@ -239,9 +253,9 @@ export function WorkflowProcessBoard() {
           <div className="px-4 py-2 max-w-full">
             <div className="text-center text-xs sm:text-sm text-muted-foreground truncate">
               Mostrando{' '}
-              <span className="font-bold">{filteredItems.length}</span>{' '}
+              <span className="font-bold">{totalProcesses}</span>{' '}
               <span className="font-medium">
-                processo{filteredItems.length !== 1 ? 's' : ''}
+                processo{totalProcesses !== 1 ? 's' : ''}
               </span>
             </div>
           </div>
