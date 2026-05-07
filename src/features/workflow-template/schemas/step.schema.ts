@@ -12,8 +12,16 @@ export const workflowTemplateStepSchema = z.object({
 });
 
 export const createStepSchemaDTO = z.object({
-  title: z.string().min(1, 'Título é obrigatório'),
-  description: z.string().min(1, 'Descrição é obrigatória'),
+  title: z
+    .string()
+    .trim()
+    .min(1, 'Título é obrigatório')
+    .max(150, 'Título deve ter no máximo 150 caracteres'),
+  description: z
+    .string()
+    .trim()
+    .min(1, 'Descrição é obrigatória')
+    .max(500, 'Descrição deve ter no máximo 500 caracteres'),
   order: z.coerce.number().min(1, 'Ordem deve ser pelo menos 1'),
 });
 

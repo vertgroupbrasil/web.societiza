@@ -3,6 +3,7 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 const withBase = (endpoint = '') => `${api}${endpoint}`;
 
 const WORKFLOW_TEMPLATE_BASE = '/workflow-template';
+const WORKFLOW_PROCESS_BASE = '/workflow-process';
 
 const workflowTemplateEndpoints = {
   createWorkflowTemplate: withBase(WORKFLOW_TEMPLATE_BASE),
@@ -12,7 +13,20 @@ const workflowTemplateEndpoints = {
     withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/activate`),
   archiveWorkflowTemplate: (workflowTemplateId: string) =>
     withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/archive`),
-  getAllWorkflowTemplates: withBase(WORKFLOW_TEMPLATE_BASE),
+  getAllWorkflowTemplates: ({
+    includeDraft = false,
+    includeArchive = false,
+    pageNumber = 1,
+    pageSize = 10,
+  }: {
+    includeDraft?: boolean;
+    includeArchive?: boolean;
+    pageNumber?: number;
+    pageSize?: number;
+  } = {}) =>
+    withBase(
+      `${WORKFLOW_TEMPLATE_BASE}?includeDraft=${includeDraft}&includeArchive=${includeArchive}&pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    ),
   getWorkflowTemplateById: (workflowTemplateId: string) =>
     withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}`),
   addWorkflowTemplateStep: (workflowTemplateId: string) =>
@@ -104,6 +118,82 @@ const workflowTemplateEndpoints = {
 
 export const API_ENDPOINTS = {
   workflowTemplate: workflowTemplateEndpoints,
+  workflowProcess: {
+    create: withBase(WORKFLOW_PROCESS_BASE),
+    board: (accountancyId: string, processType?: string) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}?accountancyId=${encodeURIComponent(
+          accountancyId,
+        )}${processType ? `&processType=${encodeURIComponent(processType)}` : ''}`,
+      ),
+    detail: (processId: string) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(processId)}`,
+      ),
+    completeTask: (
+      processId: string,
+      stepInstanceId: string,
+      taskInstanceId: string,
+    ) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(
+          processId,
+        )}/steps/${encodeURIComponent(
+          stepInstanceId,
+        )}/tasks/${encodeURIComponent(taskInstanceId)}/complete`,
+      ),
+    skipTask: (
+      processId: string,
+      stepInstanceId: string,
+      taskInstanceId: string,
+    ) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(
+          processId,
+        )}/steps/${encodeURIComponent(
+          stepInstanceId,
+        )}/tasks/${encodeURIComponent(taskInstanceId)}/skip`,
+      ),
+    revertTask: (
+      processId: string,
+      stepInstanceId: string,
+      taskInstanceId: string,
+    ) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(
+          processId,
+        )}/steps/${encodeURIComponent(
+          stepInstanceId,
+        )}/tasks/${encodeURIComponent(taskInstanceId)}/revert`,
+      ),
+    fillStepField: (
+      processId: string,
+      stepInstanceId: string,
+      fieldInstanceId: string,
+    ) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(
+          processId,
+        )}/steps/${encodeURIComponent(
+          stepInstanceId,
+        )}/fields/${encodeURIComponent(fieldInstanceId)}`,
+      ),
+    fillTaskField: (
+      processId: string,
+      stepInstanceId: string,
+      taskInstanceId: string,
+      fieldInstanceId: string,
+    ) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(
+          processId,
+        )}/steps/${encodeURIComponent(
+          stepInstanceId,
+        )}/tasks/${encodeURIComponent(
+          taskInstanceId,
+        )}/fields/${encodeURIComponent(fieldInstanceId)}`,
+      ),
+  },
   auth: {
     login: withBase('/identity/auth/login'),
     logout: withBase('/identity/auth/logout'),

@@ -1,7 +1,10 @@
 import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 import fetcher from '@societiza/lib/axios';
+import {
+  pagedWorkflowTemplatesSchema,
+  workflowTemplateDetailSchema,
+} from '../../schemas';
 import type {
-  WorkflowTemplateListItem,
   WorkflowTemplateDetail,
   CreateTemplateDTO,
   UpdateTemplateDTO,
@@ -12,6 +15,8 @@ import type {
   CreateFieldDTO,
   UpdateFieldDTO,
   CreateEntityResponse,
+  PagedWorkflowTemplates,
+  WorkflowTemplateListParams,
 } from '../types/template.types';
 
 const api = API_ENDPOINTS.workflowTemplate;
@@ -30,16 +35,28 @@ function parseOptions(raw: string | null): string[] | null {
   }
 }
 
-function serializeOptions(options: string[] | null): string | null {
+function serializeOptions(
+  fieldType: CreateFieldDTO['fieldType'],
+  options: string[] | null,
+): string | null {
+  if (fieldType !== 'Select') return null;
   if (!options || options.length === 0) return null;
   return JSON.stringify(options);
 }
 
-// Transform the raw API detail response into the strongly-typed shape the UI expects.
-function transformDetail(raw: WorkflowTemplateDetail): WorkflowTemplateDetail {
+function normalizeFieldPayload(data: CreateFieldDTO | UpdateFieldDTO) {
   return {
-    ...raw,
-    steps: raw.steps.map((step) => ({
+    ...data,
+    options: serializeOptions(data.fieldType, data.options),
+  };
+}
+
+// Transform the raw API detail response into the strongly-typed shape the UI expects.
+function transformDetail(raw: unknown): WorkflowTemplateDetail {
+  const template = raw as WorkflowTemplateDetail;
+  const transformed = {
+    ...template,
+    steps: template.steps.map((step) => ({
       ...step,
       fields: [...step.fields]
         .sort((left, right) => left.order - right.order)
@@ -58,18 +75,22 @@ function transformDetail(raw: WorkflowTemplateDetail): WorkflowTemplateDetail {
       })),
     })),
   };
+
+  return workflowTemplateDetailSchema.parse(transformed);
 }
 
 export const workflowTemplateService = {
   // ====== Template CRUD ======
-  list: async (): Promise<WorkflowTemplateListItem[]> => {
-    const response = await fetcher.get(api.getAllWorkflowTemplates);
-    return response.data as WorkflowTemplateListItem[];
+  list: async (
+    params: WorkflowTemplateListParams = {},
+  ): Promise<PagedWorkflowTemplates> => {
+    const response = await fetcher.get(api.getAllWorkflowTemplates(params));
+    return pagedWorkflowTemplatesSchema.parse(response.data);
   },
 
   getById: async (id: string): Promise<WorkflowTemplateDetail> => {
     const response = await fetcher.get(api.getWorkflowTemplateById(id));
-    return transformDetail(response.data as WorkflowTemplateDetail);
+    return transformDetail(response.data);
   },
 
   create: async (data: CreateTemplateDTO): Promise<CreateEntityResponse> => {
@@ -168,7 +189,7 @@ export const workflowTemplateService = {
   ): Promise<CreateEntityResponse> => {
     const response = await fetcher.post(
       api.addTemplateStepField(templateId, stepId),
-      { ...data, options: serializeOptions(data.options) },
+      normalizeFieldPayload(data),
     );
     return response.data as CreateEntityResponse;
   },
@@ -181,7 +202,7 @@ export const workflowTemplateService = {
   ): Promise<void> => {
     await fetcher.put(
       api.updateTemplateStepField(templateId, stepId, fieldId),
-      { ...data, options: serializeOptions(data.options) },
+      normalizeFieldPayload(data),
     );
   },
 
@@ -204,7 +225,7 @@ export const workflowTemplateService = {
   ): Promise<CreateEntityResponse> => {
     const response = await fetcher.post(
       api.addTemplateStepTaskField(templateId, stepId, taskId),
-      { ...data, options: serializeOptions(data.options) },
+      normalizeFieldPayload(data),
     );
     return response.data as CreateEntityResponse;
   },
@@ -218,7 +239,7 @@ export const workflowTemplateService = {
   ): Promise<void> => {
     await fetcher.put(
       api.updateTemplateStepTaskField(templateId, stepId, taskId, fieldId),
-      { ...data, options: serializeOptions(data.options) },
+      normalizeFieldPayload(data),
     );
   },
 

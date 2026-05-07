@@ -5,15 +5,26 @@ export const TEMPLATE_STATUS_LABELS = {
 } as const;
 
 export const TEMPLATE_STATUS_COLORS = {
-  Draft: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  Active: 'bg-green-100 text-green-800 border-green-200',
-  Archived: 'bg-gray-100 text-gray-500 border-gray-200',
+  Draft: '',
+  Active: '',
+  Archived: '',
 } as const;
 
 export const FIELD_TYPE_LABELS = {
   Text: 'Texto',
+  Boolean: 'Sim ou não',
+  Integer: 'Número inteiro',
   Select: 'Seleção',
+  Date: 'Data',
 } as const;
+
+export const FIELD_TYPE_OPTIONS = [
+  { value: 'Text', label: 'Texto' },
+  { value: 'Boolean', label: 'Sim ou não' },
+  { value: 'Integer', label: 'Número inteiro' },
+  { value: 'Select', label: 'Seleção' },
+  { value: 'Date', label: 'Data' },
+] as const;
 
 export const TASK_TYPE_OPTIONS = [
   { value: 'Manual', label: 'Manual' },

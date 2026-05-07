@@ -15,6 +15,8 @@ import {
   updateFieldSchemaDTO,
   templateStatusEnum,
   fieldTypeEnum,
+  pagedWorkflowTemplatesSchema,
+  taskTypeEnum,
 } from '../../schemas';
 
 // ====== Entity Types ======
@@ -29,6 +31,16 @@ export type WorkflowTemplateDetail = z.infer<
 >;
 export type TemplateStatus = z.infer<typeof templateStatusEnum>;
 export type FieldType = z.infer<typeof fieldTypeEnum>;
+export type TaskType = z.infer<typeof taskTypeEnum>;
+export type PagedWorkflowTemplates = z.infer<
+  typeof pagedWorkflowTemplatesSchema
+>;
+export type WorkflowTemplateListParams = {
+  includeDraft?: boolean;
+  includeArchive?: boolean;
+  pageNumber?: number;
+  pageSize?: number;
+};
 
 // ====== DTO Types ======
 export type CreateTemplateDTO = z.infer<typeof createTemplateSchemaDTO>;

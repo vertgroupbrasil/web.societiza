@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { workflowTemplateService } from '../../server/services/template.service';
 import { templateQueries } from '../queries/query-options';
-import { refreshVisibleAndMarkStale } from '@societiza/lib/query-refresh';
 import {
   replaceStepInTemplate,
   restoreTemplateDetailCache,
@@ -79,10 +78,12 @@ export const useAddStep = () => {
         );
       }
 
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-        templateQueries.list().queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.list().queryKey,
+      });
       toast.success('Etapa adicionada com sucesso!');
     },
     onError: (_error, variables, context) => {
@@ -99,9 +100,9 @@ export const useUpdateStep = () => {
     mutationFn: ({ templateId, stepId, data }) =>
       workflowTemplateService.updateStep(templateId, stepId, data),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: () => {
       toast.error('Erro ao atualizar etapa');
@@ -116,10 +117,12 @@ export const useRemoveStep = () => {
     mutationFn: ({ templateId, stepId }) =>
       workflowTemplateService.removeStep(templateId, stepId),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-        templateQueries.list().queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.list().queryKey,
+      });
       toast.success('Etapa removida com sucesso!');
     },
     onError: () => {
@@ -163,9 +166,9 @@ export const useReorderSteps = () => {
       }
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);

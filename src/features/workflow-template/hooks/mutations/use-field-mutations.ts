@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { workflowTemplateService } from '../../server/services/template.service';
 import { templateQueries } from '../queries/query-options';
-import { refreshVisibleAndMarkStale } from '@societiza/lib/query-refresh';
 import {
   replaceStepFieldInTemplate,
   replaceTaskFieldInTemplate,
@@ -94,9 +93,9 @@ export const useAddStepField = () => {
         );
       }
 
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Campo adicionado com sucesso!');
     },
     onError: (_error, variables, context) => {
@@ -143,9 +142,9 @@ export const useUpdateStepField = () => {
       return { previous };
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);
@@ -161,9 +160,9 @@ export const useRemoveStepField = () => {
     mutationFn: ({ templateId, stepId, fieldId }) =>
       workflowTemplateService.removeStepField(templateId, stepId, fieldId),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Campo removido com sucesso!');
     },
     onError: () => {
@@ -245,9 +244,9 @@ export const useAddTaskField = () => {
         );
       }
 
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Campo da tarefa adicionado com sucesso!');
     },
     onError: (_error, variables, context) => {
@@ -296,9 +295,9 @@ export const useUpdateTaskField = () => {
       return { previous };
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);
@@ -319,9 +318,9 @@ export const useRemoveTaskField = () => {
         fieldId,
       ),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Campo da tarefa removido com sucesso!');
     },
     onError: () => {
@@ -378,9 +377,9 @@ export const useReorderStepFields = () => {
       }
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);
@@ -450,9 +449,9 @@ export const useReorderTaskFields = () => {
       }
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);

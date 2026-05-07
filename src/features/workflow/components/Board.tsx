@@ -33,13 +33,17 @@ export function Board() {
   const accounties = accountanciesPage?.items;
 
   // Template-driven columns
-  const { data: templates } = useWorkflowTemplates();
+  const { data: templatesPage } = useWorkflowTemplates();
+  const templates = useMemo(
+    () => templatesPage?.items ?? [],
+    [templatesPage?.items],
+  );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
 
   // Auto-select first template when loaded
   const activeTemplateId = useMemo(() => {
     if (selectedTemplateId) return selectedTemplateId;
-    if (templates && templates.length > 0) return templates[0].id;
+    if (templates.length > 0) return templates[0].id;
     return '';
   }, [selectedTemplateId, templates]);
 
@@ -142,7 +146,7 @@ export function Board() {
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {/* Template Selector */}
-                {templates && templates.length > 1 && (
+                {templates.length > 1 && (
                   <Select
                     value={activeTemplateId}
                     onValueChange={setSelectedTemplateId}

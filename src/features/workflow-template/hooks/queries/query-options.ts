@@ -1,14 +1,16 @@
 import { queryOptions } from '@tanstack/react-query';
 import { workflowTemplateService } from '../../server/services/template.service';
 import { TEMPLATE_STALE_TIME } from '../../constants/template.constants';
+import type { WorkflowTemplateListParams } from '../../server/types';
 
 export const templateQueries = {
   all: () => ['workflow-templates'] as const,
+  lists: () => [...templateQueries.all(), 'list'] as const,
 
-  list: () =>
+  list: (params: WorkflowTemplateListParams = {}) =>
     queryOptions({
-      queryKey: [...templateQueries.all(), 'list'],
-      queryFn: workflowTemplateService.list,
+      queryKey: [...templateQueries.lists(), params] as const,
+      queryFn: () => workflowTemplateService.list(params),
       staleTime: TEMPLATE_STALE_TIME.list,
       refetchOnWindowFocus: true,
     }),

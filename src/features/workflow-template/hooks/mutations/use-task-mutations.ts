@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { workflowTemplateService } from '../../server/services/template.service';
 import { templateQueries } from '../queries/query-options';
-import { refreshVisibleAndMarkStale } from '@societiza/lib/query-refresh';
 import {
   replaceTaskInTemplate,
   restoreTemplateDetailCache,
@@ -88,9 +87,9 @@ export const useAddTask = () => {
         );
       }
 
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Tarefa adicionada com sucesso!');
     },
     onError: (_error, variables, context) => {
@@ -107,9 +106,9 @@ export const useUpdateTask = () => {
     mutationFn: ({ templateId, stepId, taskId, data }) =>
       workflowTemplateService.updateTask(templateId, stepId, taskId, data),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: () => {
       toast.error('Erro ao atualizar tarefa');
@@ -124,9 +123,9 @@ export const useRemoveTask = () => {
     mutationFn: ({ templateId, stepId, taskId }) =>
       workflowTemplateService.removeTask(templateId, stepId, taskId),
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
       toast.success('Tarefa removida com sucesso!');
     },
     onError: () => {
@@ -180,9 +179,9 @@ export const useReorderTasks = () => {
       }
     },
     onSuccess: async (_data, variables) => {
-      await refreshVisibleAndMarkStale(queryClient, [
-        templateQueries.detail(variables.templateId).queryKey,
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.detail(variables.templateId).queryKey,
+      });
     },
     onError: (_error, variables, context) => {
       restoreTemplateDetailCache(queryClient, variables.templateId, context?.previous);

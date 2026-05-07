@@ -38,7 +38,7 @@ export const corporateService = {
   },
   getProcesses: async (): Promise<ProcessByStages> => {
     const response = await fetcher.get(
-      api.workflowTemplate.getAllWorkflowTemplates,
+      api.workflowTemplate.getAllWorkflowTemplates(),
     );
     return response.data;
   },
@@ -50,7 +50,7 @@ export const corporateService = {
   },
   getStages: async (): Promise<Stages> => {
     const response = await fetcher.get(
-      api.workflowTemplate.getAllWorkflowTemplates,
+      api.workflowTemplate.getAllWorkflowTemplates(),
     );
     return response.data;
   },
@@ -62,7 +62,7 @@ export const corporateService = {
   },
   getProcessTypes: async (): Promise<ProcessTypes> => {
     const response = await fetcher.get(
-      api.workflowTemplate.getAllWorkflowTemplates,
+      api.workflowTemplate.getAllWorkflowTemplates(),
     );
     return response.data;
   },
