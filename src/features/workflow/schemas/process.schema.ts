@@ -40,10 +40,9 @@ export const tasksSchema = z.object({
 export const workflowProcessTypeEnum = z.enum(['Abertura', 'Alteracao', 'Baixa']);
 
 export const processSchemaDTO = z.object({
-  nome: z.string(),
-  contabilidade_id: z.string().uuid(),
+  nome: z.string().min(1, 'Nome é obrigatório'),
+  contabilidade_id: z.string().uuid('Selecione uma contabilidade'),
   tipo_processo_id: workflowProcessTypeEnum,
-  template_id: z.string().uuid().optional(),
   etapa_id: z.string().uuid().optional(),
 });
 
@@ -107,6 +106,5 @@ export const emptyProcess = {
   nome: '',
   contabilidade_id: '',
   tipo_processo_id: 'Abertura' as const,
-  template_id: '',
   etapa_id: undefined,
 };

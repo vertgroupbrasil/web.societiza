@@ -111,14 +111,15 @@ export function useProcessForm(props: UseProcessFormProps) {
 
       const processType = workflowProcessTypeEnum.parse(activeTab);
       const processData = {
-        ...data,
+        nome: data.nome,
+        contabilidade_id: data.contabilidade_id,
         tipo_processo_id: processType,
-        template_id: templateId,
+        template_id: templateId ?? '',
         etapa_id: computeEtapaId() || undefined,
-      };
+      } satisfies ProcessDTO & { template_id: string };
 
       await Promise.race([
-        createProcess.mutateAsync(processData),
+        createProcess.mutateAsync(processData as unknown as ProcessDTO),
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Request timeout')), 30000),
         ),

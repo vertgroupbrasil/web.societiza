@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   Process,
   ProcessDTO,
@@ -13,6 +14,10 @@ export const useCorporateMutations = () => {
 
   const createProcess = useMutation<Process, Error, ProcessDTO>({
     mutationFn: corporateService.create,
+
+    onError: () => {
+      toast.error('Erro ao criar processo. Verifique os dados e tente novamente.');
+    },
 
     onSuccess: (newProcess, variables) => {
       // Invalidate específico para a etapa onde o processo foi criado

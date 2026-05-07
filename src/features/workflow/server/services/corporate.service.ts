@@ -27,7 +27,7 @@ const HARDCODED_STAGES: Stages = {
 };
 
 export const corporateService = {
-  create: async (data: ProcessDTO): Promise<Process> => {
+  create: async (data: ProcessDTO & { template_id?: string }): Promise<Process> => {
     const payload = {
       accountancyId: data.contabilidade_id,
       templateId: data.template_id,
