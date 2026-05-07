@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import type { WorkflowTemplateListParams } from '../../server/types';
 import { templateQueries } from './query-options';
 
-export const useWorkflowTemplates = () => {
-  return useQuery(templateQueries.list());
+export const useWorkflowTemplates = (params?: WorkflowTemplateListParams) => {
+  return useQuery(templateQueries.list(params));
 };
 
 export const useWorkflowTemplateById = (id: string) => {
