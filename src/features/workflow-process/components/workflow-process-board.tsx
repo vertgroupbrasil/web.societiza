@@ -156,19 +156,17 @@ export function WorkflowProcessBoard() {
                     setProcessTypeFilter(v as ProcessTypeFilter)
                   }
                 >
-                  <SelectTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      <Filter className="h-4 w-4" />
-                      Filtros
-                      {activeFilterCount > 0 ? (
-                        <Badge
-                          variant="secondary"
-                          className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-                        >
-                          {activeFilterCount}
-                        </Badge>
-                      ) : null}
-                    </Button>
+                  <SelectTrigger className="w-auto gap-2 border-dashed border-border/70">
+                    <Filter className="h-4 w-4" />
+                    Filtros
+                    {activeFilterCount > 0 ? (
+                      <Badge
+                        variant="secondary"
+                        className="ml-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                      >
+                        {activeFilterCount}
+                      </Badge>
+                    ) : null}
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos os tipos</SelectItem>
