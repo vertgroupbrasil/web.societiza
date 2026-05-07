@@ -23,6 +23,7 @@ import {
   ChevronRight,
   Clock,
   FileText,
+  Trash2,
 } from 'lucide-react';
 import {
   WORKFLOW_PROCESS_STATUS_LABELS,
@@ -36,6 +37,7 @@ import {
 } from '../lib';
 import {
   useCompleteWorkflowProcessTask,
+  useDeleteWorkflowProcess,
   useFillWorkflowProcessStepField,
   useFillWorkflowProcessTaskField,
   useRevertWorkflowProcessTask,
@@ -197,6 +199,7 @@ export function WorkflowProcessDrawer({
   const revertTask = useRevertWorkflowProcessTask();
   const fillStepField = useFillWorkflowProcessStepField();
   const fillTaskField = useFillWorkflowProcessTaskField();
+  const deleteProcess = useDeleteWorkflowProcess();
 
   const [collapsedSteps, setCollapsedSteps] = useState<Set<string>>(new Set());
   const [pendingFields, setPendingFields] = useState<Map<string, PendingFieldPayload>>(
@@ -212,7 +215,7 @@ export function WorkflowProcessDrawer({
   const isTaskActionPending =
     completeTask.isPending || skipTask.isPending || revertTask.isPending;
   const isSavingField = fillStepField.isPending || fillTaskField.isPending;
-  const isSavingAny = isTaskActionPending || isSavingField;
+  const isSavingAny = isTaskActionPending || isSavingField || deleteProcess.isPending;
 
   const processStats = useMemo(() => {
     if (!detail) return { totalTasks: 0, completedTasks: 0, progress: 0 };
@@ -247,6 +250,14 @@ export function WorkflowProcessDrawer({
     },
     [],
   );
+
+  const handleDelete = () => {
+    if (!detail) return;
+    if (!window.confirm(`Excluir o processo "${detail.targetClient}"? Esta ação não pode ser desfeita.`)) return;
+    deleteProcess.mutate(detail.id, {
+      onSuccess: () => onOpenChange(false),
+    });
+  };
 
   const handleSaveAll = async () => {
     if (pendingFields.size > 0) {
@@ -517,11 +528,21 @@ export function WorkflowProcessDrawer({
             </ScrollArea>
 
             {/* Fixed footer */}
-            <div className="border-t bg-background p-4 flex-shrink-0">
+            <div className="border-t bg-background p-4 flex-shrink-0 flex gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="flex-shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                disabled={isSavingAny}
+                onClick={handleDelete}
+                title="Excluir processo"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
               <Button
                 variant="default"
                 effect="shineHover"
-                className="w-full"
+                className="flex-1"
                 disabled={isSavingAny}
                 loading={isSavingAny}
                 onClick={() => void handleSaveAll()}

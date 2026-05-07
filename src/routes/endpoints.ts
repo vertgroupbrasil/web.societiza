@@ -136,6 +136,10 @@ export const API_ENDPOINTS = {
       withBase(
         `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(processId)}`,
       ),
+    delete: (processId: string) =>
+      withBase(
+        `${WORKFLOW_PROCESS_BASE}/${encodeURIComponent(processId)}`,
+      ),
     completeTask: (
       processId: string,
       stepInstanceId: string,

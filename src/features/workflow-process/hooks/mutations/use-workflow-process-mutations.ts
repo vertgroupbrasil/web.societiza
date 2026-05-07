@@ -61,6 +61,30 @@ export const useCreateWorkflowProcess = () => {
   });
 };
 
+export const useDeleteWorkflowProcess = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (processId: string) => workflowProcessService.delete(processId),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: workflowProcessQueries.boards(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: workflowProcessQueries.boardsBySteps(),
+        }),
+      ]);
+      toast.success('Processo excluído com sucesso.');
+    },
+    onError: (error) => {
+      toast.error(
+        getBackendMessage(error) ?? 'Não foi possível excluir o processo.',
+      );
+    },
+  });
+};
+
 export const useCompleteWorkflowProcessTask = () => {
   const queryClient = useQueryClient();
 
