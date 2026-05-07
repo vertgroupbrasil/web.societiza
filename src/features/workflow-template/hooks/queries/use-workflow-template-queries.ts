@@ -9,38 +9,16 @@ export const useWorkflowTemplateById = (id: string) => {
   return useQuery(templateQueries.detail(id));
 };
 
-/**
- * Hook que retorna o template ativo para uso no Kanban.
- * Busca a lista de templates e filtra pelo primeiro com status "Active".
- */
 export const useActiveWorkflowTemplate = () => {
-  const { data: templates, ...rest } = useWorkflowTemplates();
+  const { data: page, ...rest } = useWorkflowTemplates();
 
-  const activeTemplate = templates?.find(
+  const activeTemplate = page?.items?.find(
     (template) => template.status === 'Active' && !template.sourceTemplateId,
   );
 
   return {
     activeTemplate,
-    templates,
-    ...rest,
-  };
-};
-
-export const useTemplateDraftBySource = (sourceTemplateId?: string) => {
-  const { data: templates, ...rest } = useWorkflowTemplates();
-
-  const draft = templates
-    ?.filter(
-      (template) =>
-        template.sourceTemplateId === sourceTemplateId &&
-        template.status === 'Draft',
-    )
-    .sort((left, right) => right.createdAt.getTime() - left.createdAt.getTime())[0];
-
-  return {
-    draft,
-    templates,
+    templates: page?.items,
     ...rest,
   };
 };

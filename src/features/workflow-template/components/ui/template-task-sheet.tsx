@@ -24,6 +24,7 @@ import {
 } from '@shadcn/index';
 import { Plus, Trash2, Pencil, Type, ChevronDown, X } from 'lucide-react';
 import type {
+  TaskType,
   WorkflowTemplateTask,
   WorkflowTemplateField,
 } from '../../server/types/template.types';
@@ -54,7 +55,7 @@ export function TemplateTaskSheet({
   onOpenChange,
 }: TemplateTaskSheetProps) {
   const [localTitle, setLocalTitle] = useState('');
-  const [localType, setLocalType] = useState('Manual');
+  const [localType, setLocalType] = useState<TaskType>('Manual');
   const [localIsOptional, setLocalIsOptional] = useState(false);
   const [editingFieldId, setEditingFieldId] = useState<string | null>(null);
   const [editingFieldLabel, setEditingFieldLabel] = useState('');
@@ -203,7 +204,7 @@ export function TemplateTaskSheet({
             />
             <div className="flex items-center gap-3 flex-wrap">
               {/* Tipo */}
-              <Select value={localType} onValueChange={setLocalType}>
+              <Select value={localType} onValueChange={(v) => setLocalType(v as TaskType)}>
                 <SelectTrigger className="w-40 h-8 text-xs">
                   <SelectValue />
                 </SelectTrigger>

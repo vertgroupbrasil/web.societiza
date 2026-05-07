@@ -6,6 +6,9 @@ import type {
 const FIELD_LABEL_PREFIX: Record<FieldType, string> = {
   Text: 'Campo de texto',
   Select: 'Campo de seleção',
+  Boolean: 'Campo booleano',
+  Integer: 'Campo numérico',
+  Date: 'Campo de data',
 };
 
 export function getNextFieldLabel(

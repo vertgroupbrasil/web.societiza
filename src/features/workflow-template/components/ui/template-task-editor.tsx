@@ -48,7 +48,7 @@ import {
   useUpdateTask,
   useUpdateTaskField,
 } from '../../hooks/mutations';
-import type { WorkflowTemplateTask } from '../../server/types/template.types';
+import type { TaskType, WorkflowTemplateTask } from '../../server/types/template.types';
 import { getNextFieldLabel } from '../../lib/field-labels';
 import { TemplateFieldEditor } from './template-field-editor';
 
@@ -286,11 +286,11 @@ export function TemplateTaskEditor({
               <Select
                 value={typeDraft}
                 onValueChange={(value) => {
-                  setTypeDraft(value);
+                  setTypeDraft(value as TaskType);
                   saveTask({
                     title: titleDraft,
                     description: descriptionDraft,
-                    type: value,
+                    type: value as TaskType,
                   });
                 }}
                 disabled={disabled}
