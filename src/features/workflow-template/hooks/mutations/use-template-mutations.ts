@@ -86,3 +86,20 @@ export const useArchiveTemplate = () => {
     },
   });
 };
+
+export const useDeleteTemplate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, string>({
+    mutationFn: (templateId) => workflowTemplateService.delete(templateId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: templateQueries.list().queryKey,
+      });
+      toast.success('Template deletado com sucesso!');
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, 'Erro ao deletar template'));
+    },
+  });
+};

@@ -13,6 +13,8 @@ const workflowTemplateEndpoints = {
     withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/activate`),
   archiveWorkflowTemplate: (workflowTemplateId: string) =>
     withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}/archive`),
+  deleteWorkflowTemplate: (workflowTemplateId: string) =>
+    withBase(`${WORKFLOW_TEMPLATE_BASE}/${workflowTemplateId}`),
   getAllWorkflowTemplates: ({
     includeDraft = false,
     includeArchive = false,

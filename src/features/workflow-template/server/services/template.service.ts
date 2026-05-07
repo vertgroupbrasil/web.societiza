@@ -110,6 +110,10 @@ export const workflowTemplateService = {
     await fetcher.patch(api.archiveWorkflowTemplate(id));
   },
 
+  delete: async (id: string): Promise<void> => {
+    await fetcher.delete(api.deleteWorkflowTemplate(id));
+  },
+
   // ====== Step CRUD ======
   addStep: async (
     templateId: string,
