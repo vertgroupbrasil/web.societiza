@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Avatar,
   AvatarFallback,
@@ -51,6 +51,10 @@ import type {
   WorkflowProcessTaskInstance,
 } from '../server/types';
 
+type PendingFieldPayload =
+  | FillWorkflowProcessStepFieldParams
+  | FillWorkflowProcessTaskFieldParams;
+
 type WorkflowProcessDrawerProps = {
   processId: string | undefined;
   open: boolean;
@@ -64,14 +68,11 @@ type TaskRowProps = {
   isCurrentStep: boolean;
   isActionPending: boolean;
   isSavingField: boolean;
-  onComplete: () => void;
+  pendingFieldValues: Map<string, PendingFieldPayload>;
+  onComplete: (onError: () => void) => void;
   onSkip: () => void;
-  onRevert: () => void;
-  onSaveTaskField: (
-    payload:
-      | FillWorkflowProcessStepFieldParams
-      | FillWorkflowProcessTaskFieldParams,
-  ) => void;
+  onRevert: (onError: () => void) => void;
+  onFieldChange: (fieldId: string, payload: PendingFieldPayload) => void;
 };
 
 function TaskRow({
@@ -81,29 +82,42 @@ function TaskRow({
   isCurrentStep,
   isActionPending,
   isSavingField,
+  pendingFieldValues,
   onComplete,
   onSkip,
   onRevert,
-  onSaveTaskField,
+  onFieldChange,
 }: TaskRowProps) {
-  const isProcessCompleted = detail.status === 'Completed';
+  const [optimisticStatus, setOptimisticStatus] = useState<
+    'Completed' | 'Skipped' | 'Pending' | null
+  >(null);
+
+  // Reset optimistic state when the real status changes (API confirmed).
+  useEffect(() => {
+    setOptimisticStatus(null);
+  }, [task.status]);
+
+  const effectiveStatus = optimisticStatus ?? task.status;
   const isDone =
-    task.status === 'Completed' || task.status === 'Skipped';
-  const isPending = task.status === 'Pending';
-  const canAct = !isProcessCompleted && isCurrentStep && !isActionPending;
+    effectiveStatus === 'Completed' || effectiveStatus === 'Skipped';
+  const isPending = effectiveStatus === 'Pending';
+  const isAnySaving = isActionPending || isSavingField;
+  const canAct = !detail.status.includes('Completed') && isCurrentStep && !isAnySaving;
 
   const handleCheckboxChange = () => {
-    if (!canAct) return;
+    if (!canAct && !isDone) return;
     if (isDone) {
-      onRevert();
+      setOptimisticStatus('Pending');
+      onRevert(() => setOptimisticStatus(null));
     } else {
-      onComplete();
+      setOptimisticStatus('Completed');
+      onComplete(() => setOptimisticStatus(null));
     }
   };
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between gap-3 py-2 px-1">
+      <div className="flex items-center justify-between gap-3 py-1.5">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <Checkbox
             checked={isDone}
@@ -113,7 +127,9 @@ function TaskRow({
           />
           <span
             className={`text-sm leading-snug ${
-              isDone ? 'line-through text-muted-foreground' : 'text-foreground'
+              isDone
+                ? 'line-through text-muted-foreground'
+                : 'text-foreground'
             }`}
           >
             {task.title}
@@ -125,7 +141,7 @@ function TaskRow({
             variant="outline"
             size="sm"
             className="flex-shrink-0 h-7 text-xs"
-            disabled={isActionPending}
+            disabled={isAnySaving}
             onClick={onSkip}
           >
             Saltar
@@ -133,22 +149,29 @@ function TaskRow({
         )}
       </div>
 
-      {/* Task fields */}
       {task.fields.length > 0 && !isDone && isCurrentStep && (
-        <div className="ml-7 space-y-2">
+        <div className="ml-7 space-y-3">
           {sortFieldsByOrder(task.fields).map((field) => (
             <WorkflowProcessFieldEditor
               key={field.id}
               field={field}
+              value={
+                (pendingFieldValues.get(field.id) as { value?: string })
+                  ?.value ??
+                field.value ??
+                ''
+              }
               editable={canAct}
               isSaving={isSavingField}
-              onSave={onSaveTaskField}
-              payloadBase={{
-                processId: detail.id,
-                stepInstanceId: step.id,
-                taskInstanceId: task.id,
-                fieldInstanceId: field.id,
-              }}
+              onChange={(newValue) =>
+                onFieldChange(field.id, {
+                  processId: detail.id,
+                  stepInstanceId: step.id,
+                  taskInstanceId: task.id,
+                  fieldInstanceId: field.id,
+                  value: newValue,
+                })
+              }
             />
           ))}
         </div>
@@ -176,11 +199,20 @@ export function WorkflowProcessDrawer({
   const fillTaskField = useFillWorkflowProcessTaskField();
 
   const [collapsedSteps, setCollapsedSteps] = useState<Set<string>>(new Set());
+  const [pendingFields, setPendingFields] = useState<Map<string, PendingFieldPayload>>(
+    new Map(),
+  );
+
+  // Reset pending edits when process changes or drawer closes.
+  useEffect(() => {
+    setPendingFields(new Map());
+  }, [processId, open]);
 
   const currentStep = detail ? getCurrentStep(detail) : undefined;
   const isTaskActionPending =
     completeTask.isPending || skipTask.isPending || revertTask.isPending;
   const isSavingField = fillStepField.isPending || fillTaskField.isPending;
+  const isSavingAny = isTaskActionPending || isSavingField;
 
   const processStats = useMemo(() => {
     if (!detail) return { totalTasks: 0, completedTasks: 0, progress: 0 };
@@ -194,6 +226,13 @@ export function WorkflowProcessDrawer({
     return { totalTasks, completedTasks, progress };
   }, [detail]);
 
+  const daysElapsed = detail
+    ? Math.ceil(
+        (Date.now() - new Date(detail.createdAt).getTime()) /
+          (1000 * 60 * 60 * 24),
+      )
+    : 0;
+
   const toggleStep = useCallback((stepId: string) => {
     setCollapsedSteps((prev) => {
       const next = new Set(prev);
@@ -202,28 +241,27 @@ export function WorkflowProcessDrawer({
     });
   }, []);
 
-  const handleSaveStepField = (
-    payload:
-      | FillWorkflowProcessStepFieldParams
-      | FillWorkflowProcessTaskFieldParams,
-  ) => fillStepField.mutate(payload);
+  const handleFieldChange = useCallback(
+    (fieldId: string, payload: PendingFieldPayload) => {
+      setPendingFields((prev) => new Map(prev).set(fieldId, payload));
+    },
+    [],
+  );
 
-  const handleSaveTaskField = (
-    payload:
-      | FillWorkflowProcessStepFieldParams
-      | FillWorkflowProcessTaskFieldParams,
-  ) => {
-    if ('taskInstanceId' in payload && payload.taskInstanceId) {
-      fillTaskField.mutate(payload);
+  const handleSaveAll = async () => {
+    if (pendingFields.size > 0) {
+      const promises = Array.from(pendingFields.values()).map((payload) => {
+        if ('taskInstanceId' in payload && payload.taskInstanceId) {
+          return fillTaskField.mutateAsync(
+            payload as FillWorkflowProcessTaskFieldParams,
+          );
+        }
+        return fillStepField.mutateAsync(payload);
+      });
+      await Promise.allSettled(promises);
     }
+    onOpenChange(false);
   };
-
-  const daysElapsed = detail
-    ? Math.ceil(
-        (Date.now() - new Date(detail.createdAt).getTime()) /
-          (1000 * 60 * 60 * 24),
-      )
-    : 0;
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
@@ -250,223 +288,243 @@ export function WorkflowProcessDrawer({
           </div>
         ) : detail ? (
           <>
-            {/* Scrollable content */}
-            <ScrollArea className="flex-1 min-h-0">
-              <div className="p-4 space-y-4">
-                {/* Header */}
-                <div className="flex items-center space-x-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-primary/20 text-primary">
-                      <Building className="h-5 w-5" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h1 className="text-lg font-bold text-foreground leading-tight">
-                      {detail.targetClient}
-                    </h1>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <Badge variant="outline" className="text-xs">
-                        {WORKFLOW_PROCESS_TYPE_LABELS[detail.processType]}
-                      </Badge>
-                      <Badge
-                        variant={
-                          detail.status === 'Completed' ? 'secondary' : 'default'
-                        }
-                        className="text-xs"
-                      >
-                        {WORKFLOW_PROCESS_STATUS_LABELS[detail.status]}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stats grid */}
-                <div className="grid grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/20">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span className="text-xs font-medium">Dias corridos</span>
-                    </div>
-                    <p className="text-lg font-bold">{daysElapsed}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <FileText className="h-4 w-4" />
-                      <span className="text-xs font-medium">Tipo de processo</span>
-                    </div>
-                    <p className="text-sm font-semibold">
-                      {WORKFLOW_PROCESS_TYPE_LABELS[detail.processType]}
-                    </p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span className="text-xs font-medium">Data de início</span>
-                    </div>
-                    <p className="text-sm font-semibold">
-                      {new Date(detail.createdAt).toLocaleDateString('pt-BR')}
-                    </p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span className="text-xs font-medium">
-                        {detail.status === 'Completed'
-                          ? 'Data de conclusão'
-                          : 'Status'}
-                      </span>
-                    </div>
-                    <p className="text-sm font-semibold">
-                      {detail.status === 'Completed' && detail.completedAt
-                        ? new Date(detail.completedAt).toLocaleDateString('pt-BR')
-                        : 'Em andamento'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Progress */}
+            {/* Sticky process info header */}
+            <div className="flex-shrink-0 border-b bg-background p-4 space-y-3">
+              {/* Title + badges */}
+              <div className="flex items-center space-x-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarFallback className="bg-primary/20 text-primary">
+                    <Building className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
                 <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-muted-foreground">Progresso</span>
-                    <span className="text-xs font-medium">
-                      {processStats.progress}%
+                  <h1 className="text-lg font-bold text-foreground leading-tight">
+                    {detail.targetClient}
+                  </h1>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <Badge variant="outline" className="text-xs">
+                      {WORKFLOW_PROCESS_TYPE_LABELS[detail.processType]}
+                    </Badge>
+                    <Badge
+                      variant={
+                        detail.status === 'Completed' ? 'secondary' : 'default'
+                      }
+                      className="text-xs"
+                    >
+                      {WORKFLOW_PROCESS_STATUS_LABELS[detail.status]}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats grid */}
+              <div className="grid grid-cols-2 gap-3 p-3 border rounded-lg bg-muted/20 text-sm">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span className="text-xs">Dias corridos</span>
+                  </div>
+                  <p className="font-bold text-base">{daysElapsed}</p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <FileText className="h-3.5 w-3.5" />
+                    <span className="text-xs">Tipo de processo</span>
+                  </div>
+                  <p className="font-semibold">
+                    {WORKFLOW_PROCESS_TYPE_LABELS[detail.processType]}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span className="text-xs">Data de início</span>
+                  </div>
+                  <p className="font-semibold">
+                    {new Date(detail.createdAt).toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5 text-muted-foreground">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span className="text-xs">
+                      {detail.status === 'Completed'
+                        ? 'Data de conclusão'
+                        : 'Status'}
                     </span>
                   </div>
-                  <Progress value={processStats.progress} className="h-2" />
+                  <p className="font-semibold">
+                    {detail.status === 'Completed' && detail.completedAt
+                      ? new Date(detail.completedAt).toLocaleDateString('pt-BR')
+                      : 'Em andamento'}
+                  </p>
                 </div>
+              </div>
 
-                <Separator />
-
-                {/* Tasks section header */}
-                <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-semibold">Tarefas</h2>
-                  <Badge variant="outline" className="text-xs">
-                    {processStats.completedTasks} de {processStats.totalTasks}
-                  </Badge>
+              {/* Progress */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-muted-foreground">Progresso</span>
+                  <span className="text-xs font-medium">
+                    {processStats.progress}%
+                  </span>
                 </div>
+                <Progress value={processStats.progress} className="h-2" />
+              </div>
 
-                {/* Step accordions */}
-                <div className="space-y-3">
-                  {sortStepsByOrder(detail.steps).map((step, idx) => {
-                    const isCollapsed = collapsedSteps.has(step.id);
-                    const isCurrent = step.id === currentStep?.id;
-                    const isEditableStep =
-                      detail.status !== 'Completed' && isCurrent;
-                    const stepDone = step.tasks.filter(
-                      (t) =>
-                        t.status === 'Completed' || t.status === 'Skipped',
-                    ).length;
-                    const stepTotal = step.tasks.length;
+              <Separator />
 
-                    return (
-                      <div key={step.id} className="border rounded-xl overflow-hidden">
-                        {/* Accordion header */}
-                        <button
-                          type="button"
-                          className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-muted/40 transition-colors"
-                          onClick={() => toggleStep(step.id)}
-                        >
-                          <div className="flex items-center gap-2 min-w-0 flex-1">
-                            <span className="text-muted-foreground flex-shrink-0">
-                              {isCollapsed ? (
-                                <ChevronRight className="h-4 w-4" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4" />
-                              )}
-                            </span>
-                            <span className="text-sm font-medium truncate">
-                              {idx + 1}. {step.title}
-                            </span>
-                            {isCurrent && (
-                              <Badge className="flex-shrink-0 text-xs">
-                                Atual
-                              </Badge>
+              {/* Tasks header */}
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold">Tarefas</h2>
+                <Badge variant="outline" className="text-xs">
+                  {processStats.completedTasks} de {processStats.totalTasks}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Scrollable step accordions */}
+            <ScrollArea className="flex-1 min-h-0">
+              <div className="p-4 space-y-2">
+                {sortStepsByOrder(detail.steps).map((step, idx) => {
+                  const isCollapsed = collapsedSteps.has(step.id);
+                  const isCurrent = step.id === currentStep?.id;
+                  const isEditableStep =
+                    detail.status !== 'Completed' && isCurrent;
+                  const stepDone = step.tasks.filter(
+                    (t) =>
+                      t.status === 'Completed' || t.status === 'Skipped',
+                  ).length;
+                  const stepTotal = step.tasks.length;
+
+                  return (
+                    <div key={step.id} className="border rounded-xl overflow-hidden">
+                      {/* Accordion header */}
+                      <button
+                        type="button"
+                        className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-muted/40 transition-colors"
+                        onClick={() => toggleStep(step.id)}
+                      >
+                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                          <span className="text-muted-foreground flex-shrink-0">
+                            {isCollapsed ? (
+                              <ChevronRight className="h-4 w-4" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4" />
                             )}
-                          </div>
-                          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0 ml-2">
-                            {stepDone}/{stepTotal}
                           </span>
-                        </button>
+                          <span className="text-sm font-medium truncate">
+                            {idx + 1}. {step.title}
+                          </span>
+                          {isCurrent && (
+                            <Badge className="flex-shrink-0 text-xs">
+                              Atual
+                            </Badge>
+                          )}
+                        </div>
+                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full flex-shrink-0 ml-2">
+                          {stepDone}/{stepTotal}
+                        </span>
+                      </button>
 
-                        {/* Accordion content */}
-                        {!isCollapsed && (
-                          <div className="border-t px-4 py-2 space-y-1">
-                            {/* Step fields */}
-                            {step.fields.length > 0 && (
-                              <div className="py-2 space-y-2">
-                                {sortFieldsByOrder(step.fields).map((field) => (
-                                  <WorkflowProcessFieldEditor
-                                    key={field.id}
-                                    field={field}
-                                    editable={isEditableStep}
-                                    isSaving={isSavingField}
-                                    onSave={handleSaveStepField}
-                                    payloadBase={{
+                      {/* Accordion content */}
+                      {!isCollapsed && (
+                        <div className="border-t px-4 py-3 space-y-2">
+                          {/* Step-level fields */}
+                          {step.fields.length > 0 && (
+                            <div className="space-y-3">
+                              {sortFieldsByOrder(step.fields).map((field) => (
+                                <WorkflowProcessFieldEditor
+                                  key={field.id}
+                                  field={field}
+                                  value={
+                                    (
+                                      pendingFields.get(field.id) as
+                                        | { value?: string }
+                                        | undefined
+                                    )?.value ??
+                                    field.value ??
+                                    ''
+                                  }
+                                  editable={isEditableStep}
+                                  isSaving={isSavingAny}
+                                  onChange={(newValue) =>
+                                    handleFieldChange(field.id, {
                                       processId: detail.id,
                                       stepInstanceId: step.id,
                                       fieldInstanceId: field.id,
-                                    }}
-                                  />
-                                ))}
-                                {step.tasks.length > 0 && (
-                                  <Separator className="mt-2" />
-                                )}
-                              </div>
-                            )}
+                                      value: newValue,
+                                    })
+                                  }
+                                />
+                              ))}
+                              {step.tasks.length > 0 && (
+                                <Separator />
+                              )}
+                            </div>
+                          )}
 
-                            {/* Task rows */}
-                            {sortTasksByOrder(step.tasks).map((task) => (
-                              <TaskRow
-                                key={task.id}
-                                detail={detail}
-                                step={step}
-                                task={task}
-                                isCurrentStep={isCurrent}
-                                isActionPending={isTaskActionPending}
-                                isSavingField={isSavingField}
-                                onComplete={() =>
-                                  completeTask.mutate({
+                          {/* Task rows */}
+                          {sortTasksByOrder(step.tasks).map((task) => (
+                            <TaskRow
+                              key={task.id}
+                              detail={detail}
+                              step={step}
+                              task={task}
+                              isCurrentStep={isCurrent}
+                              isActionPending={isTaskActionPending}
+                              isSavingField={isSavingAny}
+                              pendingFieldValues={pendingFields}
+                              onComplete={(onError) =>
+                                completeTask.mutate(
+                                  {
                                     processId: detail.id,
                                     stepInstanceId: step.id,
                                     taskInstanceId: task.id,
-                                  })
-                                }
-                                onSkip={() =>
-                                  skipTask.mutate({
+                                  },
+                                  { onError },
+                                )
+                              }
+                              onSkip={() =>
+                                skipTask.mutate({
+                                  processId: detail.id,
+                                  stepInstanceId: step.id,
+                                  taskInstanceId: task.id,
+                                })
+                              }
+                              onRevert={(onError) =>
+                                revertTask.mutate(
+                                  {
                                     processId: detail.id,
                                     stepInstanceId: step.id,
                                     taskInstanceId: task.id,
-                                  })
-                                }
-                                onRevert={() =>
-                                  revertTask.mutate({
-                                    processId: detail.id,
-                                    stepInstanceId: step.id,
-                                    taskInstanceId: task.id,
-                                  })
-                                }
-                                onSaveTaskField={handleSaveTaskField}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                                  },
+                                  { onError },
+                                )
+                              }
+                              onFieldChange={handleFieldChange}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </ScrollArea>
 
             {/* Fixed footer */}
-            <div className="border-t bg-background/95 backdrop-blur-sm p-4 flex-shrink-0">
+            <div className="border-t bg-background p-4 flex-shrink-0">
               <Button
                 variant="default"
                 effect="shineHover"
                 className="w-full"
-                onClick={() => onOpenChange(false)}
+                disabled={isSavingAny}
+                loading={isSavingAny}
+                onClick={() => void handleSaveAll()}
               >
                 Salvar alterações
               </Button>

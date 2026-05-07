@@ -33,9 +33,11 @@ type WorkflowProcessTaskListProps = {
   onComplete: () => void;
   onSkip: () => void;
   onRevert: () => void;
-  onSaveTaskField: (
-    value: FillWorkflowProcessStepFieldParams | FillWorkflowProcessTaskFieldParams,
+  onFieldChange: (
+    fieldId: string,
+    payload: FillWorkflowProcessStepFieldParams | FillWorkflowProcessTaskFieldParams,
   ) => void;
+  pendingFieldValues: Map<string, { value?: string }>;
 };
 
 export function WorkflowProcessTaskList({
@@ -48,7 +50,8 @@ export function WorkflowProcessTaskList({
   onComplete,
   onSkip,
   onRevert,
-  onSaveTaskField,
+  onFieldChange,
+  pendingFieldValues,
 }: WorkflowProcessTaskListProps) {
   const isProcessCompleted = detail.status === 'Completed';
   const isPending = task.status === 'Pending';
@@ -60,7 +63,7 @@ export function WorkflowProcessTaskList({
     !hasDownstreamProgress(step, detail.steps);
 
   return (
-    <div className="rounded-xl border bg-card p-4 shadow-sm">
+    <div className="space-y-2">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -94,15 +97,18 @@ export function WorkflowProcessTaskList({
               <WorkflowProcessFieldEditor
                 key={field.id}
                 field={field}
+                value={pendingFieldValues.get(field.id)?.value ?? field.value ?? ''}
                 editable={!isProcessCompleted && isCurrentStep}
                 isSaving={isSavingField}
-                onSave={onSaveTaskField}
-                payloadBase={{
-                  processId: detail.id,
-                  stepInstanceId: step.id,
-                  taskInstanceId: task.id,
-                  fieldInstanceId: field.id,
-                }}
+                onChange={(newValue) =>
+                  onFieldChange(field.id, {
+                    processId: detail.id,
+                    stepInstanceId: step.id,
+                    taskInstanceId: task.id,
+                    fieldInstanceId: field.id,
+                    value: newValue,
+                  })
+                }
               />
             ))}
           </div>
