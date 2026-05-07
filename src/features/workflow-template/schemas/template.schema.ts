@@ -31,7 +31,17 @@ export const workflowTemplateListSchema = z.array(
   workflowTemplateListItemSchema,
 );
 
-export const pagedWorkflowTemplatesSchema = workflowTemplateListSchema;
+export const pagedWorkflowTemplatesSchema = z.object({
+  items: workflowTemplateListSchema,
+  page: z.object({
+    pageNumber: z.number(),
+    pageSize: z.number(),
+    hasNextPage: z.boolean(),
+    hasPreviousPage: z.boolean(),
+    totalCount: z.number(),
+    totalPages: z.number(),
+  }),
+});
 
 export const createTemplateSchemaDTO = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),

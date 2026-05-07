@@ -33,10 +33,10 @@ export function Board() {
   const accounties = accountanciesPage?.items;
 
   // Template-driven columns
-  const { data: templatesData } = useWorkflowTemplates();
+  const { data: templatesPage } = useWorkflowTemplates();
   const templates = useMemo(
-    () => templatesData ?? [],
-    [templatesData],
+    () => templatesPage?.items ?? [],
+    [templatesPage?.items],
   );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
 

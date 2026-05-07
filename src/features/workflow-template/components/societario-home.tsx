@@ -90,7 +90,8 @@ function DraftCard({ template }: { template: WorkflowTemplateListItem }) {
 }
 
 export function SocietarioHome() {
-  const { data: templates, isLoading } = useWorkflowTemplates();
+  const { data: page, isLoading } = useWorkflowTemplates();
+  const templates = page?.items;
 
   const activeTemplates =
     templates?.filter(
