@@ -1,148 +1,252 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { Button, Input } from '@shadcn/index';
-import { Plus } from 'lucide-react';
-import type {
-  WorkflowTemplateDetail,
-  WorkflowTemplateTask,
-} from '../server/types/template.types';
-import { useAddStep } from '../hooks/mutations';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { Button } from '@shadcn/index';
+import { Layers, Plus } from 'lucide-react';
+import type { WorkflowTemplateDetail } from '../server/types/template.types';
+import { useAddStep, useReorderSteps } from '../hooks/mutations';
+import { getNextIndexedLabel } from '../lib/entity-labels';
 import { TemplateColumn } from './ui/template-column';
-import { TemplateTaskSheet } from './ui/template-task-sheet';
+import { TemplateProcessSheet } from './ui/template-process-sheet';
 
 interface TemplateKanbanProps {
   template: WorkflowTemplateDetail;
   templateId: string;
+  readOnly?: boolean;
 }
 
-interface SelectedTask {
-  task: WorkflowTemplateTask;
-  stepId: string;
-}
-
-export function TemplateKanban({ template, templateId }: TemplateKanbanProps) {
-  const [selectedTask, setSelectedTask] = useState<SelectedTask | null>(null);
+export function TemplateKanban({
+  template,
+  templateId,
+  readOnly = false,
+}: TemplateKanbanProps) {
+  const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [isAddingStep, setIsAddingStep] = useState(false);
-  const [newStepTitle, setNewStepTitle] = useState('');
+  const [pendingOpenStepId, setPendingOpenStepId] = useState<string | null>(
+    null,
+  );
+  const [activeStepId, setActiveStepId] = useState<string | null>(null);
+  const [overStepId, setOverStepId] = useState<string | null>(null);
 
   const addStep = useAddStep();
+  const reorderSteps = useReorderSteps();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+  );
 
   const sortedSteps = useMemo(
-    () => [...template.steps].sort((a, b) => a.order - b.order),
+    () => [...template.steps].sort((left, right) => left.order - right.order),
     [template.steps],
   );
 
-  const handleTaskEdit = useCallback(
-    (task: WorkflowTemplateTask, stepId: string) => {
-      setSelectedTask({ task, stepId });
-      setSheetOpen(true);
-    },
-    [],
-  );
+  const selectedStep =
+    sortedSteps.find((step) => step.id === selectedStepId) ?? null;
+  const activeStep =
+    sortedSteps.find((step) => step.id === activeStepId) ?? null;
 
-  const handleSheetOpenChange = useCallback((open: boolean) => {
-    setSheetOpen(open);
-    if (!open) setSelectedTask(null);
-  }, []);
+  useEffect(() => {
+    if (!pendingOpenStepId) return;
 
-  const handleAddStep = useCallback(() => {
-    const trimmed = newStepTitle.trim();
-    if (!trimmed) return;
-    addStep.mutate({
+    const createdStep = sortedSteps.find((step) => step.id === pendingOpenStepId);
+
+    if (!createdStep) return;
+
+    setSelectedStepId(createdStep.id);
+    setSheetOpen(true);
+    setPendingOpenStepId(null);
+  }, [pendingOpenStepId, sortedSteps]);
+
+  const handleAddStep = async () => {
+    const nextOrder = sortedSteps.length + 1;
+    const nextTitle = getNextIndexedLabel(
+      sortedSteps.map((step) => step.title),
+      'Etapa',
+    );
+    const clientId = `temp-step-${crypto.randomUUID()}`;
+
+    setSelectedStepId(clientId);
+    setSheetOpen(true);
+
+    const result = await addStep.mutateAsync({
       templateId,
+      clientId,
       data: {
-        title: trimmed,
-        description: trimmed,
-        order: template.steps.length + 1,
+        title: nextTitle,
+        description:
+          'Defina aqui o processo, os campos e as tarefas desta etapa.',
+        order: nextOrder,
       },
     });
-    setNewStepTitle('');
-    setIsAddingStep(false);
-  }, [newStepTitle, template.steps.length, templateId, addStep]);
+
+    setSelectedStepId(result.id);
+    setPendingOpenStepId(result.id);
+  };
+
+  const handleColumnDragStart = (event: DragStartEvent) => {
+    setActiveStepId(String(event.active.id));
+  };
+
+  const handleColumnDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    setActiveStepId(null);
+    setOverStepId(null);
+
+    if (!over || active.id === over.id) return;
+
+    const currentIndex = sortedSteps.findIndex((step) => step.id === active.id);
+    const nextIndex = sortedSteps.findIndex((step) => step.id === over.id);
+
+    if (currentIndex === -1 || nextIndex === -1) return;
+
+    const reordered = arrayMove(sortedSteps, currentIndex, nextIndex).map(
+      (step, index) => ({
+        ...step,
+        order: index + 1,
+      }),
+    );
+
+    reorderSteps.mutate({
+      templateId,
+      steps: reordered,
+    });
+  };
 
   return (
     <>
       <div className="absolute inset-0 overflow-x-auto">
-        <div className="flex gap-6 h-full w-max min-w-full p-4">
-          {/* Colunas de steps */}
-          {sortedSteps.map((step) => (
-            <TemplateColumn
-              key={step.id}
-              step={step}
-              templateId={templateId}
-              onTaskEdit={handleTaskEdit}
-            />
-          ))}
-
-          {/* Coluna para adicionar nova etapa */}
-          <div className="flex-shrink-0 w-80 min-w-[320px]">
-            <div className="bg-accent/10 rounded-lg border border-dashed border-border/60 h-auto p-4 flex flex-col items-center justify-start gap-3">
-              {isAddingStep ? (
-                <div className="w-full space-y-2">
-                  <Input
-                    autoFocus
-                    value={newStepTitle}
-                    onChange={(value) => setNewStepTitle(value)}
-                    onBlur={() => {
-                      if (newStepTitle.trim()) handleAddStep();
-                      else setIsAddingStep(false);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleAddStep();
-                      if (e.key === 'Escape') {
-                        setNewStepTitle('');
-                        setIsAddingStep(false);
-                      }
-                    }}
-                    placeholder="Nome da etapa..."
-                    className="h-9 text-sm"
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      className="flex-1"
-                      onClick={handleAddStep}
-                      disabled={addStep.isPending || !newStepTitle.trim()}
-                      loading={addStep.isPending}
-                    >
-                      Criar etapa
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => {
-                        setNewStepTitle('');
-                        setIsAddingStep(false);
-                      }}
-                    >
-                      Cancelar
-                    </Button>
-                  </div>
-                </div>
-              ) : (
+        {sortedSteps.length === 0 ? (
+          <div className="flex h-full items-center justify-center px-6">
+            <div className="max-w-md rounded-[32px] border border-dashed border-border/70 bg-accent/20 px-8 py-10 text-center shadow-sm">
+              <Layers className="mx-auto h-10 w-10 text-muted-foreground/60" />
+              <h3 className="mt-4 text-lg font-semibold text-foreground">
+                Comece pela primeira etapa
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Cada etapa já nasce com um processo-modelo. Você clica nele e
+                monta os campos e as tarefas do jeito que a equipe realmente
+                trabalha.
+              </p>
+              {!readOnly && (
                 <Button
-                  variant="ghost"
-                  className="w-full text-muted-foreground hover:text-foreground"
-                  onClick={() => setIsAddingStep(true)}
+                  className="mt-6"
+                  onClick={handleAddStep}
+                  disabled={addStep.isPending}
+                  loading={addStep.isPending}
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nova etapa
+                  <Plus className="h-4 w-4" />
+                  Criar primeira etapa
                 </Button>
               )}
             </div>
           </div>
-        </div>
+        ) : (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleColumnDragStart}
+            onDragOver={(event) => {
+              setOverStepId(event.over ? String(event.over.id) : null);
+            }}
+            onDragEnd={handleColumnDragEnd}
+            onDragCancel={() => {
+              setActiveStepId(null);
+              setOverStepId(null);
+            }}
+          >
+            <SortableContext
+              items={sortedSteps.map((step) => step.id)}
+              strategy={horizontalListSortingStrategy}
+            >
+              <div className="flex h-full min-w-full items-stretch gap-5 p-4">
+                {sortedSteps.map((step) => (
+                  <TemplateColumn
+                    key={step.id}
+                    step={step}
+                    templateId={templateId}
+                    readOnly={readOnly}
+                    isOver={overStepId === step.id}
+                    onOpenProcess={(stepId) => {
+                      setSelectedStepId(stepId);
+                      setSheetOpen(true);
+                    }}
+                  />
+                ))}
+
+                {!readOnly && (
+                  <div className="flex w-72 min-w-[18rem] flex-shrink-0 items-stretch">
+                    <button
+                      type="button"
+                      onClick={handleAddStep}
+                      className="group flex h-full min-h-[15rem] w-full flex-col items-start justify-between rounded-[28px] border border-dashed border-border/70 bg-accent/10 p-5 text-left transition-colors hover:border-primary/40 hover:bg-accent/20"
+                    >
+                      <div className="space-y-2">
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-border/70 bg-background text-muted-foreground transition-colors group-hover:text-foreground">
+                          <Plus className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-base font-semibold text-foreground">
+                            Nova etapa
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            A nova coluna já entra pronta para edição.
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                        Reordenável
+                      </p>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </SortableContext>
+
+            <DragOverlay>
+              {activeStep ? (
+                <TemplateColumn
+                  step={activeStep}
+                  templateId={templateId}
+                  readOnly
+                  onOpenProcess={() => {}}
+                />
+              ) : null}
+            </DragOverlay>
+          </DndContext>
+        )}
       </div>
 
-      {/* Sheet de edição de task — fora do loop de colunas */}
-      <TemplateTaskSheet
-        task={selectedTask?.task ?? null}
-        stepId={selectedTask?.stepId ?? ''}
-        templateId={templateId}
+      <TemplateProcessSheet
         open={sheetOpen}
-        onOpenChange={handleSheetOpenChange}
+        onOpenChange={(open) => {
+          setSheetOpen(open);
+          if (!open) setSelectedStepId(null);
+        }}
+        step={selectedStep}
+        steps={sortedSteps}
+        templateId={templateId}
+        readOnly={readOnly}
       />
     </>
   );

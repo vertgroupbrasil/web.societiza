@@ -7,6 +7,7 @@ export const workflowTemplateFieldSchema = z.object({
   label: z.string(),
   fieldType: fieldTypeEnum,
   options: z.array(z.string()).nullable(),
+  order: z.coerce.number(),
 });
 
 export const createFieldSchemaDTO = z
@@ -14,6 +15,7 @@ export const createFieldSchemaDTO = z
     label: z.string().min(1, 'Label é obrigatório'),
     fieldType: fieldTypeEnum,
     options: z.array(z.string()).nullable(),
+    order: z.coerce.number().min(1, 'Ordem deve ser pelo menos 1'),
   })
   .refine(
     (data) => {

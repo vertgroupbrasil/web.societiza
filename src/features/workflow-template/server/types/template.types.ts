@@ -59,6 +59,7 @@ export type AddTaskParams = {
   templateId: string;
   stepId: string;
   data: CreateTaskDTO;
+  clientId?: string;
 };
 
 export type UpdateTaskParams = {
@@ -78,6 +79,7 @@ export type AddStepFieldParams = {
   templateId: string;
   stepId: string;
   data: CreateFieldDTO;
+  clientId?: string;
 };
 
 export type UpdateStepFieldParams = {
@@ -98,6 +100,7 @@ export type AddTaskFieldParams = {
   stepId: string;
   taskId: string;
   data: CreateFieldDTO;
+  clientId?: string;
 };
 
 export type UpdateTaskFieldParams = {
@@ -118,9 +121,12 @@ export type RemoveTaskFieldParams = {
 export type AddStepParams = {
   templateId: string;
   data: CreateStepDTO;
+  clientId?: string;
 };
 
 export type UpdateTemplateParams = {
   templateId: string;
   data: UpdateTemplateDTO;
 };
+
+export type PublishTemplateResponse = CreateEntityResponse;

@@ -16,10 +16,30 @@ export const useWorkflowTemplateById = (id: string) => {
 export const useActiveWorkflowTemplate = () => {
   const { data: templates, ...rest } = useWorkflowTemplates();
 
-  // A lista retorna apenas id, name, description — sem status.
-  // Por isso, retornamos o primeiro da lista (assumindo que a API ordena por relevância)
-  // ou o usuário deve selecionar qual template usar.
+  const activeTemplate = templates?.find(
+    (template) => template.status === 'Active' && !template.sourceTemplateId,
+  );
+
   return {
+    activeTemplate,
+    templates,
+    ...rest,
+  };
+};
+
+export const useTemplateDraftBySource = (sourceTemplateId?: string) => {
+  const { data: templates, ...rest } = useWorkflowTemplates();
+
+  const draft = templates
+    ?.filter(
+      (template) =>
+        template.sourceTemplateId === sourceTemplateId &&
+        template.status === 'Draft',
+    )
+    .sort((left, right) => right.createdAt.getTime() - left.createdAt.getTime())[0];
+
+  return {
+    draft,
     templates,
     ...rest,
   };

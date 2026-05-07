@@ -54,7 +54,7 @@ export function TemplateTaskSheet({
   onOpenChange,
 }: TemplateTaskSheetProps) {
   const [localTitle, setLocalTitle] = useState('');
-  const [localType, setLocalType] = useState('Form');
+  const [localType, setLocalType] = useState('Manual');
   const [localIsOptional, setLocalIsOptional] = useState(false);
   const [editingFieldId, setEditingFieldId] = useState<string | null>(null);
   const [editingFieldLabel, setEditingFieldLabel] = useState('');
@@ -116,6 +116,7 @@ export function TemplateTaskSheet({
           label: trimmed,
           fieldType: field.fieldType,
           options: field.options,
+          order: field.order,
         },
       });
     }
@@ -133,11 +134,17 @@ export function TemplateTaskSheet({
       taskId: task.id,
       data:
         type === 'Text'
-          ? { label: 'Novo campo de texto', fieldType: 'Text', options: null }
+          ? {
+              label: 'Novo campo de texto',
+              fieldType: 'Text',
+              options: null,
+              order: task.fields.length + 1,
+            }
           : {
               label: 'Novo campo de seleção',
               fieldType: 'Select',
               options: ['Opção 1'],
+              order: task.fields.length + 1,
             },
     });
     setFieldPopoverOpen(false);
@@ -155,6 +162,7 @@ export function TemplateTaskSheet({
         label: field.label,
         fieldType: field.fieldType,
         options: [...currentOptions, newOptionValue.trim()],
+        order: field.order,
       },
     });
     setNewOptionValue('');
@@ -172,6 +180,7 @@ export function TemplateTaskSheet({
         label: field.label,
         fieldType: field.fieldType,
         options: newOptions.length > 0 ? newOptions : null,
+        order: field.order,
       },
     });
   };
