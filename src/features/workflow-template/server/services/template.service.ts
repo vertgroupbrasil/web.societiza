@@ -41,16 +41,20 @@ function transformDetail(raw: WorkflowTemplateDetail): WorkflowTemplateDetail {
     ...raw,
     steps: raw.steps.map((step) => ({
       ...step,
-      fields: step.fields.map((field) => ({
-        ...field,
-        options: parseOptions(field.options as unknown as string | null),
-      })),
-      tasks: step.tasks.map((task) => ({
-        ...task,
-        fields: task.fields.map((field) => ({
+      fields: [...step.fields]
+        .sort((left, right) => left.order - right.order)
+        .map((field) => ({
           ...field,
           options: parseOptions(field.options as unknown as string | null),
         })),
+      tasks: step.tasks.map((task) => ({
+        ...task,
+        fields: [...task.fields]
+          .sort((left, right) => left.order - right.order)
+          .map((field) => ({
+            ...field,
+            options: parseOptions(field.options as unknown as string | null),
+          })),
       })),
     })),
   };
@@ -73,6 +77,11 @@ export const workflowTemplateService = {
     return response.data as CreateEntityResponse;
   },
 
+  createDraft: async (id: string): Promise<CreateEntityResponse> => {
+    const response = await fetcher.post(api.draftWorkflowTemplate(id));
+    return response.data as CreateEntityResponse;
+  },
+
   update: async (id: string, data: UpdateTemplateDTO): Promise<void> => {
     await fetcher.put(api.updateWorkflowTemplate(id), data);
   },
@@ -83,6 +92,11 @@ export const workflowTemplateService = {
 
   archive: async (id: string): Promise<void> => {
     await fetcher.patch(api.archiveWorkflowTemplate(id));
+  },
+
+  publish: async (id: string): Promise<CreateEntityResponse> => {
+    const response = await fetcher.post(api.publishWorkflowTemplate(id));
+    return response.data as CreateEntityResponse;
   },
 
   // ====== Step CRUD ======

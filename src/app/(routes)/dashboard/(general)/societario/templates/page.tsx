@@ -1,9 +1,5 @@
-import { TemplateList } from '@workflow-template/index';
+import { redirect } from 'next/navigation';
 
 export default function TemplatesPage() {
-  return (
-    <div className="h-full w-full">
-      <TemplateList />
-    </div>
-  );
+  redirect('/dashboard/societario');
 }

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Button,
   Dialog,
@@ -33,6 +33,7 @@ interface CreateTemplateDialogProps {
 export function CreateTemplateDialog({ trigger }: CreateTemplateDialogProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const createTemplate = useCreateTemplate();
 
   const form = useForm<CreateTemplateDTO>({
@@ -47,7 +48,9 @@ export function CreateTemplateDialog({ trigger }: CreateTemplateDialogProps) {
     const result = await createTemplate.mutateAsync(data);
     setOpen(false);
     form.reset();
-    router.push(`/dashboard/societario/templates/${result.id}`);
+    router.push(
+      `/dashboard/societario/templates/${result.id}?returnTo=${encodeURIComponent(pathname)}`,
+    );
   });
 
   return (
@@ -56,16 +59,17 @@ export function CreateTemplateDialog({ trigger }: CreateTemplateDialogProps) {
         {trigger || (
           <Button type="button">
             <Plus className="h-4 w-4 mr-2" />
-            Novo Template
+            Criar template
           </Button>
         )}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Criar Novo Template</DialogTitle>
+          <DialogTitle>Criar novo template</DialogTitle>
           <DialogDescription>
-            Defina o nome e a descrição do seu template de workflow.
+            Defina o básico do workflow. Depois você entra no modo de edição
+            quando quiser estruturar etapas, tarefas e campos.
           </DialogDescription>
         </DialogHeader>
         <Separator />
@@ -125,7 +129,7 @@ export function CreateTemplateDialog({ trigger }: CreateTemplateDialogProps) {
                 loading={createTemplate.isPending}
                 disabled={createTemplate.isPending}
               >
-                Criar Template
+                Criar template
               </Button>
             </div>
           </form>

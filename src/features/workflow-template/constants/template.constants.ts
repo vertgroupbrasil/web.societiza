@@ -16,9 +16,8 @@ export const FIELD_TYPE_LABELS = {
 } as const;
 
 export const TASK_TYPE_OPTIONS = [
-  { value: 'Form', label: 'Formulário' },
-  { value: 'Checklist', label: 'Checklist' },
-  { value: 'Document', label: 'Documento' },
+  { value: 'Manual', label: 'Manual' },
+  { value: 'Automatic', label: 'Automática' },
   { value: 'Approval', label: 'Aprovação' },
 ] as const;
 

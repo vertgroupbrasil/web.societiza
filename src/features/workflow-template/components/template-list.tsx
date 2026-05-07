@@ -1,8 +1,19 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader } from '@shadcn/index';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  Card,
+  CardContent,
+  CardHeader,
+} from '@shadcn/index';
 import { FileText, ArrowRight, Layers } from 'lucide-react';
 import { useWorkflowTemplates } from '../hooks/queries/use-workflow-template-queries';
 import { CreateTemplateDialog } from './ui/create-template-dialog';
@@ -50,13 +61,28 @@ export function TemplateList() {
       {/* Header */}
       <div className="flex-shrink-0 border-b bg-background/95 backdrop-blur">
         <div className="px-6 py-4">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">Templates de Workflow</h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
-                Gerencie os templates usados nos processos de abertura de
-                empresa.
-              </p>
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-3">
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link href="/dashboard/societario">Societário</Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Templates</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+
+              <div>
+                <h1 className="text-2xl font-bold">Templates</h1>
+                <p className="mt-0.5 text-sm text-muted-foreground">
+                  Escolha um workflow para revisar ou crie um novo rascunho.
+                </p>
+              </div>
             </div>
             <CreateTemplateDialog />
           </div>
