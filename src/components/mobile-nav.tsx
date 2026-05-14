@@ -52,7 +52,7 @@ export function MobileNav() {
                 <a href="/login">Entrar</a>
               </Button>
               <Button asChild className="w-full">
-                <a href="#interesse">Quero conhecer</a>
+                <a href="https://forms.gle/Psgqo5uy2MXtwU1n8" target="_blank" rel="noopener noreferrer">Quero conhecer</a>
               </Button>
             </div>
           </div>
