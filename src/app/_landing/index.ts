@@ -1,0 +1,10 @@
+export { FeaturesShowcase } from './features-showcase';
+export { FeaturesSection } from './features-section';
+export { ProblemSection } from './problem-section';
+export { FeatureHighlightsSection } from './feature-highlights-section';
+export { PositioningSection } from './positioning-section';
+export { TestimonialsSection } from './testimonials-section';
+export { PricingSection } from './pricing-section';
+export { FaqSection } from './faq-section';
+export { CTASection } from './cta-section';
+export { Footer } from './footer';

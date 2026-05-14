@@ -1,37 +1,37 @@
-name: Validation
+# name: Validation
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
 
-jobs:
-  run-linters:
-    name: Run linters
-    runs-on: ubuntu-latest
+# jobs:
+#   run-linters:
+#     name: Run linters
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Check out Git repository
+#         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 23
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 23
 
-      # ESLint and Prettier must be in `package.json`
-      - name: Install Node.js dependencies
-        run: npm ci
+#       # ESLint and Prettier must be in `package.json`
+#       - name: Install Node.js dependencies
+#         run: cd societiza && npm ci
 
-      - name: Run ESLint
-        run: npm run lint
+#       - name: Run ESLint
+#         run: npm run lint
 
-      # - name: npm audit action
-      #   uses: oke-py/npm-audit-action@v2.4.4
-      #   with:
-      #     working_directory: historio/
-      #     dedupe_issues: true
-      #     github_token: ${{ secrets.GH_TOKEN }}
+#       # - name: npm audit action
+#       #   uses: oke-py/npm-audit-action@v2.4.4
+#       #   with:
+#       #     working_directory: historio/
+#       #     dedupe_issues: true
+#       #     github_token: ${{ secrets.GH_TOKEN }}

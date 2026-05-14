@@ -22,7 +22,21 @@
       }
     ],
     "paths": {
-      "@flowtec/*": ["./src/*"]
+      "@societiza/*": ["./src/*"],
+      "@shadcn/*": ["./src/components/ui/shadcnui/*"],
+      "@kibo/*": ["./src/components/ui/kiboui/*"],
+      "@magic/*": ["./src/components/ui/magicui/*"],
+      "@aceternity/*": ["./src/components/ui/aceternityui/*"],
+      "@icons/*": ["./src/components/ui/icons/*"],
+      "@components/*": ["./src/components/*"],
+      "@features/*": ["./src/features/*"],
+      "@workflow/*": ["./src/features/workflow/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@accountancy/*": ["./src/features/accountancy/*"],
+      "@dashboard/*": ["./src/features/dashboard/*"],
+      "@form/*": ["./src/features/form/*"],
+      "@user/*": ["./src/features/user/*"],
+      "@workflow-template/*": ["./src/features/workflow-template/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
