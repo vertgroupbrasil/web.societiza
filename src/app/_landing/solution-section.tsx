@@ -13,7 +13,6 @@ import {
   Monitor,
   ClipboardList,
 } from 'lucide-react';
-import Link from 'next/link';
 
 const benefits = [
   'Todos os processos em um lugar só',
@@ -162,13 +161,15 @@ export function SolutionSection() {
               </ul>
 
               {/* CTA */}
-              <Link
-                href="/login"
+              <a
+                href="https://forms.gle/Psgqo5uy2MXtwU1n8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-xl text-base font-bold hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 Quero experimentar
                 <ArrowRight className="w-5 h-5" />
-              </Link>
+              </a>
             </div>
           </FadeIn>
         </div>

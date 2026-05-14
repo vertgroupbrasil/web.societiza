@@ -82,9 +82,11 @@ export function AbandonMessSection() {
         </p>
 
         {/* CTA Button */}
-        <Button size="lg" className="rounded-full px-8 gap-2">
-          Comece agora
-          <ArrowRight className="w-4 h-4" />
+        <Button asChild size="lg" className="rounded-full px-8 gap-2">
+          <a href="https://forms.gle/Psgqo5uy2MXtwU1n8" target="_blank" rel="noopener noreferrer">
+            Comece agora
+            <ArrowRight className="w-4 h-4" />
+          </a>
         </Button>
       </div>
 

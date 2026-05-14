@@ -68,11 +68,10 @@ export function PricingSection() {
               </div>
             </div>
 
-            <Button
-              className="mt-8 w-full"
-              variant={plan.featured ? 'default' : 'outline'}
-            >
-              {plan.cta}
+            <Button asChild className="mt-8 w-full" variant={plan.featured ? 'default' : 'outline'}>
+              <a href="https://forms.gle/Psgqo5uy2MXtwU1n8" target="_blank" rel="noopener noreferrer">
+                {plan.cta}
+              </a>
             </Button>
           </article>
         ))}

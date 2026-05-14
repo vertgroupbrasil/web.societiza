@@ -79,13 +79,15 @@ export function HeroSection() {
               transition={{ delay: 0.34, duration: 0.45 }}
               className="mt-10 flex items-center gap-5"
             >
-              <Link
-                href="/login"
+              <a
+                href="https://forms.gle/Psgqo5uy2MXtwU1n8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-primary text-white px-7 py-3.5 rounded-full text-base font-bold hover:bg-primary/90 transition-all hover:scale-[1.03] active:scale-[0.98] shadow-lg shadow-primary/25"
               >
                 Começar agora
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </a>
               <Link
                 href="#como-funciona"
                 className="text-base font-semibold text-foreground hover:text-primary transition-colors"

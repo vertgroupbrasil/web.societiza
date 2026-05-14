@@ -33,7 +33,9 @@ Centralize seus processos, reduza a burocracia da rotina e entregue ao cliente a
           <div className="w-full max-w-[497px] flex flex-col justify-center items-center gap-12">
             <div className="flex justify-start items-center gap-4">
               <a
-                href="mailto:contato@societiza.com.br"
+                href="https://forms.gle/Psgqo5uy2MXtwU1n8"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="h-10 px-12 py-[6px] relative bg-primary shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#e84e00] transition-colors"
               >
                 <div className="w-44 h-[41px] absolute left-0 top-0 bg-gradient-to-b mix-blend-multiply"></div>
