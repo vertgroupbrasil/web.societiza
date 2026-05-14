@@ -40,7 +40,7 @@ const formatDateSafely = (date: Date | undefined): string | null => {
 
   try {
     return format(date, 'dd/MM/yyyy', { locale: ptBR });
-  } catch (error) {
+  } catch {
     return null;
   }
 };

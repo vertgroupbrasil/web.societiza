@@ -410,7 +410,7 @@ export function useEditProcessForm(props: UseEditProcessFormProps = {}) {
 
       form.reset(formData);
       onSuccess?.();
-    } catch (error) {
+    } catch {
       setGlobalError('Erro ao salvar alterações. Tente novamente.');
       toast.error('Erro ao salvar alterações');
     } finally {

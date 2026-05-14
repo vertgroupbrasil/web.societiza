@@ -80,15 +80,10 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     ...tableProps
   } = props;
 
-  const queryStateOptions = {
-    history,
-    scroll,
-    shallow,
-    throttleMs,
-    debounceMs,
-    clearOnDefault,
-    startTransition,
-  } as unknown as Omit<UseQueryStateOptions<string>, 'parse'>;
+  const queryStateOptions = React.useMemo(
+    () => ({ history, scroll, shallow, throttleMs, debounceMs, clearOnDefault, startTransition }) as unknown as Omit<UseQueryStateOptions<string>, 'parse'>,
+    [history, scroll, shallow, throttleMs, debounceMs, clearOnDefault, startTransition],
+  );
 
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
     initialState?.rowSelection ?? {},

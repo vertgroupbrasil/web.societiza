@@ -2,8 +2,8 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { handleFormError } from '@societiza/handlers/error';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { useLoginForm } from '@societiza/features/auth/hooks/useAuthForm';
-import { useAuthMutations } from '@societiza/features/auth/hooks/useAuth';
+import { useLoginForm } from '@societiza/features/auth/hooks/forms/useAuthForm';
+import { useAuthMutations } from '@societiza/features/auth/hooks/mutations/useAuthMutations';
 
 // Mocks
 jest.mock('./useAuth.test');

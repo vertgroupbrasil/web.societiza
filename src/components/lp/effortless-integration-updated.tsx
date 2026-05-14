@@ -1,4 +1,5 @@
 import type React from "react"
+import Image from "next/image"
 
 interface EffortlessIntegrationProps {
   /** Fixed width from Figma: 482px */
@@ -141,14 +142,12 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg"
             alt="GitHub"
-            style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
-            }}
+            width={18}
+            height={18}
+            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
 
@@ -168,13 +167,11 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/slack.svg"
             alt="Slack"
-            style={{
-              width: "18px",
-              height: "18px",
-            }}
+            width={18}
+            height={18}
           />
         </div>
 
@@ -194,13 +191,11 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/figma.svg"
             alt="Figma"
-            style={{
-              width: "16px",
-              height: "16px",
-            }}
+            width={16}
+            height={16}
           />
         </div>
 
@@ -220,14 +215,12 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg"
             alt="Discord"
-            style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
-            }}
+            width={18}
+            height={18}
+            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
 
@@ -247,13 +240,11 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/notion.svg"
             alt="Notion"
-            style={{
-              width: "18px",
-              height: "18px",
-            }}
+            width={18}
+            height={18}
           />
         </div>
 
@@ -273,14 +264,12 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/stripe.svg"
             alt="Stripe"
-            style={{
-              width: "18px",
-              height: "18px",
-              filter: "brightness(0) invert(1)",
-            }}
+            width={18}
+            height={18}
+            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
 
@@ -300,14 +289,12 @@ const EffortlessIntegration: React.FC<EffortlessIntegrationProps> = ({ width = 4
             justifyContent: "center",
           }}
         >
-          <img
+          <Image
             src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/framer.svg"
             alt="Framer"
-            style={{
-              width: "16px",
-              height: "16px",
-              filter: "brightness(0) invert(1)",
-            }}
+            width={16}
+            height={16}
+            style={{ filter: "brightness(0) invert(1)" }}
           />
         </div>
 

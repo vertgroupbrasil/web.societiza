@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as authService from '@societiza/features/auth/server/services/auth-service';
+import * as authService from '@societiza/features/auth/server/services/auth.service';
 import { API_ENDPOINTS } from '@societiza/routes/endpoints';
 
 const api = API_ENDPOINTS;

@@ -79,7 +79,7 @@ export function TemplateTaskSheet({
       setAddingOptionForFieldId(null);
       setNewOptionValue('');
     }
-  }, [task?.id]);
+  }, [task]);
 
   if (!task) return null;
 

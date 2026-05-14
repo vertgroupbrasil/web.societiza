@@ -18,24 +18,16 @@ export const useDebouncedAutoSave = <T extends FieldValues>({
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
-    console.log('🔍 useDebouncedAutoSave - enabled:', enabled);
-
     if (!enabled) {
-      console.log('⏭️ Auto-save desabilitado');
       return;
     }
 
-    console.log('✅ Auto-save habilitado');
-
     const subscription = form.watch((value) => {
-      console.log('👀 Hook detectou mudança');
-
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
       timeoutRef.current = setTimeout(() => {
-        console.log('💾 Hook executando save');
         saveFunction(value as T);
       }, debounceMs);
     });

@@ -61,11 +61,11 @@ export const TaskChecklist = React.memo<TaskChecklistProps>(
     onTipoTributacaoChange = () => {},
     tipoTributacao = 'simples',
     className,
-    showHeader = true, // ✅ Valor padrão
-    showProgress = true, // ✅ Valor padrão
+    showHeader: _showHeader = true,
+    showProgress: _showProgress = true,
     showStageGrouping = true,
-    showNextAvailable = true, // ✅ Valor padrão
-    showInfoTip = true, // ✅ Valor padrão
+    showNextAvailable: _showNextAvailable = true,
+    showInfoTip: _showInfoTip = true,
     useCollapsible = false,
     collapsedStages = new Set(),
     onToggleStage = () => {},

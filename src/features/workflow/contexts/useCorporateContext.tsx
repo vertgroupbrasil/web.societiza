@@ -255,8 +255,8 @@ export const CorporateFiltersProvider: React.FC<{
         }
 
         // Filtro de contabilidade
-        if (state.accounting && state.accounting !== '') {
-          if (item.contabilidade?.id !== state.accounting) return false;
+        if (state.accounting && state.accounting !== '' && item.contabilidade?.id !== state.accounting) {
+          return false;
         }
 
         // Filtro de data

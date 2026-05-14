@@ -339,7 +339,7 @@ function TypewriterText({
   )
 }
 
-export function WorkflowFeatureVisual({ isActive }: LandingPlatformFeatureVisualProps) {
+export function WorkflowFeatureVisual({ isActive: _isActive }: LandingPlatformFeatureVisualProps) {
   const [phase, setPhase] = useState(0)
   const [typedTitle, setTypedTitle] = useState('')
   const [typedDesc, setTypedDesc] = useState('')
@@ -641,7 +641,7 @@ const donutData = [
 
 const INS_D = [600, 800, 600, 800, 600, 800, 2200, 400]
 
-export function InsightsFeatureVisual({ isActive }: LandingPlatformFeatureVisualProps) {
+export function InsightsFeatureVisual({ isActive: _isActive }: LandingPlatformFeatureVisualProps) {
   const [phase, setPhase] = useState(0)
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
   const [hoveredDonut, setHoveredDonut] = useState<number | null>(null)
@@ -773,7 +773,7 @@ export function InsightsFeatureVisual({ isActive }: LandingPlatformFeatureVisual
         >
           <p className="text-[8.5px] font-semibold" style={{ color: C.muted }}>Processos por etapa</p>
           <div className="flex items-end gap-2 flex-1 relative">
-            {barData.map(({ stage, pct, count, bottleneck, color, key }, i) => {
+            {barData.map(({ stage, pct, count, bottleneck, color, key: _key }, i) => {
               const isHovered = hoveredBar === i
               return (
                 <div key={stage} className="flex-1 flex flex-col items-center gap-1.5 relative">
@@ -1040,7 +1040,7 @@ function EmailCard({
   )
 }
 
-export function NotificationsFeatureVisual({ isActive }: LandingPlatformFeatureVisualProps) {
+export function NotificationsFeatureVisual({ isActive: _isActive }: LandingPlatformFeatureVisualProps) {
   const [phase, setPhase] = useState(0)
   const [hoveredEmail, setHoveredEmail] = useState<'contador' | 'cliente' | null>(null)
 

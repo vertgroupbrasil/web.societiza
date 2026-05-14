@@ -1,7 +1,7 @@
-import type { WorkflowProcessBoardItem } from '../server/types';
 import type {
   WorkflowProcessDetail,
   WorkflowProcessStepField,
+  WorkflowProcessStepGroupItem,
   WorkflowProcessStepInstance,
   WorkflowProcessStepStatus,
   WorkflowProcessTaskInstance,
@@ -9,7 +9,8 @@ import type {
 
 export type WorkflowProcessColumn = {
   title: string;
-  items: WorkflowProcessBoardItem[];
+  order: number;
+  items: WorkflowProcessStepGroupItem[];
 };
 
 export function getProgressPercentage(completed: number, total: number): number {
@@ -33,7 +34,7 @@ export function getCurrentStep(
   return (
     detail.steps.find((s: WorkflowProcessStepInstance) => s.status === 'InProgress') ??
     detail.steps.find((s: WorkflowProcessStepInstance) => s.status === 'NotStarted') ??
-    detail.steps[detail.steps.length - 1]
+    detail.steps.at(-1)
   );
 }
 

@@ -63,7 +63,7 @@ export function CorporateDrawer() {
         setPendingDeleteCallback(null);
         setDrawerOpen(false);
         setSelectedProcessId(null); // ✅ Limpar processo selecionado
-      } catch (error) {
+      } catch {
         toast.error('Erro ao deletar processo');
       } finally {
         setIsDeleting(false);

@@ -1,7 +1,7 @@
 'use client';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { handleFormError } from '@societiza/handlers/error';
 import { toast } from 'sonner';
 import {
@@ -27,13 +27,15 @@ interface UseProcessFormProps {
 export function useProcessForm(props: UseProcessFormProps) {
   const { processTypes = [], stages = [], templateId, onSuccess } = props;
 
-  const processTypesArray = Array.isArray(processTypes)
-    ? processTypes
-    : (processTypes as any)?.tipo_processo || [];
+  const processTypesArray = useMemo(
+    () => (Array.isArray(processTypes) ? processTypes : (processTypes as any)?.tipo_processo || []),
+    [processTypes],
+  );
 
-  const stagesArray = Array.isArray(stages)
-    ? stages
-    : (stages as any)?.etapas || [];
+  const stagesArray = useMemo(
+    () => (Array.isArray(stages) ? stages : (stages as any)?.etapas || []),
+    [stages],
+  );
 
   const [activeTab, setActiveTab] = useState<string>(() =>
     processTypesArray.length > 0 ? processTypesArray[0].id : '',
@@ -69,12 +71,10 @@ export function useProcessForm(props: UseProcessFormProps) {
   }, [stagesArray]); // ✅ CORREÇÃO: Usar stagesArray ao invés de processTypesArray
 
   useEffect(() => {
-    if (processTypesArray.length > 0) {
-      if (!activeTab) {
-        const firstType = processTypesArray[0].id;
-        setActiveTab(firstType);
-        setValue('tipo_processo_id', firstType, { shouldValidate: false });
-      }
+    if (processTypesArray.length > 0 && !activeTab) {
+      const firstType = processTypesArray[0].id;
+      setActiveTab(firstType);
+      setValue('tipo_processo_id', firstType, { shouldValidate: false });
     }
   }, [processTypesArray, activeTab, setValue]);
 
@@ -90,7 +90,7 @@ export function useProcessForm(props: UseProcessFormProps) {
       const etapaComputada = computeEtapaId();
       setValue('etapa_id', etapaComputada, { shouldValidate: true });
     }
-  }, [processTypeId, accountingId, setValue, computeEtapaId]); // ✅ CORREÇÃO: Remover 'stages' das dependências
+  }, [processTypeId, accountingId, setValue, computeEtapaId, stagesArray]);
 
   const onSubmit = form.handleSubmit(async (data) => {
     setGlobalError(undefined);

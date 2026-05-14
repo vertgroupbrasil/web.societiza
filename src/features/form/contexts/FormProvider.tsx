@@ -89,7 +89,7 @@ interface FormProviderProps {
 export const FormProvider = ({
   children,
   processoId,
-  initialStep = 0,
+  initialStep: _initialStep = 0,
 }: FormProviderProps) => {
   const [state, dispatch] = useReducer(
     formReducer,
@@ -322,7 +322,7 @@ export const FormProvider = ({
         }
 
         dispatch({ type: 'UPDATE_FROM_API', payload: extractedData });
-      } catch (error) {
+      } catch {
         // Handle error silently
       }
     },
