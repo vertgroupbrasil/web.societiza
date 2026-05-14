@@ -30,9 +30,7 @@ export function SearchBar({
 
   // Sincroniza valor local quando filtros externos mudam
   React.useEffect(() => {
-    if (filters.searchTerm !== localValue) {
-      setLocalValue(filters.searchTerm || '');
-    }
+    setLocalValue(filters.searchTerm || '');
   }, [filters.searchTerm]);
 
   const handleInputChange = useCallback((value: string) => {

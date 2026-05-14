@@ -1,4 +1,5 @@
 import type React from "react"
+import Image from "next/image"
 
 interface YourWorkInSyncProps {
   /** Fixed width from Figma: 482px */
@@ -296,14 +297,13 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
                 flexShrink: 0,
               }}
             >
-              <img
+              <Image
                 src={imgArrowUp || "/placeholder.svg"}
                 alt="Send"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  filter: "brightness(0) invert(1)",
-                }}
+                width={20}
+                height={20}
+                unoptimized
+                style={{ filter: "brightness(0) invert(1)" }}
               />
             </div>
           </div>

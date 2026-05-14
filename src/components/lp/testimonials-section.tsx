@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 
 export default function TestimonialsSection() {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
@@ -65,15 +66,18 @@ export default function TestimonialsSection() {
       <div className="self-stretch px-2 overflow-hidden flex justify-start items-center bg-background border border-b border-l-0 border-r-0 border-t-0">
         <div className="flex-1 py-16 md:py-17 flex flex-col md:flex-row justify-center items-end gap-6">
           <div className="self-stretch px-3 md:px-12 justify-center items-start gap-4 flex flex-col md:flex-row">
-            <img
-              className="w-48 h-50 md:w-48 md:h-50 rounded-lg object-cover transition-all duration-700 ease-in-out"
+            <Image
+              className="w-48 rounded-lg object-cover transition-all duration-700 ease-in-out"
               style={{
+                height: "200px",
                 opacity: isTransitioning ? 0.6 : 1,
                 transform: isTransitioning ? "scale(0.95)" : "scale(1)",
                 transition: "opacity 0.7s ease-in-out, transform 0.7s ease-in-out",
               }}
               src={testimonials[activeTestimonial].image || "/placeholder.svg"}
               alt={testimonials[activeTestimonial].name}
+              width={192}
+              height={200}
             />
             <div className="flex-1 px-6 py-6 shadow-[0px_0px_0px_0.75px_rgba(50,45,43,0.12)] overflow-hidden flex flex-col justify-start items-start gap-6 shadow-none pb-0 pt-0">
               <div

@@ -60,10 +60,8 @@ export const useCorporateFilters = () => {
           }
         }
 
-        if (filters.accounting && filters.accounting !== '') {
-          if (process.contabilidade.nome !== filters.accounting) {
-            return false;
-          }
+        if (filters.accounting && filters.accounting !== '' && process.contabilidade.nome !== filters.accounting) {
+          return false;
         }
 
         // Filtro por intervalo de datas

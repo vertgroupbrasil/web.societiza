@@ -1,10 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import * as authService from '@societiza/features/auth/server/services/auth-service';
-import { useAuthMutations } from '@societiza/features/auth/hooks/useAuth';
-import { AxiosResponse } from 'axios';
-
-jest.mock('@societiza/features/auth/server/services/auth-service');
+import * as authService from '@societiza/features/auth/server/services/auth.service';
+import { useAuthMutations } from '@societiza/features/auth/hooks/mutations/useAuthMutations';
+jest.mock('@societiza/features/auth/server/services/auth.service');
 const mockedAuth = authService as jest.Mocked<typeof authService>;
 
 describe('useAuthMutations', () => {
@@ -27,9 +25,7 @@ describe('useAuthMutations', () => {
   });
 
   it('chama login e executa onSuccess corretamente', async () => {
-    mockedAuth.login.mockResolvedValue({
-      data: { token: 'fake-token' },
-    } as unknown as AxiosResponse<{ token: string }>);
+    mockedAuth.login.mockResolvedValue({ accessToken: 'fake-token' });
 
     const { result } = renderHook(() => useAuthMutations(), {
       wrapper,

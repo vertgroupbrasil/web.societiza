@@ -21,7 +21,7 @@ export const useOpeningForm = () => {
       try {
         context.updateStepData({ companyData: data });
         navigation.goToNextStep();
-      } catch (error) {
+      } catch {
         toast.error('Erro ao salvar dados da empresa');
       }
     },
@@ -38,7 +38,7 @@ export const useOpeningForm = () => {
 
         context.updateStepData({ partnersData: partnersWithId });
         navigation.goToNextStep();
-      } catch (error) {
+      } catch {
         toast.error('Erro ao salvar dados dos sócios');
       }
     },
@@ -74,7 +74,7 @@ export const useOpeningForm = () => {
 
       toast.success('Formulário enviado com sucesso!');
       window.location.href = `/forms/${context.processoId}/finished`;
-    } catch (error) {
+    } catch {
       toast.error('Erro ao enviar formulário. Tente novamente.');
     } finally {
       context.setIsSubmitting(false);

@@ -110,6 +110,7 @@ const SmartSimpleBrilliant: React.FC<SmartSimpleBrilliantProps> = ({
                     </span>
                     <div style={{ background: "#92400E", padding: "1.5px", borderRadius: "100px" }}>
                       <div style={{ width: "8px", height: "8px", overflow: "hidden", position: "relative" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={img || "/placeholder.svg"}
                           alt="video"
@@ -151,6 +152,7 @@ const SmartSimpleBrilliant: React.FC<SmartSimpleBrilliantProps> = ({
                     </span>
                     <div style={{ background: "#0C4A6E", padding: "1.5px", borderRadius: "100px" }}>
                       <div style={{ width: "8px", height: "8px", overflow: "hidden", position: "relative" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={img1 || "/placeholder.svg"}
                           alt="video"
@@ -239,6 +241,7 @@ const SmartSimpleBrilliant: React.FC<SmartSimpleBrilliantProps> = ({
                     </span>
                     <div style={{ background: "#581C87", padding: "1.5px", borderRadius: "100px" }}>
                       <div style={{ width: "8px", height: "8px", overflow: "hidden", position: "relative" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={img2 || "/placeholder.svg"}
                           alt="video"
@@ -280,6 +283,7 @@ const SmartSimpleBrilliant: React.FC<SmartSimpleBrilliantProps> = ({
                     </span>
                     <div style={{ background: "#BE123C", padding: "1.5px", borderRadius: "100px" }}>
                       <div style={{ width: "8px", height: "8px", overflow: "hidden", position: "relative" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={img3 || "/placeholder.svg"}
                           alt="video"

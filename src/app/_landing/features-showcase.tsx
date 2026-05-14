@@ -367,23 +367,23 @@ function ContadorAlertsAnimation() {
   );
 }
 
+const EMAIL_QUEUE = [
+  { to: 'cliente@email.com', subject: 'Proposta aceita' },
+  { to: 'contador@empresa.com', subject: 'Nova empresa iniciada' },
+  { to: 'cliente@email.com', subject: 'Envie documentos' },
+];
+
 function EmailFlowAnimation() {
   const [emails, setEmails] = useState<
     { to: string; subject: string; sent: boolean }[]
   >([]);
-
-  const emailQueue = [
-    { to: 'cliente@email.com', subject: 'Proposta aceita' },
-    { to: 'contador@empresa.com', subject: 'Nova empresa iniciada' },
-    { to: 'cliente@email.com', subject: 'Envie documentos' },
-  ];
 
   useEffect(() => {
     const timers: NodeJS.Timeout[] = [];
 
     const runAnimation = () => {
       setEmails([]);
-      emailQueue.forEach((email, i) => {
+      EMAIL_QUEUE.forEach((email, i) => {
         timers.push(
           setTimeout(
             () => {
@@ -404,7 +404,7 @@ function EmailFlowAnimation() {
         );
       });
       timers.push(
-        setTimeout(runAnimation, 600 + emailQueue.length * 1200 + 1500),
+        setTimeout(runAnimation, 600 + EMAIL_QUEUE.length * 1200 + 1500),
       );
     };
 

@@ -75,8 +75,6 @@ export function EditProcessForm({
     new Set(),
   );
 
-  const formTarefas = form.watch('tarefas') || [];
-
   const processStats = React.useMemo(() => {
     const allTasks = process.tarefas || [];
     const completedTasks = allTasks.filter(
@@ -110,6 +108,7 @@ export function EditProcessForm({
   }, [processTypes, process.tipo_processo]);
 
   const processWithFormTasks: Process = React.useMemo(() => {
+    const formTarefas = form.watch('tarefas') || [];
     const updated: Tasks[] =
       process.tarefas?.map((orig) => {
         const ft = formTarefas.find((f: any) => f.id === orig.id);
@@ -124,7 +123,7 @@ export function EditProcessForm({
         };
       }) || [];
     return { ...process, tarefas: updated };
-  }, [process, formTarefas]);
+  }, [process, form]);
 
   const taskLogic = useTaskSequentialLogic(
     processWithFormTasks,

@@ -19,7 +19,7 @@ export const useCorporateMutations = () => {
       toast.error('Erro ao criar processo. Verifique os dados e tente novamente.');
     },
 
-    onSuccess: (newProcess, variables) => {
+    onSuccess: (newProcess, _variables) => {
       // Invalidate específico para a etapa onde o processo foi criado
       queryClient.invalidateQueries({
         queryKey: corporateQueries.processesByStages().queryKey,
@@ -75,7 +75,7 @@ export const useCorporateMutations = () => {
       });
     },
 
-    onError: (error) => {},
+    onError: () => {},
   });
 
   return {
